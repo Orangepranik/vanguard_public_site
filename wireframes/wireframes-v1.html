@@ -1,0 +1,975 @@
+<!doctype html>
+<html lang="uk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>VANGUARD — Wireframes v1 (Головна · Каталог · Продукт)</title>
+<style>
+/* ===== Токени (затверджена палітра, 2026-08-12) ===== */
+:root{
+  --bg:#0B0D0F; --bg-2:#111417; --bg-deep:#040506; --surface:#171B1F; --surface-2:#1D2227;
+  --border:rgba(255,255,255,.08); --border-l:rgba(255,255,255,.16);
+  --text:#F0F0F0; --muted:#A7AAAD; --muted-2:#747A80;
+  --accent:#E87524; --accent-h:#F18432; --accent-dim:rgba(232,117,36,.14);
+  --success:#4ADE80; --warning:#FBBF24; --danger:#F87171;
+  --r:6px; --r-lg:10px; --maxw:1280px;
+  --mono:ui-monospace,"Cascadia Mono",Consolas,"Roboto Mono",monospace;
+  color-scheme:dark;
+  accent-color:var(--accent);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-text-size-adjust:100%}
+@media (prefers-reduced-motion:no-preference){html{scroll-behavior:smooth}}
+body{
+  background:var(--bg);color:var(--text);
+  font:16px/1.55 -apple-system,"Segoe UI",Roboto,Inter,system-ui,sans-serif;
+}
+img,svg{display:block;max-width:100%}
+a{color:var(--accent)} a:hover{color:var(--accent-h)}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:4px}
+::selection{background:var(--accent);color:#0B0D0F}
+
+.container{width:min(100% - 32px,var(--maxw));margin-inline:auto}
+.section{padding-block:36px}
+h2{font-size:clamp(20px,2.6vw,26px);margin-bottom:18px;letter-spacing:.2px}
+.h2row{display:flex;align-items:baseline;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:18px}
+.h2row h2{margin:0}
+.mutetxt{color:var(--muted)}
+.small{font-size:13px}
+
+/* ===== Кнопки, чипи, бейджі ===== */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;
+  min-height:48px;padding:0 20px;border-radius:var(--r);font-weight:600;font-size:16px;
+  border:1px solid transparent;cursor:pointer;text-decoration:none;color:var(--text);background:none}
+.btn-primary{background:var(--accent);color:#0B0D0F}
+.btn-primary:hover{background:var(--accent-h)}
+.btn-secondary{border-color:var(--border);background:transparent}
+.btn-secondary:hover{border-color:var(--border-l);background:var(--surface)}
+.btn-ghost{color:var(--muted)}
+.btn-ghost:hover{color:var(--text)}
+.btn-sm{min-height:44px;padding:0 14px;font-size:15px}
+.btn-full{width:100%}
+
+.chip{display:inline-flex;align-items:center;gap:6px;min-height:44px;padding:0 16px;
+  border-radius:999px;border:1px solid var(--border);background:var(--surface);
+  color:var(--text);font-size:15px;cursor:pointer;text-decoration:none;white-space:nowrap}
+.chip:hover{border-color:var(--border-l)}
+.chip.on{border-color:var(--accent);background:var(--accent-dim)}
+.chip .x{color:var(--muted);font-size:13px}
+
+.badge{display:inline-block;font-size:12px;font-weight:600;padding:3px 8px;border-radius:4px;
+  background:var(--surface-2);border:1px solid var(--border);color:var(--muted)}
+.badge-a{border-color:var(--accent);color:var(--accent-h);background:var(--accent-dim)}
+
+.avail{font-size:14px;font-weight:600}
+.avail::before{content:"";display:inline-block;width:8px;height:8px;border-radius:50%;
+  margin-right:7px;transform:translateY(-1px);background:currentColor}
+.avail.in{color:var(--success)}
+.avail.order,.avail.prod{color:var(--warning)}
+.avail.ask{color:var(--muted)}
+
+.price{font-size:20px;font-weight:700}
+.price .from{font-size:14px;font-weight:400;color:var(--muted)}
+
+.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);padding:16px}
+
+/* ===== Поля ===== */
+.field{margin-bottom:14px}
+.field label{display:block;font-size:14px;font-weight:600;margin-bottom:6px}
+.field .hint{font-weight:400;color:var(--muted)}
+input[type=text],input[type=tel],input[type=search],input[type=number],select,textarea{
+  width:100%;min-height:48px;padding:10px 14px;font-size:16px;color:var(--text);
+  background:var(--surface);border:1px solid var(--border);border-radius:var(--r)}
+textarea{min-height:88px;resize:vertical}
+input::placeholder,textarea::placeholder{color:var(--muted)}
+input:hover,select:hover,textarea:hover{border-color:var(--border-l)}
+
+/* опції конфігуратора / фільтрів */
+.opt{position:relative;display:inline-flex}
+.opt input{position:absolute;inset:0;opacity:0;cursor:pointer}
+.opt span{display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:0 16px;
+  border:1px solid var(--border);border-radius:var(--r);background:var(--surface);font-size:15px}
+.opt small{color:var(--muted);font-size:13px}
+.opt input:checked + span{border-color:var(--accent);background:var(--accent-dim)}
+.opt input:focus-visible + span{outline:2px solid var(--accent);outline-offset:2px}
+.optrow{display:flex;flex-wrap:wrap;gap:10px}
+fieldset{border:0;margin-bottom:16px}
+legend{font-size:14px;font-weight:600;margin-bottom:8px;color:var(--muted)}
+
+/* ===== Мета-панель рев'ю ===== */
+.meta{position:sticky;top:0;z-index:100;background:rgba(4,5,6,.95);
+  border-bottom:1px dashed var(--border-l);font-size:13px}
+.meta-in{display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding:8px 0}
+.meta .lbl{color:var(--muted);letter-spacing:.08em;margin-right:4px}
+.mbtn{min-height:36px;padding:0 14px;border-radius:999px;border:1px solid var(--border);
+  background:var(--surface);color:var(--text);font-size:13px;cursor:pointer}
+.mbtn.on{border-color:var(--accent);background:var(--accent-dim)}
+.notes{margin-top:12px;font-size:13px;color:var(--muted)}
+.notes summary{cursor:pointer;font-weight:600}
+.notes ul{margin:8px 0 0 18px;display:grid;gap:4px}
+
+/* ===== Екрани ===== */
+.screen{border-bottom:2px dashed var(--border-l);padding-bottom:56px}
+body.single .screen{display:none;border-bottom:0}
+body.single .screen.active{display:block}
+.scr-lbl{font-size:12px;letter-spacing:.18em;color:var(--muted);padding:14px 0 0}
+
+/* ===== Шапка сайту ===== */
+.site-head{background:var(--bg);border-bottom:1px solid var(--border)}
+.head-in{display:flex;align-items:center;gap:6px;min-height:62px}
+.logo{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--text);margin-right:auto}
+.logo-mark{width:34px;height:30px;flex:none}
+.logo-txt strong{display:block;font-size:17px;letter-spacing:.2em;font-weight:700;line-height:1.1}
+.logo-tag{display:none;font-size:8.5px;letter-spacing:.18em;color:var(--muted);text-transform:uppercase}
+@media (min-width:560px){.logo-tag{display:block}}
+.nav{display:none}
+.iconbtn{position:relative;width:44px;height:44px;display:inline-flex;align-items:center;
+  justify-content:center;background:none;border:0;border-radius:var(--r);color:var(--text);cursor:pointer}
+.iconbtn:hover{background:var(--surface)}
+.iconbtn .cnt{position:absolute;top:3px;right:2px;background:var(--accent);color:#0B0D0F;
+  font-size:11px;font-weight:700;border-radius:999px;padding:0 5px;line-height:16px}
+.head-cta{display:none}
+@media (min-width:1024px){
+  .nav{display:flex;gap:2px;margin-right:8px}
+  .nav a{color:var(--text);text-decoration:none;padding:10px 12px;border-radius:var(--r);font-size:15px}
+  .nav a:hover{background:var(--surface);color:var(--text)}
+  .head-cta{display:inline-flex}
+  .burger{display:none}
+}
+
+/* ===== Hero ===== */
+.hero{background:linear-gradient(180deg,var(--bg) 0%,var(--bg-2) 100%);position:relative;overflow:hidden}
+.hero::before{content:"";position:absolute;inset:0;
+  background-image:linear-gradient(rgba(255,255,255,.045) 1px,transparent 1px),
+                   linear-gradient(90deg,rgba(255,255,255,.045) 1px,transparent 1px);
+  background-size:44px 44px}
+.hero::after{content:"";position:absolute;inset:0;
+  background:radial-gradient(ellipse at 75% 15%,rgba(232,117,36,.07),transparent 55%)}
+.hero-in{position:relative;z-index:1;display:grid;gap:28px;padding:48px 0 52px}
+.hero h1{font-size:clamp(27px,4.5vw,40px);line-height:1.15;letter-spacing:.2px;max-width:640px}
+.hero p{color:var(--muted);font-size:17px;max-width:560px;margin-top:12px}
+.hero-cta{display:flex;gap:12px;flex-wrap:wrap;margin-top:26px}
+.hero-ph{display:none}
+@media (min-width:1024px){
+  .hero-in{grid-template-columns:1.1fr .9fr;align-items:center}
+  .hero-ph{display:block}
+}
+
+/* фото-плейсхолдер */
+.ph{position:relative;background:repeating-linear-gradient(45deg,#1D1F20 0 12px,#191B1C 12px 24px);
+  border:1px solid var(--border);border-radius:var(--r);display:flex;align-items:center;
+  justify-content:center;color:var(--muted);font-size:13px;aspect-ratio:4/3;overflow:hidden}
+.ph.tall{aspect-ratio:5/4}
+
+/* ===== Сітки ===== */
+.grid-cats{display:grid;gap:12px;grid-template-columns:repeat(auto-fill,minmax(155px,1fr))}
+.cat{display:flex;flex-direction:column;gap:8px;min-height:158px;padding:14px;text-decoration:none;
+  color:var(--text);background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg)}
+.cat:hover{border-color:var(--border-l)}
+.cat svg{width:34px;height:34px;color:var(--muted)}
+.cat b{font-size:16px}
+.cat .d{font-size:13px;color:var(--muted);line-height:1.4}
+.cat .n{margin-top:auto;font-size:13px;color:var(--accent-h);font-weight:600}
+
+.grid-tiles{display:grid;gap:10px;grid-template-columns:repeat(auto-fill,minmax(150px,1fr))}
+
+.grid-products{display:grid;gap:14px;grid-template-columns:repeat(auto-fill,minmax(215px,1fr))}
+.pcard{display:flex;flex-direction:column;gap:8px;background:var(--surface);
+  border:1px solid var(--border);border-radius:var(--r-lg);padding:12px}
+.pcard:hover{border-color:var(--border-l)}
+.pcard .ph{margin-bottom:2px}
+.cmp{position:absolute;top:8px;right:8px;display:flex;align-items:center;gap:7px;
+  background:rgba(4,5,6,.72);border:1px solid var(--border);border-radius:var(--r);
+  padding:8px 10px;font-size:13px;cursor:pointer;color:var(--text)}
+.cmp input{width:16px;height:16px}
+.pcard h3{font-size:16.5px;line-height:1.3}
+.pcard .sp{font-size:14px;color:var(--muted);line-height:1.45}
+.pcard .badges{display:flex;gap:6px;flex-wrap:wrap}
+.pcard .foot{margin-top:auto;display:grid;gap:10px;padding-top:6px}
+
+/* ===== Головна: інші блоки ===== */
+.why{display:grid;gap:12px;grid-template-columns:repeat(auto-fill,minmax(215px,1fr))}
+.why .card{display:flex;gap:12px;align-items:flex-start}
+.why svg{width:22px;height:22px;color:var(--success);flex:none;margin-top:2px}
+.why b{display:block;margin-bottom:2px}
+.why span{font-size:14px;color:var(--muted)}
+
+.rev{border-left:3px solid var(--accent)}
+.rev .t{font-size:15px;line-height:1.55}
+.rev .f{margin-top:10px;font-size:13px;color:var(--muted)}
+.rev .media{display:flex;gap:8px;margin-top:12px}
+.rev .media .ph{width:64px;height:64px;aspect-ratio:1;flex:none;border-radius:var(--r)}
+.grid-rev{display:grid;gap:14px;grid-template-columns:repeat(auto-fill,minmax(280px,1fr))}
+
+.docstrip{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.doclink{display:inline-flex;align-items:center;gap:9px;min-height:48px;padding:0 16px;
+  background:var(--surface);border:1px solid var(--border);border-radius:var(--r);
+  color:var(--text);text-decoration:none;font-size:15px}
+.doclink:hover{border-color:var(--border-l)}
+.doclink svg{width:18px;height:18px;color:var(--muted)}
+
+.ctablock{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);
+  padding:28px 20px;text-align:center;display:grid;gap:14px;justify-items:center}
+.ctablock .tel{font-size:20px;font-weight:700;color:var(--text);text-decoration:none}
+.msgrow{display:flex;gap:8px;flex-wrap:wrap;justify-content:center}
+
+.site-foot{background:var(--bg-deep);border-top:1px solid var(--border);margin-top:8px}
+.foot-in{display:grid;gap:24px;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));padding:36px 0 24px}
+.foot-in b{display:block;margin-bottom:10px;font-size:14px;letter-spacing:.04em}
+.foot-in a{display:block;color:var(--muted);text-decoration:none;font-size:14px;padding:5px 0}
+.foot-in a:hover{color:var(--text)}
+.legal{border-top:1px solid var(--border);padding:16px 0;font-size:13px;color:var(--muted)}
+
+/* ===== Каталог ===== */
+.crumbs{font-size:13px;color:var(--muted);padding:16px 0 4px}
+.crumbs a{color:var(--muted);text-decoration:none}
+.crumbs a:hover{color:var(--text)}
+.search{position:relative;margin:14px 0}
+.search svg{position:absolute;left:13px;top:50%;transform:translateY(-50%);width:18px;height:18px;color:var(--muted)}
+.search input{padding-left:42px}
+.chiprow{display:flex;gap:8px;overflow-x:auto;padding:4px 0 10px;scrollbar-width:none}
+.chiprow::-webkit-scrollbar{display:none}
+.ctrls{display:flex;gap:10px;align-items:center;margin:6px 0 12px;flex-wrap:wrap}
+.ctrls select{width:auto;min-width:180px;min-height:48px}
+.fsheet{margin:4px 0 16px}
+.fsheet > summary{list-style:none;cursor:pointer}
+.fsheet > summary::-webkit-details-marker{display:none}
+.fbody{margin-top:10px}
+.fbody .row2{display:flex;gap:10px}
+.fbody .foot{display:flex;gap:10px;flex-wrap:wrap;margin-top:6px}
+.applied{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:14px}
+.cmpbar{position:sticky;bottom:12px;z-index:30;display:flex;gap:12px;align-items:center;
+  justify-content:space-between;flex-wrap:wrap;margin-top:22px;
+  background:rgba(24,25,26,.97);border:1px solid var(--border-l);border-radius:var(--r-lg);
+  padding:12px 16px;box-shadow:0 8px 24px rgba(0,0,0,.45)}
+.cmpbar .l{display:flex;gap:10px;align-items:center;font-size:14px;color:var(--muted)}
+.cmpbar .r{display:flex;gap:8px}
+
+/* ===== Продукт ===== */
+.pgrid{display:grid;gap:30px;margin-top:10px}
+@media (min-width:1024px){.pgrid{grid-template-columns:1fr 1fr}}
+.thumbs{display:flex;gap:8px;margin-top:10px}
+.thumbs .ph{width:62px;height:62px;aspect-ratio:1;flex:none;cursor:pointer}
+.thumbs .ph.on{border-color:var(--accent)}
+.pinfo h1{font-size:clamp(23px,3vw,28px);line-height:1.2}
+.purpose{color:var(--muted);font-size:15.5px;margin-top:8px}
+.pricerow{display:flex;align-items:center;gap:16px;flex-wrap:wrap;margin:18px 0 6px}
+.pricerow .price{font-size:27px}
+.keyspecs{display:grid;gap:8px;margin:16px 0 22px;padding:14px 16px;background:var(--surface);
+  border:1px solid var(--border);border-radius:var(--r-lg)}
+.keyspecs div{display:flex;justify-content:space-between;gap:14px;font-size:14.5px}
+.keyspecs dt{color:var(--muted)}
+.keyspecs dd{font-family:var(--mono);font-size:13.5px;text-align:right}
+.cfgbox{border-left:3px solid var(--accent);display:grid;gap:8px;margin-top:6px}
+.cfgbox .cap{font-size:12px;letter-spacing:.12em;color:var(--muted);font-weight:600}
+.cfgbox .line{font-size:15.5px;font-weight:600}
+.cfgbox .sku{font-family:var(--mono);font-size:12.5px;color:var(--muted)}
+.cfgbox .pr{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-top:2px}
+.cfgbox .pr .price{font-size:23px}
+.cfgbox .act{display:grid;gap:10px;margin-top:8px}
+@media (min-width:560px){.cfgbox .act{grid-template-columns:1fr 1fr}}
+.desc p{margin-bottom:10px;max-width:70ch}
+.specs details{border:1px solid var(--border);border-radius:var(--r-lg);background:var(--surface);margin-bottom:10px}
+.specs summary{cursor:pointer;list-style:none;display:flex;justify-content:space-between;
+  align-items:center;gap:10px;padding:14px 16px;font-weight:600;min-height:52px}
+.specs summary::-webkit-details-marker{display:none}
+.specs summary::after{content:"▾";color:var(--muted);transition:none}
+.specs details[open] summary::after{content:"▴"}
+.specs .rows{padding:2px 16px 14px;display:grid;gap:8px}
+.specs .rows div{display:flex;justify-content:space-between;gap:14px;font-size:14.5px;
+  border-top:1px solid var(--border);padding-top:8px}
+.specs .rows div:first-child{border-top:0;padding-top:0}
+.specs dt{color:var(--muted)}
+.specs dd{font-family:var(--mono);font-size:13.5px;text-align:right}
+.pack ul{list-style:none;display:grid;gap:8px}
+.pack li{display:flex;gap:10px;font-size:15px}
+.pack li::before{content:"—";color:var(--accent)}
+.compat{display:grid;gap:10px;grid-template-columns:repeat(auto-fill,minmax(250px,1fr))}
+.compat a{display:flex;gap:12px;align-items:center;padding:12px;background:var(--surface);
+  border:1px solid var(--border);border-radius:var(--r-lg);color:var(--text);text-decoration:none}
+.compat a:hover{border-color:var(--border-l)}
+.compat .ph{width:56px;height:56px;aspect-ratio:1;flex:none}
+.compat b{display:block;font-size:15px}
+.compat span{font-size:13px;color:var(--muted)}
+.docrows{display:grid;gap:10px}
+.docrows .row{display:flex;gap:12px;align-items:center;flex-wrap:wrap;background:var(--surface);
+  border:1px solid var(--border);border-radius:var(--r-lg);padding:12px 16px}
+.docrows svg{width:20px;height:20px;color:var(--muted);flex:none}
+.docrows b{font-size:15px}
+.docrows .m{font-size:13px;color:var(--muted)}
+.docrows .acts{margin-left:auto;display:flex;gap:14px;font-size:14.5px}
+.reqitems{display:grid;gap:10px;margin-bottom:16px}
+.reqitems .it{display:flex;gap:12px;align-items:center;flex-wrap:wrap;border:1px solid var(--border);
+  border-radius:var(--r);padding:10px 12px;font-size:14.5px}
+.reqitems .it b{font-size:15px}
+.reqitems .it .cfg{color:var(--muted);font-size:13.5px;width:100%}
+.pcta{position:sticky;bottom:0;z-index:40;background:rgba(4,5,6,.94);border-top:1px solid var(--border);
+  margin-top:28px}
+.pcta-in{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:10px 0}
+.gwarr{display:flex;gap:10px;align-items:center;font-size:14.5px;color:var(--muted)}
+</style>
+</head>
+<body>
+
+<!-- ===================== МЕТА-ПАНЕЛЬ РЕВ'Ю (не частина сайту) ===================== -->
+<div class="meta">
+  <div class="container meta-in">
+    <span class="lbl">WIREFRAMES&nbsp;V1</span>
+    <button class="mbtn" data-s="home">1 · Головна</button>
+    <button class="mbtn" data-s="catalog">2 · Каталог</button>
+    <button class="mbtn" data-s="product">3 · Продукт</button>
+  </div>
+</div>
+<details class="notes container">
+  <summary>Нотатки до макета (для рев'ю)</summary>
+  <ul>
+    <li>Палітра v1.1 (фон #0B0D0F, картки #171B1F, акцент #E87524) — повна специфікація: docs/09-design-system.md. На акцентних кнопках текст темний — білий на помаранчевому не проходить контраст AA.</li>
+    <li>Логотип у шапці — тимчасовий плейсхолдер до отримання SVG-вихідників (assets/brand/README.md).</li>
+    <li>Фото — плейсхолдери; дані продуктів демонстраційні, до отримання переліку від власника.</li>
+    <li>Шрифт тут системний; у реалізації — self-hosted Inter + IBM Plex Mono (числа, артикули).</li>
+    <li>«Фільтри» та «Заявка» розгортаються тут як демо-панелі; у реалізації на mobile — bottom-sheet.</li>
+    <li>Конфігуратор і перемикання екранів — робочі (демо-логіка).</li>
+    <li>Композиційна v2 головної (hero 45/55 з фото, «Продукція» з 4 категорій, блок підбору 1–2–3) — після затвердження Style Guide (docs/09-design-system.md §54).</li>
+  </ul>
+</details>
+
+<!-- ============================= ЕКРАН 1 · ГОЛОВНА ============================= -->
+<section class="screen" id="scr-home">
+<p class="scr-lbl container">ЕКРАН · ГОЛОВНА</p>
+
+<header class="site-head">
+  <div class="container head-in">
+    <button class="iconbtn burger" aria-label="Меню">
+      <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+    </button>
+    <a class="logo" href="#" aria-label="VANGUARD — на головну">
+      <svg class="logo-mark" viewBox="0 0 48 40" fill="none" stroke="#F0F0F0" stroke-width="2.4">
+        <path d="M24 3 45 37H3Z"/><path d="M24 13.5 36 33H12Z" stroke="#A7AAAD" stroke-width="2"/>
+      </svg>
+      <span class="logo-txt">
+        <strong>VANGUARD</strong>
+        <span class="logo-tag">Ukrainian Radioelectronic Systems</span>
+      </span>
+    </a>
+    <nav class="nav" aria-label="Основна навігація">
+      <a href="#">Каталог</a><a href="#">Рішення</a><a href="#">Документація</a><a href="#">Про компанію</a><a href="#">Контакти</a>
+    </nav>
+    <button class="iconbtn" aria-label="Пошук">
+      <svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="11" r="7"/><path d="m16.5 16.5 4.5 4.5"/></svg>
+    </button>
+    <button class="iconbtn" aria-label="Порівняння: 2 товари">
+      <svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M7 4 3 8l4 4M3 8h11M17 12l4 4-4 4M21 16H10"/></svg>
+      <span class="cnt">2</span>
+    </button>
+    <a class="btn btn-primary btn-sm head-cta" href="#">Отримати консультацію</a>
+  </div>
+</header>
+
+<div class="hero">
+  <div class="container hero-in">
+    <div>
+      <h1>Радіоелектронні системи для виявлення та протидії БПЛА</h1>
+      <p>Детектори, антени та комплекси для польового, мобільного та стаціонарного застосування.</p>
+      <div class="hero-cta">
+        <a class="btn btn-primary" href="#">Переглянути каталог</a>
+        <a class="btn btn-secondary" href="#">Підібрати рішення</a>
+      </div>
+    </div>
+    <div class="ph tall hero-ph">Продуктова фотографія</div>
+  </div>
+</div>
+
+<div class="container section">
+  <div class="h2row"><h2>Каталог</h2><a class="small" href="#">Увесь каталог →</a></div>
+  <div class="grid-cats">
+    <a class="cat" href="#">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="3.2"/><path d="M12 4.5a7.5 7.5 0 0 1 7.5 7.5M12 1a11 11 0 0 1 11 11"/></svg>
+      <b>Детектори БПЛА</b><span class="d">Виявлення активності БПЛА та каналів зв'язку</span><span class="n">12 моделей →</span>
+    </a>
+    <a class="cat" href="#">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 3 20 6v6c0 5-3.6 7.8-8 9-4.4-1.2-8-4-8-9V6Z"/><path d="m9 12 2 2 4-5"/></svg>
+      <b>РЕБ / придушення</b><span class="d">Придушення каналів управління та відео</span><span class="n">8 моделей →</span>
+    </a>
+    <a class="cat" href="#">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 21V8M6 3l6 5 6-5"/><path d="M8.5 21h7"/></svg>
+      <b>Антени</b><span class="d">Розширення дальності та чутливості</span><span class="n">15 моделей →</span>
+    </a>
+    <a class="cat" href="#">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="9" width="14" height="10" rx="2"/><path d="M17 12c2 0 4-1.5 4-4M17 8.5C18.2 8.5 20 7.6 20 5"/></svg>
+      <b>Приймачі</b><span class="d">Прийом і аналіз сигналів</span><span class="n">5 моделей →</span>
+    </a>
+    <a class="cat" href="#">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 8.5 12 4l9 4.5-9 4.5Z"/><path d="M3 8.5V16l9 4.5 9-4.5V8.5"/><path d="M12 13v7.5"/></svg>
+      <b>Комплекти</b><span class="d">Готові рішення під задачу</span><span class="n">6 наборів →</span>
+    </a>
+    <a class="cat" href="#">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="4" y="8" width="13" height="9" rx="2"/><path d="M17 11h3v3h-3M8 8V5m5 3V5"/></svg>
+      <b>Аксесуари та живлення</b><span class="d">АКБ, кабелі, кріплення, кейси</span><span class="n">20 позицій →</span>
+    </a>
+  </div>
+</div>
+
+<div class="container section">
+  <h2>Підбір за задачею</h2>
+  <div class="grid-tiles">
+    <a class="btn btn-secondary" href="#">Піхота</a>
+    <a class="btn btn-secondary" href="#">Автомобіль</a>
+    <a class="btn btn-secondary" href="#">Стаціонарний пост</a>
+    <a class="btn btn-secondary" href="#">Мобільна група</a>
+    <a class="btn btn-secondary" href="#">Підрозділ</a>
+    <a class="btn btn-secondary" href="#">Спеціальні задачі</a>
+  </div>
+  <div class="card" style="margin-top:12px;display:flex;gap:14px;align-items:center;flex-wrap:wrap;justify-content:space-between">
+    <span class="mutetxt">Не знаєте, з чого почати? Дайте відповідь на 3 питання — підкажемо комплект.</span>
+    <a class="btn btn-secondary btn-sm" href="#">Майстер підбору <span class="badge">V2</span></a>
+  </div>
+</div>
+
+<div class="container section">
+  <div class="h2row"><h2>Ключові продукти</h2><a class="small" href="#">Всі детектори →</a></div>
+  <div class="grid-products">
+    <article class="pcard">
+      <div class="ph">Фото продукту
+        <label class="cmp"><input type="checkbox" checked> ⇄</label>
+      </div>
+      <div class="badges"><span class="badge">Виносні антени</span></div>
+      <h3>Детектор дронів «КОЖАН»</h3>
+      <p class="sp">4 діапазони · 1G / 3G / 5G / 6G</p>
+      <div class="foot">
+        <span class="avail in">В наявності</span>
+        <span class="price"><span class="from">від </span>42 000 грн</span>
+        <a class="btn btn-secondary btn-sm" href="#">Детальніше</a>
+      </div>
+    </article>
+    <article class="pcard">
+      <div class="ph">Фото продукту
+        <label class="cmp"><input type="checkbox"> ⇄</label>
+      </div>
+      <div class="badges"><span class="badge">Виносні антени</span><span class="badge">Посилена батарея</span></div>
+      <h3>Детектор «КОЖАН Pro»</h3>
+      <p class="sp">6 діапазонів · розширена дальність</p>
+      <div class="foot">
+        <span class="avail order">Під замовлення</span>
+        <span class="price"><span class="from">від </span>58 000 грн</span>
+        <a class="btn btn-secondary btn-sm" href="#">Детальніше</a>
+      </div>
+    </article>
+    <article class="pcard">
+      <div class="ph">Фото продукту
+        <label class="cmp"><input type="checkbox"> ⇄</label>
+      </div>
+      <div class="badges"><span class="badge-a badge">Версія для авто</span></div>
+      <h3>Детектор «КОЖАН Авто»</h3>
+      <p class="sp">4 діапазони · бортове живлення 12–24 В</p>
+      <div class="foot">
+        <span class="avail prod">Виробництво 3–5 днів</span>
+        <span class="price"><span class="from">від </span>47 000 грн</span>
+        <a class="btn btn-secondary btn-sm" href="#">Детальніше</a>
+      </div>
+    </article>
+  </div>
+</div>
+
+<div class="container section">
+  <h2>Чому обирають нас</h2>
+  <div class="why">
+    <div class="card"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m4 12 5 5L20 7"/></svg><div><b>Власне виробництво</b><span>Розробка та збирання в Україні</span></div></div>
+    <div class="card"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m4 12 5 5L20 7"/></svg><div><b>Гарантія 12 місяців</b><span>Сервісний центр виробника</span></div></div>
+    <div class="card"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m4 12 5 5L20 7"/></svg><div><b>Сертифікована продукція</b><span>Повний пакет документів</span></div></div>
+    <div class="card"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m4 12 5 5L20 7"/></svg><div><b>Досвід постачань</b><span>Підрозділи, фонди, юрособи</span></div></div>
+  </div>
+</div>
+
+<div class="container section">
+  <div class="h2row"><h2>Досвід застосування</h2></div>
+  <div class="grid-rev">
+    <blockquote class="card rev">
+      <p class="t">«Детектор дав час зняти екіпаж з машини до підльоту. Працює від АКБ повну зміну, за пів року — жодної відмови.»</p>
+      <footer class="f">«Мольфар» · оператор БПЛА · КОЖАН · <a href="#">до продукту →</a></footer>
+    </blockquote>
+    <blockquote class="card rev">
+      <p class="t">«Брали три комплекти на групу. Найцінніше — зрозуміла індикація діапазонів: людина без підготовки розбирається за вечір.»</p>
+      <footer class="f">Волонтерський фонд · комплект для мобільної групи · <a href="#">до продукту →</a></footer>
+    </blockquote>
+  </div>
+</div>
+
+<div class="container section">
+  <h2>Документація та сертифікація</h2>
+  <div class="docstrip">
+    <a class="doclink" href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="5" y="3" width="14" height="18" rx="2"/><path d="M9 8h6M9 12h6M9 16h4"/></svg>Інструкції користувача</a>
+    <a class="doclink" href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="5" y="3" width="14" height="18" rx="2"/><path d="M9 8h6M9 12h6M9 16h4"/></svg>Технічні паспорти</a>
+    <a class="doclink" href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="5" y="3" width="14" height="18" rx="2"/><path d="M9 8h6M9 12h6M9 16h4"/></svg>Сертифікати</a>
+    <a class="btn btn-ghost" href="#">Вся документація →</a>
+  </div>
+</div>
+
+<div class="container section">
+  <div class="ctablock">
+    <h2 style="margin:0">Потрібна консультація?</h2>
+    <p class="mutetxt" style="max-width:46ch">Допоможемо підібрати обладнання під вашу задачу та умови застосування.</p>
+    <button class="btn btn-primary" data-openreq>Залишити заявку</button>
+    <a class="tel" href="tel:+380000000000">+380 (00) 000 00 00</a>
+    <div class="msgrow">
+      <a class="chip" href="#">Telegram</a><a class="chip" href="#">Signal</a><a class="chip" href="#">WhatsApp</a>
+    </div>
+  </div>
+</div>
+
+<footer class="site-foot">
+  <div class="container foot-in">
+    <div><b>Каталог</b><a href="#">Детектори БПЛА</a><a href="#">РЕБ / придушення</a><a href="#">Антени</a><a href="#">Комплекти</a><a href="#">Аксесуари</a></div>
+    <div><b>Рішення</b><a href="#">Для піхоти</a><a href="#">Для автомобіля</a><a href="#">Стаціонарний пост</a><a href="#">Мобільна група</a><a href="#">Для підрозділу</a></div>
+    <div><b>Компанія</b><a href="#">Про компанію</a><a href="#">Партнерам</a><a href="#">Документація</a><a href="#">Контакти</a></div>
+    <div><b>Контакти</b><a href="tel:+380000000000">+380 (00) 000 00 00</a><a href="#">info@vanguard.ua</a><a href="#">Telegram · Signal · WhatsApp</a></div>
+  </div>
+  <div class="legal"><div class="container">© 2026 VANGUARD™ · Ukrainian Radioelectronic Systems</div></div>
+</footer>
+</section>
+
+<!-- ============================= ЕКРАН 2 · КАТАЛОГ ============================= -->
+<section class="screen" id="scr-catalog">
+<p class="scr-lbl container">ЕКРАН · КАТАЛОГ (КАТЕГОРІЯ)</p>
+
+<div class="container">
+  <nav class="crumbs" aria-label="Хлібні крихти"><a href="#">Головна</a> / <a href="#">Каталог</a> / Детектори</nav>
+  <div class="h2row" style="margin-bottom:4px">
+    <h2 style="font-size:clamp(22px,3vw,28px)">Детектори БПЛА <span class="mutetxt" style="font-weight:400">· 12 моделей</span></h2>
+  </div>
+
+  <div class="search">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="11" r="7"/><path d="m16.5 16.5 4.5 4.5"/></svg>
+    <input type="search" placeholder="Пошук: назва, артикул, діапазон, задача…" aria-label="Пошук по каталогу">
+  </div>
+
+  <div class="chiprow" role="tablist" aria-label="Категорії">
+    <a class="chip on" href="#">Детектори</a><a class="chip" href="#">РЕБ</a><a class="chip" href="#">Антени</a>
+    <a class="chip" href="#">Приймачі</a><a class="chip" href="#">Комплекти</a><a class="chip" href="#">Аксесуари</a>
+  </div>
+
+  <div class="ctrls">
+    <details class="fsheet" id="fsheet" style="margin:0">
+      <summary class="btn btn-secondary">Фільтри <span class="badge-a badge">2</span></summary>
+      <div class="fbody card">
+        <fieldset>
+          <legend>Діапазони</legend>
+          <div class="optrow">
+            <label class="opt"><input type="checkbox" checked><span>1G</span></label>
+            <label class="opt"><input type="checkbox"><span>3G</span></label>
+            <label class="opt"><input type="checkbox" checked><span>5G</span></label>
+            <label class="opt"><input type="checkbox"><span>6G</span></label>
+          </div>
+        </fieldset>
+        <fieldset>
+          <legend>Антени</legend>
+          <div class="optrow">
+            <label class="opt"><input type="radio" name="f-ant"><span>Всі</span></label>
+            <label class="opt"><input type="radio" name="f-ant" checked><span>Виносні</span></label>
+            <label class="opt"><input type="radio" name="f-ant"><span>Вбудовані</span></label>
+          </div>
+        </fieldset>
+        <fieldset>
+          <legend>Живлення</legend>
+          <div class="optrow">
+            <label class="opt"><input type="checkbox"><span>Акумулятор</span></label>
+            <label class="opt"><input type="checkbox"><span>Бортове 12–24 В</span></label>
+            <label class="opt"><input type="checkbox"><span>Мережа 220 В</span></label>
+          </div>
+        </fieldset>
+        <fieldset>
+          <legend>Ціна, грн</legend>
+          <div class="row2">
+            <input type="number" placeholder="від 0" aria-label="Ціна від">
+            <input type="number" placeholder="до 50 000" aria-label="Ціна до">
+          </div>
+        </fieldset>
+        <label class="opt"><input type="checkbox" checked><span>Лише в наявності</span></label>
+        <div class="foot">
+          <button class="btn btn-primary">Показати 8 моделей</button>
+          <button class="btn btn-ghost">Скинути</button>
+        </div>
+      </div>
+    </details>
+    <select aria-label="Сортування">
+      <option>За популярністю</option><option>Ціна: спочатку нижча</option>
+      <option>Ціна: спочатку вища</option><option>Нові</option>
+    </select>
+  </div>
+
+  <div class="applied">
+    <span class="chip on">Виносні антени <span class="x">✕</span></span>
+    <span class="chip on">До 50 000 грн <span class="x">✕</span></span>
+    <button class="btn btn-ghost btn-sm">Скинути все</button>
+  </div>
+
+  <div class="grid-products">
+    <article class="pcard">
+      <div class="ph">Фото продукту<label class="cmp"><input type="checkbox" checked> ⇄</label></div>
+      <div class="badges"><span class="badge">Виносні антени</span></div>
+      <h3>Детектор дронів «КОЖАН»</h3>
+      <p class="sp">4 діапазони · 1G / 3G / 5G / 6G</p>
+      <div class="foot"><span class="avail in">В наявності</span>
+        <span class="price"><span class="from">від </span>42 000 грн</span>
+        <a class="btn btn-secondary btn-sm" href="#">Детальніше</a></div>
+    </article>
+    <article class="pcard">
+      <div class="ph">Фото продукту<label class="cmp"><input type="checkbox" checked> ⇄</label></div>
+      <div class="badges"><span class="badge">Виносні антени</span><span class="badge">Посилена батарея</span></div>
+      <h3>Детектор «КОЖАН Pro»</h3>
+      <p class="sp">6 діапазонів · розширена дальність</p>
+      <div class="foot"><span class="avail order">Під замовлення</span>
+        <span class="price"><span class="from">від </span>58 000 грн</span>
+        <a class="btn btn-secondary btn-sm" href="#">Детальніше</a></div>
+    </article>
+    <article class="pcard">
+      <div class="ph">Фото продукту<label class="cmp"><input type="checkbox"> ⇄</label></div>
+      <div class="badges"><span class="badge">Вбудовані антени</span></div>
+      <h3>Детектор «КОЖАН Компакт»</h3>
+      <p class="sp">3 діапазони · кишеньковий формат</p>
+      <div class="foot"><span class="avail in">В наявності</span>
+        <span class="price">29 500 грн</span>
+        <a class="btn btn-secondary btn-sm" href="#">Детальніше</a></div>
+    </article>
+    <article class="pcard">
+      <div class="ph">Фото продукту<label class="cmp"><input type="checkbox"> ⇄</label></div>
+      <div class="badges"><span class="badge-a badge">Версія для авто</span></div>
+      <h3>Детектор «КОЖАН Авто»</h3>
+      <p class="sp">4 діапазони · бортове живлення 12–24 В</p>
+      <div class="foot"><span class="avail prod">Виробництво 3–5 днів</span>
+        <span class="price"><span class="from">від </span>47 000 грн</span>
+        <a class="btn btn-secondary btn-sm" href="#">Детальніше</a></div>
+    </article>
+    <article class="pcard">
+      <div class="ph">Фото продукту<label class="cmp"><input type="checkbox"> ⇄</label></div>
+      <div class="badges"><span class="badge">Стаціонарний</span></div>
+      <h3>Детектор «КОЖАН Пост»</h3>
+      <p class="sp">4 діапазони · зовнішнє живлення · щогла</p>
+      <div class="foot"><span class="avail order">Під замовлення</span>
+        <span class="price"><span class="from">від </span>64 000 грн</span>
+        <a class="btn btn-secondary btn-sm" href="#">Детальніше</a></div>
+    </article>
+    <article class="pcard">
+      <div class="ph">Фото продукту<label class="cmp"><input type="checkbox"> ⇄</label></div>
+      <div class="badges"><span class="badge">Вбудовані антени</span></div>
+      <h3>Детектор «КОЖАН Лайт»</h3>
+      <p class="sp">2 діапазони · базова модель</p>
+      <div class="foot"><span class="avail in">В наявності</span>
+        <span class="price">21 900 грн</span>
+        <a class="btn btn-secondary btn-sm" href="#">Детальніше</a></div>
+    </article>
+  </div>
+
+  <div style="display:flex;justify-content:center;margin-top:22px">
+    <button class="btn btn-secondary">Показати ще 6</button>
+  </div>
+
+  <div class="cmpbar">
+    <div class="l">
+      <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M7 4 3 8l4 4M3 8h11M17 12l4 4-4 4M21 16H10"/></svg>
+      Порівняння: <b style="color:var(--text)">2 товари</b> однієї категорії
+    </div>
+    <div class="r">
+      <button class="btn btn-primary btn-sm">Порівняти</button>
+      <button class="btn btn-ghost btn-sm">Очистити</button>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- ============================= ЕКРАН 3 · ПРОДУКТ ============================= -->
+<section class="screen" id="scr-product">
+<p class="scr-lbl container">ЕКРАН · СТОРІНКА ПРОДУКТУ</p>
+
+<div class="container">
+  <nav class="crumbs" aria-label="Хлібні крихти"><a href="#">Головна</a> / <a href="#">Каталог</a> / <a href="#">Детектори</a> / КОЖАН</nav>
+
+  <div class="pgrid">
+    <div>
+      <div class="ph tall">Фото продукту · 1/5</div>
+      <div class="thumbs">
+        <div class="ph on">1</div><div class="ph">2</div><div class="ph">3</div><div class="ph">4</div><div class="ph">5</div>
+      </div>
+    </div>
+
+    <div class="pinfo">
+      <h1>Детектор дронів «КОЖАН»</h1>
+      <p class="purpose">Компактний детектор активності БПЛА у 4 частотних діапазонах — для мобільних груп, автомобілів та стаціонарних постів.</p>
+
+      <div class="pricerow">
+        <span class="price" id="cfg-price">45 500 грн</span>
+        <span class="avail in" id="cfg-avail">В наявності</span>
+      </div>
+
+      <dl class="keyspecs">
+        <div><dt>Діапазони</dt><dd>1G / 3G / 5G / 6G</dd></div>
+        <div><dt>Антени</dt><dd>виносні / вбудовані</dd></div>
+        <div><dt>Робота від АКБ</dt><dd>до N год</dd></div>
+        <div><dt>Вага</dt><dd>N г</dd></div>
+      </dl>
+
+      <h3 style="font-size:18px;margin-bottom:12px">Конфігурація</h3>
+      <fieldset>
+        <legend>Діапазони</legend>
+        <div class="optrow">
+          <label class="opt"><input type="radio" name="c-band" checked><span>4 діапазони (1G/3G/5G/6G)</span></label>
+        </div>
+      </fieldset>
+      <fieldset>
+        <legend>Антени</legend>
+        <div class="optrow">
+          <label class="opt"><input type="radio" name="c-ant" value="int" data-price="0"><span>Вбудовані</span></label>
+          <label class="opt"><input type="radio" name="c-ant" value="ext" data-price="3500" checked><span>Виносні <small>+3 500 грн</small></span></label>
+        </div>
+      </fieldset>
+      <fieldset>
+        <legend>Батарея</legend>
+        <div class="optrow">
+          <label class="opt"><input type="radio" name="c-bat" value="std" data-price="0" checked><span>Стандартна</span></label>
+          <label class="opt"><input type="radio" name="c-bat" value="rein" data-price="2400"><span>Посилена <small>+2 400 грн</small></span></label>
+        </div>
+      </fieldset>
+
+      <div class="card cfgbox">
+        <span class="cap">ОБРАНА КОНФІГУРАЦІЯ</span>
+        <span class="line" id="cfg-line">4 діапазони · Виносні антени · Стандартна батарея</span>
+        <span class="sku" id="cfg-sku">Артикул: KOJ-4B-EXT-STD</span>
+        <div class="pr"><span class="price" id="cfg-price2">45 500 грн</span><span class="avail in">В наявності</span></div>
+        <div class="act">
+          <button class="btn btn-primary" data-openreq>Залишити заявку</button>
+          <button class="btn btn-secondary">⇄ Додати до порівняння</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section desc">
+    <h2>Опис</h2>
+    <p><b>«КОЖАН» — компактний детектор для виявлення активності БПЛА у декількох частотних діапазонах.</b></p>
+    <p>Підходить для мобільних груп, автомобілів та стаціонарних постів. Виносні антени підвищують чутливість і дозволяють розмістити прилад у захищеному місці.</p>
+    <p>Готовий до роботи за секунди після ввімкнення; працює повну зміну від штатної батареї. Керування зрозуміле без підготовки — індикація по кожному діапазону окремо.</p>
+  </div>
+
+  <div class="section specs">
+    <h2>Технічні характеристики</h2>
+    <details open>
+      <summary>Радіочастотні характеристики</summary>
+      <div class="rows">
+        <div><dt>Діапазони</dt><dd>1G / 3G / 5G / 6G</dd></div>
+        <div><dt>Тип антен</dt><dd>виносні / вбудовані</dd></div>
+        <div><dt>Роз'єми антен</dt><dd>SMA</dd></div>
+        <div><dt>Чутливість</dt><dd>N дБм</dd></div>
+      </div>
+    </details>
+    <details>
+      <summary>Живлення</summary>
+      <div class="rows">
+        <div><dt>Батарея</dt><dd>стандартна / посилена</dd></div>
+        <div><dt>Час роботи</dt><dd>до N год</dd></div>
+        <div><dt>Заряджання</dt><dd>USB-C</dd></div>
+        <div><dt>Бортове живлення</dt><dd>12–24 В (опція)</dd></div>
+      </div>
+    </details>
+    <details>
+      <summary>Фізичні параметри</summary>
+      <div class="rows">
+        <div><dt>Вага</dt><dd>N г</dd></div>
+        <div><dt>Розміри</dt><dd>N × N × N мм</dd></div>
+        <div><dt>Захист корпусу</dt><dd>IP54</dd></div>
+      </div>
+    </details>
+    <details>
+      <summary>Інтерфейси та індикація</summary>
+      <div class="rows">
+        <div><dt>Індикація</dt><dd>по кожному діапазону</dd></div>
+        <div><dt>Сповіщення</dt><dd>звук / вібро / беззвучний</dd></div>
+      </div>
+    </details>
+    <details>
+      <summary>Умови експлуатації</summary>
+      <div class="rows">
+        <div><dt>Температура</dt><dd>−20…+50 °C</dd></div>
+        <div><dt>Вологість</dt><dd>до N %</dd></div>
+        <div><dt>Артикул базової версії</dt><dd>KOJ-4B-INT-STD</dd></div>
+      </div>
+    </details>
+  </div>
+
+  <div class="section pack">
+    <h2>Комплектація</h2>
+    <div class="card"><ul>
+      <li>Детектор «КОЖАН»</li>
+      <li>Виносні антени — 4 шт (для конфігурації з виносними)</li>
+      <li>Зарядний пристрій USB-C</li>
+      <li>Кабель живлення</li>
+      <li>Захисний кейс</li>
+    </ul></div>
+  </div>
+
+  <div class="section">
+    <h2>Працює з</h2>
+    <div class="compat">
+      <a href="#"><div class="ph">Фото</div><div><b>Виносна антена 5G</b><span>підключення через роз'єм SMA</span></div></a>
+      <a href="#"><div class="ph">Фото</div><div><b>АКБ посилений</b><span>подовжує роботу до N год</span></div></a>
+    </div>
+  </div>
+
+  <div class="section docrows">
+    <h2>Документація</h2>
+    <div class="row">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="5" y="3" width="14" height="18" rx="2"/><path d="M9 8h6M9 12h6M9 16h4"/></svg>
+      <div><b>Інструкція користувача</b><div class="m">PDF · 2,4 МБ</div></div>
+      <div class="acts"><a href="#">Переглянути</a><a href="#">Завантажити</a></div>
+    </div>
+    <div class="row">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="5" y="3" width="14" height="18" rx="2"/><path d="M9 8h6M9 12h6M9 16h4"/></svg>
+      <div><b>Технічний паспорт</b><div class="m">PDF · 0,8 МБ</div></div>
+      <div class="acts"><a href="#">Переглянути</a><a href="#">Завантажити</a></div>
+    </div>
+    <div class="row">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="5" y="3" width="14" height="18" rx="2"/><path d="M9 8h6M9 12h6M9 16h4"/></svg>
+      <div><b>Сертифікат відповідності</b><div class="m">PDF · 1,1 МБ</div></div>
+      <div class="acts"><a href="#">Переглянути</a><a href="#">Завантажити</a></div>
+    </div>
+    <div class="gwarr">
+      <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M12 3 20 6v6c0 5-3.6 7.8-8 9-4.4-1.2-8-4-8-9V6Z"/><path d="m9 12 2 2 4-5"/></svg>
+      Гарантія 12 місяців · Сервісний центр виробника
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>Відгуки та досвід застосування</h2>
+    <div class="grid-rev">
+      <blockquote class="card rev">
+        <p class="t">«Возимо на пікапі, антени на кунгу. Детектор дав час зняти екіпаж до підльоту — двічі за місяць. Батареї вистачає на повну зміну.»</p>
+        <div class="media"><div class="ph">Фото</div><div class="ph">▶ Відео</div></div>
+        <footer class="f"><b style="color:var(--text)">«Мольфар»</b> · оператор БПЛА · на автомобілі · березень 2026 · перевірений відгук ✓</footer>
+      </blockquote>
+      <blockquote class="card rev">
+        <p class="t">«Індикація по діапазонах — головне. Новачок розбирається за вечір, хибних тривог менше, ніж у попереднього приладу.»</p>
+        <div class="media"><div class="ph">Фото</div></div>
+        <footer class="f"><b style="color:var(--text)">Боєць підрозділу Сил оборони</b> · піхота · лютий 2026 · перевірений відгук ✓</footer>
+      </blockquote>
+    </div>
+    <div style="margin-top:14px"><button class="btn btn-secondary btn-sm">Показати всі відгуки</button></div>
+  </div>
+
+  <div class="section">
+    <h2>Схожі продукти</h2>
+    <div class="grid-products">
+      <article class="pcard">
+        <div class="ph">Фото продукту</div>
+        <h3>Детектор «КОЖАН Pro»</h3>
+        <p class="sp">6 діапазонів · розширена дальність</p>
+        <div class="foot"><span class="avail order">Під замовлення</span>
+          <span class="price"><span class="from">від </span>58 000 грн</span>
+          <a class="btn btn-secondary btn-sm" href="#">Детальніше</a></div>
+      </article>
+      <article class="pcard">
+        <div class="ph">Фото продукту</div>
+        <h3>Детектор «КОЖАН Компакт»</h3>
+        <p class="sp">3 діапазони · кишеньковий формат</p>
+        <div class="foot"><span class="avail in">В наявності</span>
+          <span class="price">29 500 грн</span>
+          <a class="btn btn-secondary btn-sm" href="#">Детальніше</a></div>
+      </article>
+    </div>
+  </div>
+
+  <div class="section" id="request">
+    <h2>Заявка</h2>
+    <details class="fsheet" id="reqdet">
+      <summary class="btn btn-primary">Залишити заявку</summary>
+      <div class="fbody card">
+        <div class="reqitems">
+          <div class="it">
+            <b>Детектор «КОЖАН»</b>
+            <span class="mutetxt">1 шт · <span id="cfg-price3">45 500 грн</span></span>
+            <button class="btn btn-ghost btn-sm" style="margin-left:auto">Прибрати</button>
+            <span class="cfg" id="cfg-line2">4 діапазони · Виносні антени · Стандартна батарея · KOJ-4B-EXT-STD</span>
+          </div>
+          <button class="btn btn-ghost btn-sm" style="justify-self:start">+ Додати ще продукт</button>
+        </div>
+        <div class="field"><label for="f-name">Ім'я <span style="color:var(--danger)">*</span></label>
+          <input type="text" id="f-name" autocomplete="name" placeholder="Як до вас звертатися"></div>
+        <div class="field"><label for="f-tel">Телефон <span style="color:var(--danger)">*</span></label>
+          <input type="tel" id="f-tel" inputmode="tel" autocomplete="tel" placeholder="+380 __ ___ __ __"></div>
+        <fieldset>
+          <legend>Зручний спосіб зв'язку</legend>
+          <div class="optrow">
+            <label class="opt"><input type="radio" name="f-ch"><span>Дзвінок</span></label>
+            <label class="opt"><input type="radio" name="f-ch" checked><span>Telegram</span></label>
+            <label class="opt"><input type="radio" name="f-ch"><span>Signal</span></label>
+            <label class="opt"><input type="radio" name="f-ch"><span>WhatsApp</span></label>
+          </div>
+        </fieldset>
+        <div class="field"><label for="f-org">Організація / підрозділ <span class="hint">— необов'язково</span></label>
+          <input type="text" id="f-org" placeholder="Можна не вказувати"></div>
+        <div class="field"><label for="f-com">Коментар <span class="hint">— необов'язково</span></label>
+          <textarea id="f-com" placeholder="Кількість, строки, питання…"></textarea></div>
+        <button class="btn btn-primary btn-full" type="button" title="Демо-макет: відправлення не працює">Надіслати заявку</button>
+        <p class="small mutetxt" style="margin-top:10px">Після відправлення менеджер зв'яжеться протягом робочого дня.
+          Терміново? <a href="tel:+380000000000">+380 (00) 000 00 00</a> · <a href="#">Telegram</a></p>
+      </div>
+    </details>
+  </div>
+</div>
+
+<div class="pcta">
+  <div class="container pcta-in">
+    <div><div class="small mutetxt">КОЖАН · обрана конфігурація</div>
+      <span class="price" id="cfg-price4" style="font-size:19px">45 500 грн</span></div>
+    <button class="btn btn-primary" data-openreq>Залишити заявку</button>
+  </div>
+</div>
+</section>
+
+<script>
+(function(){
+  // Перемикання екранів (progressive enhancement: без JS всі екрани показані підряд)
+  var btns=[].slice.call(document.querySelectorAll('.mbtn'));
+  var scr={home:document.getElementById('scr-home'),
+           catalog:document.getElementById('scr-catalog'),
+           product:document.getElementById('scr-product')};
+  function show(id){
+    document.body.classList.add('single');
+    Object.keys(scr).forEach(function(k){scr[k].classList.toggle('active',k===id);});
+    btns.forEach(function(b){b.classList.toggle('on',b.dataset.s===id);});
+    window.scrollTo(0,0);
+  }
+  btns.forEach(function(b){b.addEventListener('click',function(){show(b.dataset.s);});});
+  show('home');
+
+  // Конфігуратор (демо): база 42 000 = 4 діапазони + вбудовані + стандартна
+  var BASE=42000;
+  var LBL={ant:{int:'Вбудовані антени',ext:'Виносні антени'},
+           bat:{std:'Стандартна батарея',rein:'Посилена батарея'}};
+  function fmt(n){return n.toString().replace(/\B(?=(\d{3})+(?!\d))/g,' ')+' грн';}
+  function upd(){
+    var ant=document.querySelector('input[name="c-ant"]:checked');
+    var bat=document.querySelector('input[name="c-bat"]:checked');
+    if(!ant||!bat)return;
+    var total=BASE+ +ant.dataset.price+ +bat.dataset.price;
+    var line='4 діапазони · '+LBL.ant[ant.value]+' · '+LBL.bat[bat.value];
+    var sku='KOJ-4B-'+(ant.value==='ext'?'EXT':'INT')+'-'+(bat.value==='rein'?'REIN':'STD');
+    ['cfg-price','cfg-price2','cfg-price3','cfg-price4'].forEach(function(id){
+      var el=document.getElementById(id); if(el)el.textContent=fmt(total);});
+    document.getElementById('cfg-line').textContent=line;
+    document.getElementById('cfg-sku').textContent='Артикул: '+sku;
+    var l2=document.getElementById('cfg-line2'); if(l2)l2.textContent=line+' · '+sku;
+  }
+  [].slice.call(document.querySelectorAll('input[name="c-ant"],input[name="c-bat"]'))
+    .forEach(function(i){i.addEventListener('change',upd);});
+  upd();
+
+  // Кнопки «Залишити заявку» → відкрити демо-форму на екрані продукту
+  [].slice.call(document.querySelectorAll('[data-openreq]')).forEach(function(b){
+    b.addEventListener('click',function(){
+      show('product');
+      var d=document.getElementById('reqdet'); d.open=true;
+      d.scrollIntoView({block:'start'});
+    });
+  });
+})();
+</script>
+</body>
+</html>

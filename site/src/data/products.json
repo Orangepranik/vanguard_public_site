@@ -1,0 +1,186 @@
+[
+  {
+    "slug": "kozhan-4",
+    "name": "Детектор дронів «КОЖАН»",
+    "shortName": "КОЖАН",
+    "typeLabel": "Детектор БПЛА",
+    "cardTags": ["1G", "3G", "5G", "6G", "до 10 км"],
+    "shortDescription": "Компактний детектор активності БПЛА у 4 частотних діапазонах — для мобільних груп, автомобілів та стаціонарних постів.",
+    "category": { "slug": "detectors", "name": "Детектори" },
+    "useCases": ["infantry", "vehicle", "mobile-group", "stationary"],
+    "badges": ["Виносні антени"],
+    "publicImages": [
+      { "src": "/images/products/kozhan-4/main.webp", "alt": "Детектор КОЖАН, вид спереду", "width": 1600, "height": 1200 }
+    ],
+    "keySpecs": [
+      { "label": "Діапазони", "value": "1G / 3G / 5G / 6G" },
+      { "label": "Антени", "value": "виносні / вбудовані" },
+      { "label": "Робота від АКБ", "value": "до N год" },
+      { "label": "Вага", "value": "N г" }
+    ],
+    "publicSpecifications": [
+      {
+        "group": "Радіочастотні характеристики",
+        "items": [
+          { "label": "Діапазони", "value": "1G / 3G / 5G / 6G" },
+          { "label": "Тип антен", "value": "виносні / вбудовані" },
+          { "label": "Роз'єми антен", "value": "SMA" }
+        ]
+      },
+      {
+        "group": "Живлення",
+        "items": [
+          { "label": "Батарея", "value": "стандартна / посилена" },
+          { "label": "Час роботи", "value": "до N год" },
+          { "label": "Заряджання", "value": "USB-C" }
+        ]
+      },
+      {
+        "group": "Фізичні параметри",
+        "items": [
+          { "label": "Вага", "value": "N г" },
+          { "label": "Захист корпусу", "value": "IP54" }
+        ]
+      },
+      {
+        "group": "Умови експлуатації",
+        "items": [
+          { "label": "Температура", "value": "−20…+50 °C" }
+        ]
+      }
+    ],
+    "configuration": {
+      "optionGroups": [
+        {
+          "id": "antenna",
+          "label": "Антени",
+          "type": "single",
+          "options": [
+            { "id": "int", "label": "Вбудовані", "priceDelta": 0 },
+            { "id": "ext", "label": "Виносні", "priceDelta": 3500 }
+          ]
+        },
+        {
+          "id": "battery",
+          "label": "Батарея",
+          "type": "single",
+          "options": [
+            { "id": "std", "label": "Стандартна", "priceDelta": 0 },
+            { "id": "rein", "label": "Посилена", "priceDelta": 2400 }
+          ]
+        }
+      ],
+      "variants": [
+        { "id": "int-std", "options": { "antenna": "int", "battery": "std" }, "sku": "KOJ-4B-INT-STD", "price": 42000, "availability": "in_stock" },
+        { "id": "int-rein", "options": { "antenna": "int", "battery": "rein" }, "sku": "KOJ-4B-INT-REIN", "price": 44400, "availability": "on_order" },
+        { "id": "ext-std", "options": { "antenna": "ext", "battery": "std" }, "sku": "KOJ-4B-EXT-STD", "price": 45500, "availability": "in_stock" },
+        { "id": "ext-rein", "options": { "antenna": "ext", "battery": "rein" }, "sku": "KOJ-4B-EXT-REIN", "price": 47900, "availability": "production_3_5d" }
+      ],
+      "defaultVariantId": "ext-std"
+    },
+    "publicPrice": { "type": "from", "amount": 42000, "currency": "UAH" },
+    "availability": "in_stock",
+    "documents": [
+      { "title": "Інструкція користувача", "type": "pdf", "url": "/docs/kozhan-4/manual.pdf", "sizeBytes": 2516582 },
+      { "title": "Технічний паспорт", "type": "pdf", "url": "/docs/kozhan-4/passport.pdf", "sizeBytes": 838860 }
+    ],
+    "packageContents": [
+      "Детектор «КОЖАН»",
+      "Виносні антени — 4 шт (для конфігурації з виносними)",
+      "Зарядний пристрій USB-C",
+      "Захисний кейс"
+    ],
+    "warrantyMonths": 12,
+    "relatedSlugs": ["kozhan-pro"],
+    "compatibility": [
+      { "slug": "antenna-5g", "relation": "works_with", "note": "підключення через роз'єм SMA" }
+    ],
+    "reviews": [
+      {
+        "displayName": "«Мольфар»",
+        "roleLabel": "оператор БПЛА",
+        "text": "Возимо на пікапі, антени на кунгу. Детектор дав час зняти екіпаж до підльоту — двічі за місяць. Батареї вистачає на повну зміну.",
+        "useCaseTag": "на автомобілі",
+        "publishedAt": "2026-03",
+        "verified": true
+      }
+    ]
+  },
+  {
+    "slug": "kozhan-pro",
+    "name": "Детектор «КОЖАН Pro»",
+    "shortName": "КОЖАН PRO",
+    "typeLabel": "Детектор БПЛА",
+    "cardTags": ["6 діапазонів", "до 15 км"],
+    "shortDescription": "Детектор активності БПЛА з розширеним набором діапазонів і збільшеною дальністю виявлення.",
+    "category": { "slug": "detectors", "name": "Детектори" },
+    "useCases": ["vehicle", "stationary", "unit"],
+    "badges": ["Виносні антени", "Посилена батарея"],
+    "publicImages": [
+      { "src": "/images/products/kozhan-pro/main.webp", "alt": "Детектор КОЖАН Pro", "width": 1600, "height": 1200 }
+    ],
+    "keySpecs": [
+      { "label": "Діапазони", "value": "6 діапазонів" },
+      { "label": "Антени", "value": "виносні" },
+      { "label": "Робота від АКБ", "value": "до N год" }
+    ],
+    "publicSpecifications": [
+      {
+        "group": "Радіочастотні характеристики",
+        "items": [
+          { "label": "Діапазони", "value": "6 діапазонів" },
+          { "label": "Тип антен", "value": "виносні" }
+        ]
+      }
+    ],
+    "publicPrice": { "type": "from", "amount": 58000, "currency": "UAH" },
+    "availability": "on_order",
+    "documents": [],
+    "packageContents": ["Детектор «КОЖАН Pro»", "Виносні антени", "Зарядний пристрій"],
+    "warrantyMonths": 12,
+    "relatedSlugs": ["kozhan-4"],
+    "compatibility": [
+      { "slug": "antenna-5g", "relation": "works_with", "note": "підключення через роз'єм SMA" }
+    ],
+    "reviews": []
+  },
+  {
+    "slug": "antenna-5g",
+    "name": "Виносна антена 5G",
+    "shortName": "АНТЕНА 5G",
+    "typeLabel": "Виносна антена",
+    "cardTags": ["5G", "SMA"],
+    "shortDescription": "Спрямована виносна антена для підвищення чутливості детекторів у діапазоні 5G.",
+    "category": { "slug": "antennas", "name": "Антени" },
+    "useCases": ["vehicle", "stationary"],
+    "badges": [],
+    "publicImages": [
+      { "src": "/images/products/antenna-5g/main.webp", "alt": "Виносна антена 5G", "width": 1600, "height": 1200 }
+    ],
+    "keySpecs": [
+      { "label": "Діапазон", "value": "5G" },
+      { "label": "Роз'єм", "value": "SMA" },
+      { "label": "Монтаж", "value": "магнітний / на кронштейн" }
+    ],
+    "publicSpecifications": [
+      {
+        "group": "Характеристики",
+        "items": [
+          { "label": "Діапазон", "value": "5G" },
+          { "label": "Роз'єм", "value": "SMA" }
+        ]
+      }
+    ],
+    "publicPrice": { "type": "exact", "amount": 2900, "currency": "UAH" },
+    "availability": "in_stock",
+    "documents": [],
+    "packageContents": ["Антена", "Кабель N м"],
+    "warrantyMonths": 6,
+    "relatedSlugs": ["kozhan-4"],
+    "compatibility": [
+      { "slug": "kozhan-4", "relation": "works_with", "note": "штатна виносна антена детектора" },
+      { "slug": "kozhan-pro", "relation": "works_with" }
+    ],
+    "reviews": []
+  }
+]

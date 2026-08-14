@@ -1,0 +1,8 @@
+[
+  { "slug": "detectors", "name": "Детектори", "description": "Виявлення активності БПЛА та каналів зв'язку", "order": 1 },
+  { "slug": "reb", "name": "РЕБ", "description": "Придушення каналів управління та відео", "order": 2 },
+  { "slug": "antennas", "name": "Антени", "description": "Розширення дальності та чутливості", "order": 3 },
+  { "slug": "receivers", "name": "Приймачі", "description": "Прийом і аналіз сигналів", "order": 4 },
+  { "slug": "kits", "name": "Комплекти", "description": "Готові рішення під задачу", "order": 5 },
+  { "slug": "accessories", "name": "Аксесуари та живлення", "description": "АКБ, кабелі, кріплення, кейси", "order": 6 }
+]
