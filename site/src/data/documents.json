@@ -1,0 +1,18 @@
+[
+  { "id": "doc-01", "title": "Інструкція з експлуатації", "type": "pdf", "category": "instructions", "productSlug": "kozhan-4", "version": "v2.1", "updatedAt": "2026-08-12", "sizeBytes": 2516582, "url": "#" },
+  { "id": "doc-02", "title": "Керівництво користувача", "type": "pdf", "category": "instructions", "productSlug": "kozhan-4", "version": "v2.0", "updatedAt": "2026-06-04", "sizeBytes": 3355443, "url": "#" },
+  { "id": "doc-03", "title": "Швидкий старт", "type": "pdf", "category": "instructions", "productSlug": "kozhan-pro", "version": "v1.2", "updatedAt": "2026-07-20", "sizeBytes": 838860, "url": "#" },
+  { "id": "doc-04", "title": "Інструкція з монтажу антен", "type": "docx", "category": "instructions", "productSlug": "antenna-5g", "version": "v1.0", "updatedAt": "2026-05-15", "sizeBytes": 512000, "url": "#" },
+  { "id": "doc-05", "title": "Технічний паспорт", "type": "pdf", "category": "specifications", "productSlug": "kozhan-4", "version": "v2.1", "updatedAt": "2026-08-01", "sizeBytes": 1048576, "url": "#" },
+  { "id": "doc-06", "title": "Технічні характеристики", "type": "pdf", "category": "specifications", "productSlug": "kozhan-pro", "version": "v1.1", "updatedAt": "2026-07-02", "sizeBytes": 943718, "url": "#" },
+  { "id": "doc-07", "title": "Схема підключення", "type": "docx", "category": "specifications", "productSlug": "antenna-5g", "version": "v1.0", "updatedAt": "2026-04-10", "sizeBytes": 262144, "url": "#" },
+  { "id": "doc-08", "title": "Сертифікат відповідності", "type": "pdf", "category": "certificates", "productSlug": "kozhan-4", "version": "v1.0", "updatedAt": "2026-03-18", "sizeBytes": 734003, "url": "#" },
+  { "id": "doc-09", "title": "Протокол ЕМС-випробувань", "type": "pdf", "category": "certificates", "productSlug": "kozhan-pro", "version": "v1.0", "updatedAt": "2026-02-25", "sizeBytes": 1258291, "url": "#" },
+  { "id": "doc-10", "title": "Декларація виробника", "type": "pdf", "category": "certificates", "productSlug": "antenna-5g", "version": "v1.0", "updatedAt": "2026-01-30", "sizeBytes": 419430, "url": "#" },
+  { "id": "doc-11", "title": "Протокол польових випробувань", "type": "pdf", "category": "testing", "productSlug": "kozhan-4", "version": "v1.3", "updatedAt": "2026-07-28", "sizeBytes": 2097152, "url": "#" },
+  { "id": "doc-12", "title": "Звіт про випробування дальності", "type": "pdf", "category": "testing", "productSlug": "kozhan-pro", "version": "v1.0", "updatedAt": "2026-06-19", "sizeBytes": 1572864, "url": "#" },
+  { "id": "doc-13", "title": "Прошивка 4.0", "type": "zip", "category": "software", "productSlug": "kozhan-4", "version": "v4.0", "updatedAt": "2026-08-20", "sizeBytes": 5242880, "url": "#" },
+  { "id": "doc-14", "title": "Оновлення ПЗ детектора", "type": "zip", "category": "software", "productSlug": "kozhan-pro", "version": "v1.2", "updatedAt": "2026-08-05", "sizeBytes": 3670016, "url": "#" },
+  { "id": "doc-15", "title": "Утиліта калібрування", "type": "zip", "category": "software", "productSlug": "kozhan-4", "version": "v1.1", "updatedAt": "2026-05-22", "sizeBytes": 1887436, "url": "#" },
+  { "id": "doc-16", "title": "Посібник з обслуговування", "type": "docx", "category": "instructions", "productSlug": "kozhan-4", "version": "v1.0", "updatedAt": "2026-04-01", "sizeBytes": 655360, "url": "#" }
+]

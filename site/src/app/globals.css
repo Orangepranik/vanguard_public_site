@@ -39,6 +39,15 @@
   --color-adv-line: #20262c;
   --color-divider: #151b20;
   --color-submit: #d44801;
+  /* сторінка «Документація» (Figma Desktop / Documentation) */
+  --color-panel: #0c161d;      /* панелі «Обраний продукт» / «Останні оновлення» */
+  --color-panel-2: #061017;    /* таблиця документів, смуга вкладок */
+  --color-row: #101920;        /* рядок документа */
+  --color-help: #0d171e;       /* картка-підказка, кнопка «Переглянути» */
+  --color-tab: #fd4500;        /* активна вкладка / акценти сторінки docs */
+  --color-file-pdf: #f3493f;
+  --color-file-docx: #3578d4;
+  --color-file-zip: #f2a735;
 }
 
 :root {

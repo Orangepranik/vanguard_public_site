@@ -9,7 +9,7 @@ const NAV = [
   { label: "Контакти", href: "#" },
   { label: "Рішення", href: "#" },
   { label: "Порівняння", href: "#" },
-  { label: "Документація", href: "#" },
+  { label: "Документація", href: "/documentation" },
   { label: "Про компанію", href: "#" },
 ];
 

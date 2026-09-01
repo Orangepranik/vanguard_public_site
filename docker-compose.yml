@@ -1,0 +1,22 @@
+# Підняти сайт одним рядком:
+#   docker compose up --build         →  http://localhost:3000
+# Зупинити:  docker compose down   (додати -v, щоб стерти й чергу заявок)
+
+services:
+  site:
+    build:
+      context: ./site
+    image: vanguard-site:latest
+    container_name: vanguard-site
+    ports:
+      - "3000:3000"
+    environment:
+      NODE_ENV: production
+      # Перед релізом: NOTIFY_EMAIL, TELEGRAM_BOT_TOKEN, TELEGRAM_CHAT_ID (сповіщення про заявки)
+    volumes:
+      # Черга заявок (персональні дані) — поза образом, зберігається між перезапусками
+      - vanguard-requests:/app/.data
+    restart: unless-stopped
+
+volumes:
+  vanguard-requests:

@@ -187,3 +187,81 @@ export function IconTelegram({ className }: IconProps) {
     </svg>
   );
 }
+
+/* Іконки сторінки «Документація» (Figma Desktop / Documentation) */
+
+export function IconDownload({ className }: IconProps) {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" className={className} aria-hidden>
+      <path d="M12 3v12" />
+      <path d="m7.5 10.5 4.5 4.5 4.5-4.5" />
+      <path d="M4.5 20.5h15" />
+    </svg>
+  );
+}
+
+export function IconEye({ className }: IconProps) {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" className={className} aria-hidden>
+      <path d="M2.5 12S6 5.5 12 5.5 21.5 12 21.5 12 18 18.5 12 18.5 2.5 12 2.5 12Z" />
+      <circle cx="12" cy="12" r="3" />
+    </svg>
+  );
+}
+
+export function IconFolder({ className }: IconProps) {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" className={className} aria-hidden>
+      <path d="M3 6.5A1.5 1.5 0 0 1 4.5 5h4l2 2.5H20a1 1 0 0 1 1 1V18a1.5 1.5 0 0 1-1.5 1.5h-15A1.5 1.5 0 0 1 3 18Z" strokeLinejoin="round" />
+    </svg>
+  );
+}
+
+export function IconDoc({ className }: IconProps) {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" className={className} aria-hidden>
+      <path d="M6 3h8l4 4v14H6Z" strokeLinejoin="round" />
+      <path d="M14 3v4h4" />
+      <path d="M9 12h6M9 16h6" />
+    </svg>
+  );
+}
+
+export function IconSpecs({ className }: IconProps) {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" className={className} aria-hidden>
+      <path d="M5 7h14M5 12h14M5 17h14" />
+      <circle cx="9" cy="7" r="2" fill="currentColor" stroke="none" />
+      <circle cx="15" cy="12" r="2" fill="currentColor" stroke="none" />
+      <circle cx="8" cy="17" r="2" fill="currentColor" stroke="none" />
+    </svg>
+  );
+}
+
+export function IconCertificate({ className }: IconProps) {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" className={className} aria-hidden>
+      <circle cx="12" cy="9" r="5.5" />
+      <path d="m8.5 13.5-1.5 7 5-2.5 5 2.5-1.5-7" strokeLinejoin="round" />
+    </svg>
+  );
+}
+
+export function IconFlask({ className }: IconProps) {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" className={className} aria-hidden>
+      <path d="M9 3h6M10 3v6l-5 8.5A2 2 0 0 0 6.7 20.5h10.6A2 2 0 0 0 19 17.5L14 9V3" strokeLinejoin="round" />
+      <path d="M7.5 15h9" />
+    </svg>
+  );
+}
+
+export function IconSoftware({ className }: IconProps) {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" className={className} aria-hidden>
+      <path d="M20 12a8 8 0 1 1-2.3-5.6" />
+      <path d="M20 4v4h-4" />
+      <path d="M12 8v4l2.5 2.5" />
+    </svg>
+  );
+}

@@ -30,3 +30,26 @@ export function availabilityClass(a: Availability): string {
       return "text-ink-4";
   }
 }
+
+/** Розмір файлу для UI: 838860 → "819 KB", 2516582 → "2.4 MB". */
+export function formatBytes(bytes: number): string {
+  if (bytes < 1024) return `${bytes} B`;
+  const kb = bytes / 1024;
+  if (kb < 1024) return `${Math.round(kb)} KB`;
+  return `${(kb / 1024).toFixed(1)} MB`;
+}
+
+/** "документ / документи / документів" за українськими правилами. */
+export function documentsPlural(n: number): string {
+  const m10 = n % 10;
+  const m100 = n % 100;
+  if (m10 === 1 && m100 !== 11) return `${n} документ`;
+  if (m10 >= 2 && m10 <= 4 && (m100 < 12 || m100 > 14)) return `${n} документи`;
+  return `${n} документів`;
+}
+
+/** ISO-дата "2026-08-12" → "12.08.2026". */
+export function formatDate(iso: string): string {
+  const [y, m, d] = iso.split("-");
+  return y && m && d ? `${d}.${m}.${y}` : iso;
+}

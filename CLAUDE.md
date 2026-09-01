@@ -19,6 +19,14 @@
 
 ## Запуск
 
+Локально:
+
 ```bash
 cd site && npm install && npm run dev
+```
+
+Через Docker (продакшн-образ, standalone):
+
+```bash
+docker compose up --build   # → http://localhost:3000
 ```

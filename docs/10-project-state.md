@@ -1,6 +1,6 @@
 # Поточний стан проєкту
 
-**Оновлено:** 2026-08-16. Цей файл — точка входу для продовження роботи з будь-якої машини.
+**Оновлено:** 2026-09-01. Цей файл — точка входу для продовження роботи з будь-якої машини.
 
 ## Що це за проєкт
 
@@ -21,6 +21,12 @@ Next.js 16 (TypeScript + Tailwind v4, App Router, Turbopack).
 - ✅ **Мобільна версія** — бургер у правому куті, висувна панель справа через портал;
   адаптив: <640 один стовпець · 640+ дві картки · 1024+ sidebar+3 · 1280+ 4 картки.
 - ✅ **/products/[slug]** — мінімальна SSG-заглушка (чекає макет).
+- ✅ **/documentation** — повна сторінка «Документація» за макетом
+  `assets/design/public_site_documentation_page.fig`: hero з фото виробництва, вкладки категорій
+  (Усі/Інструкції/Тех.характеристики/Сертифікати/Випробування/ПЗ), сайдбар фільтрів (тип, продукт)
+  + картка-CTA, таблиця документів (бейджі PDF/DOCX/ZIP, «Переглянути»/завантаження, сортування),
+  панелі «Обраний продукт» і «Останні оновлення». Дані демо — `site/src/data/documents.json`
+  + лоадер `lib/documents.ts`, Public DTO `PublicDocument` у `lib/types.ts`. Реальні файли — від власника.
 - ✅ **/** — тимчасовий redirect на /catalog (чекає макет головної).
 - ✅ **POST /api/requests** — валідація, honeypot (поле `website`), rate limit,
   черга `site/.data/requests.jsonl` (у .gitignore — ПІІ). TODO: сповіщення email/Telegram.
@@ -34,7 +40,11 @@ Next.js 16 (TypeScript + Tailwind v4, App Router, Turbopack).
   public_site_catalog_page.fig — актуальний каталог). Нові макети розбирати так:
   .fig = zip → `canvas.fig` (kiwi, стиснення **zstd**) → декод пакетами `kiwi-schema` + `fzstd`
   (схема вшита в файл; chunk0 = схема, chunk1 = дані) → дерево вузлів зі стилями/текстами;
-  вбудовані зображення лежать у zip у папці `images/`.
+  вбудовані зображення лежать у zip у папці `images/`. Розбір автоматизовано — `tools/fig/`
+  (`npm run decode -- <canvas.fig> <out>`, пакети kiwi-schema + fzstd): дерево вузлів (JSON) +
+  читабельний контур. Уточнення до методу: блок 0 (схема) — raw deflate, блок 1 (дані) — zstd,
+  метод визначається за магією байтів; корінь `decodeMessage` викликати **як метод**
+  (`compiled.decodeMessage(...)`, інакше губиться `this`). Деталі — `tools/fig/README.md`.
 - Токени з макета — у `site/src/app/globals.css` (@theme): фон `#060A0F`, шапка `#000202`,
   картка `#0D1418`, акценти `#E94A02/#E54A02/#D04401`, шрифти Inter + Roboto Condensed (H1/назви).
 - Логотипи витягнуті з макета: `site/public/images/brand/` (PNG з прозорістю).
@@ -62,6 +72,22 @@ Next.js 16 (TypeScript + Tailwind v4, App Router, Turbopack).
 2. **Фото продуктів** (у каталозі зараз плейсхолдери — фото в .fig не вбудовані).
 3. **Реальний перелік продуктів** (назви, характеристики, варіанти, ціни) — замінити демо-дані.
 4. SVG-вихідники логотипа (є лише PNG з макета) — чекліст в `assets/brand/README.md`.
+5. **Реальні файли документів** (PDF/DOCX/ZIP) для /documentation — зараз демо-перелік.
+6. Підтвердити фінальний **порядок пунктів шапки**: макети каталогу й документації дають різний
+   склад (у Documentation є «Головна» і «Контакти»); зараз використано порядок каталогу.
+
+## Docker
+
+Продакшн-образ — Next.js **standalone** (`next.config.ts` → `output: "standalone"`),
+`site/Dockerfile` (multi-stage, non-root user) + `docker-compose.yml` у корені. Підняти одним рядком:
+
+```bash
+docker compose up --build   # → http://localhost:3000
+```
+
+Черга заявок (`/app/.data`, PII) — на іменованому volume `vanguard-requests`, поза образом.
+Перевірено: `next build` (standalone) зелений, `server.js` віддає /documentation з HTTP 200
+і повним HTML (SSR). Сам образ ще не зібрано — на машині не запущено демон Docker Desktop.
 
 ## Історія проектування
 

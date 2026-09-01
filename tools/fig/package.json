@@ -1,0 +1,14 @@
+{
+  "name": "vanguard-fig-tools",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Розбір .fig-макетів (Figma) у дерево вузлів + витяг зображень. Джерело правди для UI — .fig власника.",
+  "scripts": {
+    "decode": "node decode-fig.mjs"
+  },
+  "dependencies": {
+    "fzstd": "^0.1.1",
+    "kiwi-schema": "^0.5.0"
+  }
+}
