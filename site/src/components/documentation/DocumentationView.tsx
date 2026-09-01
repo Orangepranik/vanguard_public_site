@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import type { ReactElement, ReactNode } from "react";
 import Image from "next/image";
 import Link from "next/link";
@@ -13,6 +13,7 @@ import {
   IconCertificate,
   IconCheck,
   IconChevronDown,
+  IconChevronRight,
   IconDoc,
   IconDownload,
   IconEye,
@@ -37,6 +38,8 @@ const TABS: { key: TabKey; label: string; Icon: IconType }[] = [
 ];
 
 const TYPE_ORDER: DocumentType[] = ["pdf", "docx", "zip"];
+
+const PAGE_SIZE = 5; // рядків на сторінку — як у макеті (Document Row 01…05)
 
 // Кольори бейджів типів — з макета (PDF червоний, DOCX синій, ZIP помаранчевий).
 const typeBg: Record<DocumentType, string> = {
@@ -67,7 +70,7 @@ function Check({
   count?: number;
 }) {
   return (
-    <label className="flex cursor-pointer select-none items-center gap-2 py-1 text-[13px] text-ink-2">
+    <label className="flex cursor-pointer select-none items-center gap-2 py-0.5 text-[13px] text-ink-2">
       <input type="checkbox" className="peer sr-only" checked={checked} onChange={onChange} />
       <span
         className={
@@ -85,8 +88,8 @@ function Check({
 
 function FilterGroup({ title, children }: { title: string; children: ReactNode }) {
   return (
-    <div className="border-t border-line pt-3">
-      <h3 className="mb-1.5 text-[13px] font-medium text-ink-2">{title}</h3>
+    <div className="border-t border-line pt-2.5">
+      <h3 className="mb-1 text-[13px] font-medium text-ink-2">{title}</h3>
       <div className="space-y-0.5">{children}</div>
     </div>
   );
@@ -110,6 +113,7 @@ export default function DocumentationView({
   const [products, setProducts] = useState<Set<string>>(new Set());
   const [sort, setSort] = useState<SortKey>("newest");
   const [filtersOpen, setFiltersOpen] = useState(false);
+  const [page, setPage] = useState(1);
 
   const typeCounts = useMemo(() => {
     const c: Record<DocumentType, number> = { pdf: 0, docx: 0, zip: 0 };
@@ -129,6 +133,13 @@ export default function DocumentationView({
     return sorted;
   }, [documents, tab, types, products, sort]);
 
+  const pageCount = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
+  const pageItems = filtered.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
+  // Скидати на 1-шу сторінку при зміні вкладки/фільтрів/сортування
+  useEffect(() => {
+    setPage(1);
+  }, [tab, types, products, sort]);
+
   const toggle = <T,>(set: Set<T>, val: T): Set<T> => {
     const next = new Set(set);
     if (next.has(val)) next.delete(val);
@@ -144,7 +155,7 @@ export default function DocumentationView({
   return (
     <>
       {/* Вкладки категорій */}
-      <div className="mt-6 border-y border-line-3 bg-panel-2">
+      <div className="mt-3 border-y border-line-3 bg-panel-2">
         <div role="tablist" aria-label="Категорії документів" className="flex overflow-x-auto">
           {TABS.map(({ key, label, Icon }) => {
             const active = tab === key;
@@ -156,7 +167,7 @@ export default function DocumentationView({
                 aria-selected={active}
                 onClick={() => setTab(key)}
                 className={
-                  "relative flex shrink-0 items-center gap-2 whitespace-nowrap px-4 py-3.5 text-[14px] font-medium transition-colors " +
+                  "relative flex shrink-0 items-center gap-2 whitespace-nowrap px-4 py-2.5 text-[14px] font-medium transition-colors " +
                   (active ? "text-tab" : "text-ink-2 hover:text-ink")
                 }
               >
@@ -185,10 +196,10 @@ export default function DocumentationView({
       </button>
 
       {/* Контент: фільтри · таблиця · праві панелі */}
-      <div className="mt-5 flex flex-col gap-6 lg:grid lg:grid-cols-[240px_1fr] lg:items-start xl:grid-cols-[240px_1fr_300px]">
+      <div className="mt-3 flex flex-col gap-6 lg:grid lg:grid-cols-[240px_1fr] lg:items-start xl:grid-cols-[240px_1fr_300px]">
         {/* Сайдбар фільтрів */}
-        <aside className={(filtersOpen ? "flex" : "hidden") + " flex-col gap-4 lg:flex xl:row-start-1"}>
-          <div className="rounded-[10px] border border-line-3 bg-surface p-4">
+        <aside className={(filtersOpen ? "flex" : "hidden") + " flex-col gap-3 lg:flex xl:row-start-1"}>
+          <div className="rounded-[10px] border border-line-3 bg-surface p-3.5">
             <div className="flex items-center justify-between">
               <h2 className="text-[13px] font-semibold uppercase tracking-wide text-ink">Фільтри</h2>
               {hasFilters && (
@@ -203,7 +214,7 @@ export default function DocumentationView({
               )}
             </div>
 
-            <div className="mt-3 space-y-3">
+            <div className="mt-2.5 space-y-2.5">
               <FilterGroup title="Тип документа">
                 {TYPE_ORDER.map((t) => (
                   <Check
@@ -230,14 +241,14 @@ export default function DocumentationView({
             </div>
           </div>
 
-          <div className="rounded-[10px] border border-line-3 bg-help p-4">
+          <div className="rounded-[10px] border border-line-3 bg-help p-3.5">
             <h3 className="text-[13px] font-semibold text-ink">Не знайшли потрібний документ?</h3>
             <p className="mt-1.5 text-[11px] leading-4 text-ink-3">
               Запросіть документацію або зв&apos;яжіться з технічною підтримкою.
             </p>
             <Link
               href="#request"
-              className="mt-3 inline-flex items-center gap-1.5 text-[12px] font-medium text-tab transition-opacity hover:opacity-80"
+              className="mt-2.5 inline-flex items-center gap-1.5 text-[12px] font-medium text-tab transition-opacity hover:opacity-80"
             >
               Запросити документацію
               <IconArrowRight className="size-4" />
@@ -276,18 +287,18 @@ export default function DocumentationView({
             <table className="w-full min-w-[620px] table-fixed border-collapse text-left">
               <thead>
                 <tr className="border-b border-line text-[11px] uppercase tracking-wide text-ink-4">
-                  <th scope="col" className="px-4 py-3 font-medium">Документ</th>
-                  <th scope="col" className="w-[130px] px-3 py-3 font-medium">Продукт</th>
-                  <th scope="col" className="w-[64px] px-3 py-3 font-medium">Версія</th>
-                  <th scope="col" className="w-[96px] px-3 py-3 font-medium">Оновлено</th>
-                  <th scope="col" className="w-[70px] px-3 py-3 font-medium">Розмір</th>
-                  <th scope="col" className="w-[164px] px-4 py-3 text-right font-medium">Дії</th>
+                  <th scope="col" className="px-4 py-2.5 font-medium">Документ</th>
+                  <th scope="col" className="w-[130px] px-3 py-2.5 font-medium">Продукт</th>
+                  <th scope="col" className="w-[64px] px-3 py-2.5 font-medium">Версія</th>
+                  <th scope="col" className="w-[96px] px-3 py-2.5 font-medium">Оновлено</th>
+                  <th scope="col" className="w-[70px] px-3 py-2.5 font-medium">Розмір</th>
+                  <th scope="col" className="w-[164px] px-4 py-2.5 text-right font-medium">Дії</th>
                 </tr>
               </thead>
               <tbody>
-                {filtered.map((d) => (
+                {pageItems.map((d) => (
                   <tr key={d.id} className="border-b border-line-3 transition-colors last:border-0 hover:bg-row/60">
-                    <td className="px-4 py-3">
+                    <td className="px-4 py-2.5">
                       <div className="flex items-center gap-3">
                         <FileBadge type={d.type} className="h-8 w-7 shrink-0" />
                         <div className="min-w-0">
@@ -298,14 +309,14 @@ export default function DocumentationView({
                         </div>
                       </div>
                     </td>
-                    <td className="px-3 py-3">
+                    <td className="px-3 py-2.5">
                       <div className="whitespace-nowrap text-[13px] text-ink-2">{d.productName}</div>
                       <div className="whitespace-nowrap text-[11px] text-ink-4">{d.productTypeLabel}</div>
                     </td>
-                    <td className="whitespace-nowrap px-3 py-3 text-[13px] text-ink-3">{d.version}</td>
-                    <td className="whitespace-nowrap px-3 py-3 text-[13px] text-ink-3">{formatDate(d.updatedAt)}</td>
-                    <td className="whitespace-nowrap px-3 py-3 text-[13px] text-ink-3">{formatBytes(d.sizeBytes)}</td>
-                    <td className="px-4 py-3">
+                    <td className="whitespace-nowrap px-3 py-2.5 text-[13px] text-ink-3">{d.version}</td>
+                    <td className="whitespace-nowrap px-3 py-2.5 text-[13px] text-ink-3">{formatDate(d.updatedAt)}</td>
+                    <td className="whitespace-nowrap px-3 py-2.5 text-[13px] text-ink-3">{formatBytes(d.sizeBytes)}</td>
+                    <td className="px-4 py-2.5">
                       <div className="flex items-center justify-end gap-2">
                         <a
                           href={d.url}
@@ -346,15 +357,63 @@ export default function DocumentationView({
               </div>
             )}
           </div>
+
+          {pageCount > 1 && (
+            <nav
+              aria-label="Сторінки документів"
+              className="mt-3 flex flex-wrap items-center justify-between gap-3"
+            >
+              <p className="text-[12px] text-ink-4">
+                {(page - 1) * PAGE_SIZE + 1}–{Math.min(page * PAGE_SIZE, filtered.length)} з{" "}
+                {filtered.length}
+              </p>
+              <div className="flex items-center gap-1">
+                <button
+                  type="button"
+                  onClick={() => setPage((p) => Math.max(1, p - 1))}
+                  disabled={page === 1}
+                  aria-label="Попередня сторінка"
+                  className="flex size-8 items-center justify-center rounded-[6px] border border-line text-ink-3 transition-colors enabled:hover:border-accent enabled:hover:text-ink disabled:opacity-40"
+                >
+                  <IconChevronRight className="size-4 rotate-180" />
+                </button>
+                {Array.from({ length: pageCount }, (_, i) => i + 1).map((n) => (
+                  <button
+                    key={n}
+                    type="button"
+                    onClick={() => setPage(n)}
+                    aria-current={n === page ? "page" : undefined}
+                    className={
+                      "flex size-8 items-center justify-center rounded-[6px] border text-[13px] transition-colors " +
+                      (n === page
+                        ? "border-accent bg-accent/15 text-ink"
+                        : "border-line text-ink-3 hover:border-accent hover:text-ink")
+                    }
+                  >
+                    {n}
+                  </button>
+                ))}
+                <button
+                  type="button"
+                  onClick={() => setPage((p) => Math.min(pageCount, p + 1))}
+                  disabled={page === pageCount}
+                  aria-label="Наступна сторінка"
+                  className="flex size-8 items-center justify-center rounded-[6px] border border-line text-ink-3 transition-colors enabled:hover:border-accent enabled:hover:text-ink disabled:opacity-40"
+                >
+                  <IconChevronRight className="size-4" />
+                </button>
+              </div>
+            </nav>
+          )}
         </section>
 
         {/* Праві панелі */}
-        <aside className="flex flex-col gap-4 lg:col-span-2 xl:col-span-1 xl:col-start-3 xl:row-start-1">
+        <aside className="flex flex-col gap-3 lg:col-span-2 xl:col-span-1 xl:col-start-3 xl:row-start-1">
           {featured && (
-            <div className="rounded-[10px] border border-line-3 bg-panel p-4">
+            <div className="rounded-[10px] border border-line-3 bg-panel p-3.5">
               <h2 className="text-[13px] font-semibold uppercase tracking-wide text-ink">Обраний продукт</h2>
-              <div className="mt-3 flex gap-3">
-                <div className="relative h-[70px] w-[92px] shrink-0 overflow-hidden rounded-[6px] bg-black/30">
+              <div className="mt-2.5 flex gap-3">
+                <div className="relative h-[62px] w-[84px] shrink-0 overflow-hidden rounded-[6px] bg-black/30">
                   <Image src={featured.image} alt={featured.name} fill sizes="92px" className="object-cover" />
                 </div>
                 <div className="min-w-0">
@@ -362,7 +421,7 @@ export default function DocumentationView({
                   <div className="text-[12px] text-ink-3">{featured.typeLabel}</div>
                 </div>
               </div>
-              <dl className="mt-3 space-y-1.5 text-[12px]">
+              <dl className="mt-2.5 space-y-1 text-[12px]">
                 <div className="flex justify-between gap-2">
                   <dt className="text-ink-4">Документів:</dt>
                   <dd className="text-ink-2">{featured.docsCount}</dd>
@@ -378,7 +437,7 @@ export default function DocumentationView({
               </dl>
               <Link
                 href={`/products/${featured.slug}`}
-                className="mt-3 flex h-9 items-center justify-between rounded-[6px] border border-accent-deep px-3 text-[13px] text-ink transition-colors hover:bg-accent-deep/15"
+                className="mt-2.5 flex h-9 items-center justify-between rounded-[6px] border border-accent-deep px-3 text-[13px] text-ink transition-colors hover:bg-accent-deep/15"
               >
                 Відкрити продукт
                 <IconArrowRight className="size-4 text-tab" />
@@ -387,9 +446,9 @@ export default function DocumentationView({
           )}
 
           {recent.length > 0 && (
-            <div className="rounded-[10px] border border-line-3 bg-panel p-4">
+            <div className="rounded-[10px] border border-line-3 bg-panel p-3.5">
               <h2 className="text-[13px] font-semibold uppercase tracking-wide text-ink">Останні оновлення</h2>
-              <ul className="mt-3 space-y-3">
+              <ul className="mt-2.5 space-y-2">
                 {recent.map((d) => (
                   <li key={d.id} className="flex gap-3">
                     <FileBadge type={d.type} className="h-7 w-6 shrink-0" />
