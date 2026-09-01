@@ -5,12 +5,13 @@ import { IconSearch } from "./icons";
 
 // Порядок пунктів — за Figma-макетом (фрейм Header / NAVIGATION)
 const NAV = [
+  { label: "Головна", href: "/" },
   { label: "Каталог", href: "/catalog" },
-  { label: "Контакти", href: "#" },
-  { label: "Рішення", href: "#" },
+  { label: "Рішення", href: "/solutions" },
   { label: "Порівняння", href: "#" },
   { label: "Документація", href: "/documentation" },
-  { label: "Про компанію", href: "#" },
+  { label: "Про компанію", href: "/about" },
+  { label: "Контакти", href: "#request" },
 ];
 
 export default function SiteHeader({ active = "Каталог" }: { active?: string }) {
@@ -29,7 +30,7 @@ export default function SiteHeader({ active = "Каталог" }: { active?: str
 
         <nav
           aria-label="Основна навігація"
-          className="mx-auto hidden items-center gap-8 lg:flex xl:gap-[45px]"
+          className="mx-auto hidden items-center gap-6 xl:flex 2xl:gap-[38px]"
         >
           {NAV.map((item) => (
             <Link
@@ -49,14 +50,14 @@ export default function SiteHeader({ active = "Каталог" }: { active?: str
 
         <button
           type="button"
-          className="ml-auto flex h-[39px] items-center gap-2.5 px-2.5 text-ink lg:ml-0"
+          className="ml-auto flex h-[39px] items-center gap-2.5 px-2.5 text-ink xl:ml-0"
           aria-label="Пошук"
         >
           <IconSearch className="size-4" />
           <span className="hidden text-[16px] font-medium sm:inline">Пошук</span>
         </button>
 
-        <span aria-hidden className="hidden h-[33px] w-px bg-line-2 lg:block" />
+        <span aria-hidden className="hidden h-[33px] w-px bg-line-2 xl:block" />
 
         <Link
           href="#request"
