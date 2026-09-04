@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { promises as fs } from "fs";
 import path from "path";
 import { getSql } from "@/lib/db";
+import { notifyTelegram } from "@/lib/notify";
 
 /**
  * POST /api/requests — єдиний динамічний ендпоінт сайту (docs/06-tech.md §28).
@@ -71,10 +72,12 @@ export async function POST(req: Request) {
     })
     .filter((it) => it.slug.length > 0 && it.qty > 0);
 
+  // Заявка = або товари (items), або загальне звернення з повідомленням (comment) зі сторінки «Контакти».
+  const hasMessage = !!comment && comment.length >= 5;
   const errors: string[] = [];
   if (name.length < 2) errors.push("name");
   if (!PHONE_RE.test(phone)) errors.push("phone");
-  if (items.length === 0) errors.push("items");
+  if (items.length === 0 && !hasMessage) errors.push("comment");
   if (errors.length > 0) {
     return NextResponse.json({ error: "validation", fields: errors }, { status: 422 });
   }
@@ -96,7 +99,7 @@ export async function POST(req: Request) {
       return row.id as string;
     });
 
-    // TODO: сповіщення менеджерів — email + Telegram (env: NOTIFY_EMAIL, TELEGRAM_BOT_TOKEN, TELEGRAM_CHAT_ID)
+    await notifyTelegram({ id: `REQ-${reqId}`, name, phone, contactChannel, organization, comment, items, sourcePage });
     return NextResponse.json({ ok: true, id: `REQ-${reqId}` });
   } catch (err) {
     console.error("[requests] INSERT у БД не вдався — резерв у .data/requests.jsonl:", err);
@@ -110,6 +113,7 @@ export async function POST(req: Request) {
       console.error("[requests] Резерв у JSONL теж не вдався:", fsErr);
       return NextResponse.json({ error: "server_error" }, { status: 500 });
     }
+    await notifyTelegram({ id, name, phone, contactChannel, organization, comment, items, sourcePage, fallback: true });
     return NextResponse.json({ ok: true, id, fallback: true });
   }
 }

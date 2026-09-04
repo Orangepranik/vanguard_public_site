@@ -11,7 +11,7 @@ const NAV = [
   { label: "Порівняння", href: "#" },
   { label: "Документація", href: "/documentation" },
   { label: "Про компанію", href: "/about" },
-  { label: "Контакти", href: "#request" },
+  { label: "Контакти", href: "/contacts" },
 ];
 
 export default function SiteHeader({ active = "Каталог" }: { active?: string }) {
