@@ -1,0 +1,20 @@
+{
+  "name": "vanguard-backend",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "БД VANGUARD (Drizzle + PostgreSQL) — таблиці за контрактом Public DTO. Див. docs/11-backend-db.md.",
+  "scripts": {
+    "db:generate": "drizzle-kit generate",
+    "db:migrate": "drizzle-kit migrate",
+    "db:push": "drizzle-kit push",
+    "db:studio": "drizzle-kit studio"
+  },
+  "dependencies": {
+    "drizzle-orm": "^0.36.4",
+    "postgres": "^3.4.5"
+  },
+  "devDependencies": {
+    "drizzle-kit": "^0.30.1"
+  }
+}
