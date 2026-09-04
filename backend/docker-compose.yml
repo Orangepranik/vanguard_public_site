@@ -1,0 +1,24 @@
+# Локальний PostgreSQL для розробки БД VANGUARD (окремо від образу сайту).
+#   docker compose -f backend/docker-compose.yml up -d
+# Дані — у named volume vanguard-pgdata (переживають перезапуск контейнера).
+services:
+  db:
+    image: postgres:17-alpine
+    container_name: vanguard-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: vanguard
+      POSTGRES_PASSWORD: vanguard
+      POSTGRES_DB: vanguard
+    ports:
+      - "5432:5432"
+    volumes:
+      - vanguard-pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U vanguard -d vanguard"]
+      interval: 5s
+      timeout: 5s
+      retries: 15
+
+volumes:
+  vanguard-pgdata:
