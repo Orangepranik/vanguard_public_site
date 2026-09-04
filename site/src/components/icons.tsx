@@ -265,3 +265,47 @@ export function IconSoftware({ className }: IconProps) {
     </svg>
   );
 }
+
+/* Іконки напрямів продукції (головна сторінка) */
+
+export function IconRadar({ className }: IconProps) {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" className={className} aria-hidden>
+      <circle cx="12" cy="12" r="9" />
+      <circle cx="12" cy="12" r="5" />
+      <path d="m12 12 7.5-6" />
+      <circle cx="16.5" cy="8.5" r="1.1" fill="currentColor" stroke="none" />
+    </svg>
+  );
+}
+
+export function IconJammer({ className }: IconProps) {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" className={className} aria-hidden>
+      <circle cx="12" cy="12" r="2" fill="currentColor" stroke="none" />
+      <path d="M8 8a5.5 5.5 0 0 0 0 8M16 8a5.5 5.5 0 0 1 0 8" />
+      <path d="M5 5a9.5 9.5 0 0 0 0 14M19 5a9.5 9.5 0 0 1 0 14" />
+    </svg>
+  );
+}
+
+export function IconAntenna({ className }: IconProps) {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" className={className} aria-hidden>
+      <path d="M12 21V10" />
+      <path d="M12 10 7.5 3M12 10l4.5-7" />
+      <path d="M9.2 6.5h5.6" />
+      <circle cx="12" cy="9.6" r="1.4" fill="currentColor" stroke="none" />
+    </svg>
+  );
+}
+
+export function IconKit({ className }: IconProps) {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" className={className} aria-hidden>
+      <rect x="3.5" y="7" width="17" height="13" rx="2" />
+      <path d="M8.5 7V5a2 2 0 0 1 2-2h3a2 2 0 0 1 2 2v2" />
+      <path d="M3.5 12.5h17" />
+    </svg>
+  );
+}

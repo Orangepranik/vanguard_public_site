@@ -8,7 +8,6 @@ const NAV = [
   { label: "Головна", href: "/" },
   { label: "Каталог", href: "/catalog" },
   { label: "Рішення", href: "/solutions" },
-  { label: "Порівняння", href: "#" },
   { label: "Документація", href: "/documentation" },
   { label: "Про компанію", href: "/about" },
   { label: "Контакти", href: "/contacts" },
