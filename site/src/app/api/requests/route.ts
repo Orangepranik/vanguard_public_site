@@ -1,12 +1,12 @@
 import { NextResponse } from "next/server";
 import { promises as fs } from "fs";
 import path from "path";
+import { getSql } from "@/lib/db";
 
 /**
  * POST /api/requests — єдиний динамічний ендпоінт сайту (docs/06-tech.md §28).
- * Рішення Q5: на старті заявки зберігаються в черзі на боці сайту (.data/requests.jsonl)
- * + сповіщення менеджерам; самописна ERP підключиться до цієї черги пізніше.
- * Заявка не має губитися ніколи.
+ * Заявка зберігається транзакційно у БД (таблиці requests + request_items, за контрактом DTO);
+ * при збої БД — резерв у .data/requests.jsonl (заявка не має губитися ніколи). ERP читає ті самі таблиці.
  */
 
 const WINDOW_MS = 60_000;
@@ -49,7 +49,27 @@ export async function POST(req: Request) {
     typeof body.contactChannel === "string" && CHANNELS.has(body.contactChannel)
       ? body.contactChannel
       : "call";
-  const items = Array.isArray(body.items) ? body.items : [];
+  const organization = typeof body.organization === "string" ? body.organization.trim() : null;
+  const comment = typeof body.comment === "string" ? body.comment.trim() : null;
+  const sourcePage = typeof body.sourcePage === "string" ? body.sourcePage : null;
+  const items = (Array.isArray(body.items) ? body.items : [])
+    .map((it) => {
+      const raw = it as Record<string, unknown>;
+      return {
+        slug: typeof raw.slug === "string" ? raw.slug.trim() : "",
+        qty: typeof raw.qty === "number" && Number.isFinite(raw.qty) ? Math.floor(raw.qty) : 0,
+        configuration:
+          raw.configuration && typeof raw.configuration === "object"
+            ? (raw.configuration as Record<string, string>)
+            : undefined,
+        sku: typeof raw.sku === "string" ? raw.sku : undefined,
+        priceAtSubmit:
+          typeof raw.priceAtSubmit === "number" && Number.isFinite(raw.priceAtSubmit)
+            ? raw.priceAtSubmit
+            : undefined,
+      };
+    })
+    .filter((it) => it.slug.length > 0 && it.qty > 0);
 
   const errors: string[] = [];
   if (name.length < 2) errors.push("name");
@@ -59,26 +79,37 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "validation", fields: errors }, { status: 422 });
   }
 
-  const id = `REQ-${Date.now().toString(36).toUpperCase()}`;
-  const record = {
-    id,
-    receivedAt: new Date().toISOString(),
-    name,
-    phone,
-    contactChannel,
-    organization: typeof body.organization === "string" ? body.organization.trim() : null,
-    comment: typeof body.comment === "string" ? body.comment.trim() : null,
-    items,
-    sourcePage: typeof body.sourcePage === "string" ? body.sourcePage : null,
-  };
+  // Первинно — у БД (транзакція requests + request_items). Заявка не має губитися:
+  // при збої БД пишемо резервний запис у чергу-файл .data/requests.jsonl (звірити з БД пізніше).
+  try {
+    const sql = getSql();
+    const reqId = await sql.begin(async (tx) => {
+      const [row] = await tx`
+        INSERT INTO requests (name, phone, contact_channel, organization, comment, source_page)
+        VALUES (${name}, ${phone}, ${contactChannel}, ${organization}, ${comment}, ${sourcePage})
+        RETURNING id`;
+      for (const it of items) {
+        await tx`
+          INSERT INTO request_items (request_id, product_slug, qty, configuration, sku, price_at_submit)
+          VALUES (${row.id}, ${it.slug}, ${it.qty}, ${it.configuration ? sql.json(it.configuration) : null}, ${it.sku ?? null}, ${it.priceAtSubmit ?? null})`;
+      }
+      return row.id as string;
+    });
 
-  // Черга заявок (PII! .data/ у .gitignore; доступ і retention — docs/08-roadmap ризик №2)
-  const dir = path.join(process.cwd(), ".data");
-  await fs.mkdir(dir, { recursive: true });
-  await fs.appendFile(path.join(dir, "requests.jsonl"), JSON.stringify(record) + "\n", "utf8");
-
-  // TODO: сповіщення менеджерів — email + Telegram-бот
-  // (env: NOTIFY_EMAIL, TELEGRAM_BOT_TOKEN, TELEGRAM_CHAT_ID; підключається перед релізом)
-
-  return NextResponse.json({ ok: true, id });
+    // TODO: сповіщення менеджерів — email + Telegram (env: NOTIFY_EMAIL, TELEGRAM_BOT_TOKEN, TELEGRAM_CHAT_ID)
+    return NextResponse.json({ ok: true, id: `REQ-${reqId}` });
+  } catch (err) {
+    console.error("[requests] INSERT у БД не вдався — резерв у .data/requests.jsonl:", err);
+    const id = `REQ-${Date.now().toString(36).toUpperCase()}`;
+    const record = { id, receivedAt: new Date().toISOString(), name, phone, contactChannel, organization, comment, items, sourcePage };
+    try {
+      const dir = path.join(process.cwd(), ".data"); // PII! .data/ у .gitignore
+      await fs.mkdir(dir, { recursive: true });
+      await fs.appendFile(path.join(dir, "requests.jsonl"), JSON.stringify(record) + "\n", "utf8");
+    } catch (fsErr) {
+      console.error("[requests] Резерв у JSONL теж не вдався:", fsErr);
+      return NextResponse.json({ error: "server_error" }, { status: 500 });
+    }
+    return NextResponse.json({ ok: true, id, fallback: true });
+  }
 }
