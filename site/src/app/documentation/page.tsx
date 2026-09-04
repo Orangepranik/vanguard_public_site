@@ -13,18 +13,22 @@ import {
   getRecentDocuments,
 } from "@/lib/documents";
 
+export const revalidate = 300; // ISR: фонове оновлення раз на 5 хв
+
 export const metadata: Metadata = {
   title: "Документація — VANGUARD",
   description:
     "Інструкції, технічні характеристики, сертифікати та ПЗ для обладнання VANGUARD: детектори БПЛА, антени, РЕБ-системи.",
 };
 
-export default function DocumentationPage() {
-  const documents = getDocuments();
-  const categoryCounts = getCategoryCounts();
-  const productOptions = getDocumentProducts();
-  const featured = getFeaturedProduct();
-  const recent = getRecentDocuments(2);
+export default async function DocumentationPage() {
+  const [documents, categoryCounts, productOptions, featured, recent] = await Promise.all([
+    getDocuments(),
+    getCategoryCounts(),
+    getDocumentProducts(),
+    getFeaturedProduct(),
+    getRecentDocuments(2),
+  ]);
 
   return (
     <>

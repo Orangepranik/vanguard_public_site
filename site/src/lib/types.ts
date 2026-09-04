@@ -165,6 +165,23 @@ export interface PublicDocument {
   url: string;
 }
 
+/** Документ, збагачений назвою/типом продукту з каталогу — для рендера в UI. */
+export interface DocumentView extends PublicDocument {
+  productName: string;
+  productTypeLabel: string;
+}
+
+/** Зведення для панелі «Обраний продукт» на сторінці документації. */
+export interface FeaturedProduct {
+  slug: string;
+  name: string;
+  typeLabel: string;
+  image: string;
+  docsCount: number;
+  version: string;
+  updatedAt: string;
+}
+
 /* ---------- Заявка (docs/04-logic.md §21) ---------- */
 
 export type ContactChannel = "call" | "telegram" | "signal" | "whatsapp";

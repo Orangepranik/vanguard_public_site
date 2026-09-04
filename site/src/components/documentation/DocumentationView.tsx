@@ -6,7 +6,7 @@ import Image from "next/image";
 import Link from "next/link";
 import type { DocumentCategory, DocumentType } from "@/lib/types";
 import { DOCUMENT_CATEGORY_LABELS, DOCUMENT_TYPE_LABELS } from "@/lib/types";
-import type { DocumentView, FeaturedProduct } from "@/lib/documents";
+import type { DocumentView, FeaturedProduct } from "@/lib/types";
 import { documentsPlural, formatBytes, formatDate } from "@/lib/format";
 import {
   IconArrowRight,

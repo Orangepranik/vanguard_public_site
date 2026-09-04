@@ -7,15 +7,16 @@ import CatalogView from "@/components/catalog/CatalogView";
 import { IconChevronRight, IconHome } from "@/components/icons";
 import { getCategories, getProducts } from "@/lib/catalog";
 
+export const revalidate = 300; // ISR: фонове оновлення раз на 5 хв
+
 export const metadata: Metadata = {
   title: "Каталог продукції — VANGUARD",
   description:
     "Професійні рішення для виявлення та протидії БПЛА. Обладнання для будь-яких умов та задач.",
 };
 
-export default function CatalogPage() {
-  const products = getProducts();
-  const categories = getCategories();
+export default async function CatalogPage() {
+  const [products, categories] = await Promise.all([getProducts(), getCategories()]);
 
   return (
     <>

@@ -10,13 +10,15 @@ import { availabilityClass, formatPrice } from "@/lib/format";
 
 type Params = { params: Promise<{ slug: string }> };
 
-export function generateStaticParams() {
-  return getProducts().map((p) => ({ slug: p.slug }));
+export const revalidate = 300; // ISR: фонове оновлення раз на 5 хв
+
+export async function generateStaticParams() {
+  return (await getProducts()).map((p) => ({ slug: p.slug }));
 }
 
 export async function generateMetadata({ params }: Params): Promise<Metadata> {
   const { slug } = await params;
-  const product = getProduct(slug);
+  const product = await getProduct(slug);
   if (!product) return {};
   return {
     title: `${product.name} — VANGUARD`,
@@ -26,7 +28,7 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
 
 export default async function ProductPage({ params }: Params) {
   const { slug } = await params;
-  const product = getProduct(slug);
+  const product = await getProduct(slug);
   if (!product) notFound();
 
   return (
