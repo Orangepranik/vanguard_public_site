@@ -103,6 +103,18 @@
         "useCaseTag": "на автомобілі",
         "publishedAt": "2026-03",
         "verified": true
+      },
+      {
+        "displayName": "«Сокіл»",
+        "roleLabel": "командир взводу",
+        "text": "Поставили на стаціонарному посту, виносні антени на щоглі. За два тижні — три спрацювання по Mavic на підльоті, встигали розосередитись. Фото з позиції додаю.",
+        "useCaseTag": "стаціонарний пост",
+        "publishedAt": "2026-04",
+        "verified": true,
+        "media": [
+          { "type": "photo", "src": "/images/documentation/product-kozhan.png" },
+          { "type": "photo", "src": "/images/documentation/factory.png" }
+        ]
       }
     ]
   },
