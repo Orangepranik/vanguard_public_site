@@ -2,10 +2,9 @@ import Image from "next/image";
 import Link from "next/link";
 import {
   IconArrowRight,
-  IconFacebook,
   IconInstagram,
   IconTelegram,
-  IconYoutube,
+  IconTikTok,
 } from "./icons";
 
 /* Футер — Figma catalog_page, фрейми "Footer / Main" + "Footer / Bottom".
@@ -59,10 +58,33 @@ export default function SiteFooter() {
               сучасних повітряних загроз.
             </p>
             <div className="mt-3 flex items-center gap-4">
-              <a href="#" aria-label="Instagram"><IconInstagram className="size-[18px]" /></a>
-              <a href="#" aria-label="Facebook"><IconFacebook className="size-[18px]" /></a>
-              <a href="#" aria-label="YouTube"><IconYoutube className="size-[18px]" /></a>
-              <a href="#" aria-label="Telegram"><IconTelegram className="size-[18px]" /></a>
+              <a
+                href="https://t.me/vanguard_urs"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Telegram VANGUARD"
+                className="transition-opacity hover:opacity-80"
+              >
+                <IconTelegram className="size-[18px]" />
+              </a>
+              <a
+                href="https://www.instagram.com/vanguard_urs/"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Instagram VANGUARD"
+                className="transition-opacity hover:opacity-80"
+              >
+                <IconInstagram className="size-[18px]" />
+              </a>
+              <a
+                href="https://www.tiktok.com/@vanguard_urs"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="TikTok VANGUARD"
+                className="transition-opacity hover:opacity-80"
+              >
+                <IconTikTok className="size-[18px]" />
+              </a>
             </div>
           </div>
 

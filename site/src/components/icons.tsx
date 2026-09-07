@@ -188,6 +188,18 @@ export function IconTelegram({ className }: IconProps) {
   );
 }
 
+export function IconTikTok({ className }: IconProps) {
+  return (
+    <svg viewBox="0 0 18 18" className={className} aria-hidden>
+      <rect x="0.5" y="0.5" width="17" height="17" rx="4.5" fill="#898F94" />
+      <path
+        d="M10.2 3.5h1.9c.15 1.35 1.05 2.35 2.4 2.5v1.9c-.9 0-1.75-.25-2.4-.72v3.68c0 1.9-1.45 3.34-3.3 3.34-1.85 0-3.3-1.44-3.3-3.24 0-1.9 1.6-3.3 3.5-3.14v1.95c-.85-.2-1.6.45-1.6 1.24 0 .72.6 1.3 1.35 1.3.78 0 1.4-.6 1.4-1.55Z"
+        fill="#0F0F0F"
+      />
+    </svg>
+  );
+}
+
 /* Іконки сторінки «Документація» (Figma Desktop / Documentation) */
 
 export function IconDownload({ className }: IconProps) {
