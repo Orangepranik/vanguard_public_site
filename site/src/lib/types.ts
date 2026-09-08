@@ -134,62 +134,6 @@ export interface PublicProduct {
   reviews: PublicReview[];
 }
 
-/* ---------- Бібліотека документації (сторінка «Документація», Figma) ---------- */
-
-export type DocumentType = "pdf" | "docx" | "zip";
-
-export type DocumentCategory =
-  | "instructions"    // Інструкції
-  | "specifications"  // Технічні характеристики
-  | "certificates"    // Сертифікати
-  | "testing"         // Випробування
-  | "software";       // ПЗ та оновлення
-
-export const DOCUMENT_CATEGORY_LABELS: Record<DocumentCategory, string> = {
-  instructions: "Інструкції",
-  specifications: "Технічні характеристики",
-  certificates: "Сертифікати",
-  testing: "Випробування",
-  software: "ПЗ та оновлення",
-};
-
-export const DOCUMENT_TYPE_LABELS: Record<DocumentType, string> = {
-  pdf: "PDF",
-  docx: "DOCX",
-  zip: "ZIP",
-};
-
-/** Один документ публічної бібліотеки. Файл (`url`) додає власник пізніше;
- *  `productSlug` зшивається з каталогом для назви/типу продукту. */
-export interface PublicDocument {
-  id: string;
-  title: string;
-  type: DocumentType;
-  category: DocumentCategory;
-  productSlug: string;
-  version: string;     // напр. "v2.1"
-  updatedAt: string;   // ISO-дата, напр. "2026-08-12"
-  sizeBytes: number;
-  url: string;
-}
-
-/** Документ, збагачений назвою/типом продукту з каталогу — для рендера в UI. */
-export interface DocumentView extends PublicDocument {
-  productName: string;
-  productTypeLabel: string;
-}
-
-/** Зведення для панелі «Обраний продукт» на сторінці документації. */
-export interface FeaturedProduct {
-  slug: string;
-  name: string;
-  typeLabel: string;
-  image: string;
-  docsCount: number;
-  version: string;
-  updatedAt: string;
-}
-
 /* ---------- Заявка (docs/04-logic.md §21) ---------- */
 
 export type ContactChannel = "call" | "telegram" | "signal" | "whatsapp";
