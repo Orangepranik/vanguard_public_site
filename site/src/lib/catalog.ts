@@ -33,7 +33,14 @@ function groupBy(rows: Row[], key: string): Map<string, Row[]> {
 
 function toPrice(p: Row): PublicPrice {
   if (p.price_type === "on_request") return { type: "on_request" };
-  return { type: p.price_type as "from" | "exact", amount: p.price_amount as number, currency: "UAH" };
+  if (p.price_type === "from") return { type: "from", amount: p.price_amount as number, currency: "UAH" };
+  const old = p.price_old_amount as number | null;
+  return {
+    type: "exact",
+    amount: p.price_amount as number,
+    currency: "UAH",
+    ...(old != null ? { oldAmount: old } : {}),
+  };
 }
 
 const toImage = (im: Row): ProductImage => ({
@@ -62,7 +69,7 @@ export const getProducts = cache(async (): Promise<PublicProduct[]> => {
   const prods = await sql`
     SELECT p.slug, p.name, p.short_name, p.type_label, p.short_description,
            p.card_tags, p.use_cases, p.badges, p.package_contents,
-           p.price_type, p.price_amount, p.currency, p.availability, p.warranty_months,
+           p.price_type, p.price_amount, p.price_old_amount, p.currency, p.availability, p.warranty_months,
            c.slug AS category_slug, c.name AS category_name
     FROM products p JOIN categories c ON c.id = p.category_id
     WHERE p.is_published
@@ -112,7 +119,7 @@ export const getProduct = cache(async (slug: string): Promise<PublicProduct | un
   const [p] = await sql`
     SELECT p.slug, p.name, p.short_name, p.type_label, p.short_description,
            p.card_tags, p.use_cases, p.badges, p.package_contents,
-           p.price_type, p.price_amount, p.currency, p.availability, p.warranty_months,
+           p.price_type, p.price_amount, p.price_old_amount, p.currency, p.availability, p.warranty_months,
            p.default_variant_id, c.slug AS category_slug, c.name AS category_name
     FROM products p JOIN categories c ON c.id = p.category_id
     WHERE p.slug = ${slug} AND p.is_published`;

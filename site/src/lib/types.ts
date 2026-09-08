@@ -71,7 +71,7 @@ export interface Configuration {
 
 export type PublicPrice =
   | { type: "from"; amount: number; currency: "UAH" }
-  | { type: "exact"; amount: number; currency: "UAH" }
+  | { type: "exact"; amount: number; oldAmount?: number; currency: "UAH" }
   | { type: "on_request" };
 
 export interface CompatibilityLink {

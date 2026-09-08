@@ -82,6 +82,7 @@ export const products = pgTable(
     packageContents: text("package_contents").array().notNull().default(emptyText),
     priceType: priceType("price_type").notNull(), // publicPrice.type
     priceAmount: integer("price_amount"), // грн; NULL для on_request
+    priceOldAmount: integer("price_old_amount"), // стара ціна (знижка); NULL — без знижки
     currency: text("currency").notNull().default("UAH"),
     availability: availability("availability").notNull(),
     warrantyMonths: integer("warranty_months").notNull().default(12),

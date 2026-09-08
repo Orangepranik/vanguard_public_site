@@ -63,6 +63,7 @@ for (const p of products) {
       packageContents: p.packageContents ?? [],
       priceType: p.publicPrice.type,
       priceAmount: onRequest ? null : p.publicPrice.amount,
+      priceOldAmount: onRequest ? null : p.publicPrice.oldAmount ?? null,
       currency: onRequest ? "UAH" : p.publicPrice.currency,
       availability: p.availability,
       warrantyMonths: p.warrantyMonths ?? 12,

@@ -9,6 +9,11 @@ export function formatPrice(p: PublicPrice): string {
   return (p.type === "from" ? "від " : "") + formatNumber(p.amount) + " грн";
 }
 
+/** Сума в грн для UI: 18000 → "18 000 грн" (напр. стара ціна при знижці). */
+export function formatAmount(n: number): string {
+  return formatNumber(n) + " грн";
+}
+
 export function productsPlural(n: number): string {
   const m10 = n % 10;
   const m100 = n % 100;

@@ -59,8 +59,26 @@
         ]
       }
     ],
-    "publicPrice": { "type": "on_request" },
+    "publicPrice": { "type": "exact", "amount": 28000, "currency": "UAH" },
     "availability": "check_with_manager",
+    "configuration": {
+      "optionGroups": [
+        {
+          "id": "remote_antenna",
+          "label": "Виносна антена",
+          "type": "single",
+          "options": [
+            { "id": "no", "label": "Без виносної антени", "priceDelta": 0 },
+            { "id": "yes", "label": "З виносною антеною", "priceDelta": 6000 }
+          ]
+        }
+      ],
+      "variants": [
+        { "id": "kzh4-base", "options": { "remote_antenna": "no" }, "sku": "KZH4", "price": 28000, "availability": "check_with_manager" },
+        { "id": "kzh4-ant", "options": { "remote_antenna": "yes" }, "sku": "KZH4-ANT", "price": 34000, "availability": "check_with_manager" }
+      ],
+      "defaultVariantId": "kzh4-base"
+    },
     "documents": [],
     "packageContents": [
       "Приймач на 4 діапазони 1G+3G+5G+6G (суцільний корпус) — 1 шт",
@@ -97,6 +115,30 @@
         ]
       }
     ]
+  },
+  {
+    "slug": "kozhan-3",
+    "name": "Детектор дронів «КОЖАН 3.0»",
+    "shortName": "КОЖАН 3.0",
+    "typeLabel": "Детектор БПЛА",
+    "cardTags": [],
+    "shortDescription": "Детектор дронів «КОЖАН» покоління 3.0. Повні технічні характеристики уточнюються — залиште заявку, і менеджер надішле специфікацію та актуальну комплектацію.",
+    "category": { "slug": "detectors", "name": "Детектори" },
+    "useCases": [],
+    "badges": [],
+    "publicImages": [],
+    "keySpecs": [],
+    "publicSpecifications": [],
+    "publicPrice": { "type": "exact", "amount": 16000, "oldAmount": 18000, "currency": "UAH" },
+    "availability": "check_with_manager",
+    "documents": [],
+    "packageContents": [],
+    "warrantyMonths": 12,
+    "relatedSlugs": ["kozhan-4"],
+    "compatibility": [
+      { "slug": "remote-antenna", "relation": "recommended_addon", "note": "виносна антена для рознесення приймання від оператора" }
+    ],
+    "reviews": []
   },
   {
     "slug": "kraken",
@@ -406,17 +448,17 @@
     "name": "Тепловізійна камера",
     "shortName": "ТЕПЛОВІЗОР",
     "typeLabel": "Тепловізійний комплекс",
-    "cardTags": ["VOx", "8–14 мкм", "кабель до 50 м"],
-    "shortDescription": "Компактний керований тепловізійний комплекс для дистанційного огляду території, інженерної розвідки та виявлення людей і техніки у складних умовах. Поворотна камера на сенсорі VOx дає чітке теплове зображення в реальному часі; кабель до 50 м віддаляє камеру від оператора.",
+    "cardTags": ["VOx", "8–14 мкм", "кабель 10–50 м"],
+    "shortDescription": "Компактний керований тепловізійний комплекс для дистанційного огляду території, інженерної розвідки та виявлення людей і техніки у складних умовах. Доступний у стаціонарному та поворотному виконанні; сенсор VOx дає чітке теплове зображення в реальному часі, а зʼєднувальний кабель віддаляє камеру від оператора.",
     "category": { "slug": "surveillance", "name": "Спостереження" },
     "useCases": ["stationary", "special", "unit"],
-    "badges": ["Поворотна камера", "Виявлення в темряві"],
+    "badges": ["Стаціонарна / поворотна", "Виявлення в темряві"],
     "publicImages": [],
     "keySpecs": [
       { "label": "Матриця", "value": "VOx 256 × 192 px" },
       { "label": "Спектр", "value": "8–14 мкм" },
       { "label": "Кут огляду", "value": "50° × 37,2°" },
-      { "label": "Кабель", "value": "5–50 м" }
+      { "label": "Кабель", "value": "10–50 м" }
     ],
     "publicSpecifications": [
       {
@@ -446,21 +488,66 @@
         "items": [
           { "label": "Монітор", "value": "IPS 5″" },
           { "label": "Контроль заряду", "value": "OLED 0,91″ — напруга (В) та залишковий заряд (%)" },
-          { "label": "З'єднувальний кабель", "value": "5–50 м (камера ↔ блок керування)" }
+          { "label": "З'єднувальний кабель", "value": "10 м (стаціонарна) · 5–50 м (поворотна)" }
         ]
       }
     ],
-    "publicPrice": { "type": "on_request" },
+    "publicPrice": { "type": "from", "amount": 10500, "currency": "UAH" },
     "availability": "check_with_manager",
+    "configuration": {
+      "optionGroups": [
+        {
+          "id": "execution",
+          "label": "Виконання",
+          "type": "single",
+          "options": [
+            { "id": "stationary", "label": "Стаціонарна", "priceDelta": 0 },
+            { "id": "rotary", "label": "Поворотна", "priceDelta": 4000 }
+          ]
+        }
+      ],
+      "variants": [
+        { "id": "cam-st", "options": { "execution": "stationary" }, "sku": "CAM-ST", "price": 10500, "availability": "check_with_manager" },
+        { "id": "cam-rot", "options": { "execution": "rotary" }, "sku": "CAM-ROT", "price": 14500, "availability": "check_with_manager" }
+      ],
+      "defaultVariantId": "cam-st"
+    },
     "documents": [],
     "packageContents": [
-      "Поворотна тепловізійна камера в захисному корпусі (3D-друк) — 1 шт",
+      "Тепловізійна камера (стаціонарна або поворотна) у захисному корпусі (3D-друк) — 1 шт",
       "Монітор 5″ на 3D-друкованій підставці — 1 шт",
-      "З'єднувальний кабель — 5–50 м"
+      "З'єднувальний кабель — 10–50 м"
     ],
     "warrantyMonths": 12,
     "relatedSlugs": [],
     "compatibility": [],
+    "reviews": []
+  },
+  {
+    "slug": "remote-antenna",
+    "name": "Виносна антена для детекторів «КОЖАН»",
+    "shortName": "Виносна антена",
+    "typeLabel": "Аксесуар детектора",
+    "cardTags": ["Для детекторів КОЖАН"],
+    "shortDescription": "Виносна антена для рознесення приймальних антен детектора «КОЖАН» від блока оператора — монтаж на щоглі, кунгу чи стаціонарному посту для стабільнішого прийому та більшої дальності виявлення.",
+    "category": { "slug": "antennas", "name": "Антени" },
+    "useCases": ["stationary", "vehicle"],
+    "badges": [],
+    "publicImages": [],
+    "keySpecs": [
+      { "label": "Сумісність", "value": "Детектори «КОЖАН»" }
+    ],
+    "publicSpecifications": [],
+    "publicPrice": { "type": "exact", "amount": 6000, "currency": "UAH" },
+    "availability": "check_with_manager",
+    "documents": [],
+    "packageContents": [],
+    "warrantyMonths": 12,
+    "relatedSlugs": ["kozhan-4", "kozhan-3"],
+    "compatibility": [
+      { "slug": "kozhan-4", "relation": "works_with" },
+      { "slug": "kozhan-3", "relation": "works_with" }
+    ],
     "reviews": []
   }
 ]

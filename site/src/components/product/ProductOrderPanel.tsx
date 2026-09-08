@@ -4,7 +4,7 @@ import { useId, useMemo, useState } from "react";
 import type { FormEvent } from "react";
 import type { Availability, Configuration, PublicPrice, Variant } from "@/lib/types";
 import { AVAILABILITY_LABELS } from "@/lib/types";
-import { availabilityClass, formatPrice } from "@/lib/format";
+import { availabilityClass, formatAmount, formatPrice } from "@/lib/format";
 import { IconArrowRight, IconCheck } from "@/components/icons";
 
 /* Панель ціни/наявності + конфігуратор варіантів + форма замовлення (→ POST /api/requests).
@@ -121,7 +121,12 @@ export default function ProductOrderPanel({ slug, name, configuration, publicPri
     <div className="rounded-[12px] border border-card-line bg-card p-5">
       <div className="flex items-start justify-between gap-3">
         <div>
-          <div className="font-display text-[26px] font-bold leading-none text-ink">{formatPrice(price)}</div>
+          <div className="flex flex-wrap items-baseline gap-x-2.5 gap-y-1">
+            <span className="font-display text-[26px] font-bold leading-none text-ink">{formatPrice(price)}</span>
+            {price.type === "exact" && price.oldAmount != null && price.oldAmount > price.amount && (
+              <s className="text-[15px] font-medium text-ink-5">{formatAmount(price.oldAmount)}</s>
+            )}
+          </div>
           <div className={"mt-2 flex items-center gap-1.5 text-[12px] font-medium " + availabilityClass(avail)}>
             <span aria-hidden className="size-1.5 rounded-full bg-current" />
             {AVAILABILITY_LABELS[avail]}
