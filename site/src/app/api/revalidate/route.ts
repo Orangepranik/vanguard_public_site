@@ -24,6 +24,7 @@ export async function POST(req: Request) {
   if (scope === "products" || scope === "all") {
     revalidatePath("/catalog");
     revalidatePath("/products/[slug]", "page");
+    revalidatePath("/reviews");
   }
 
   return NextResponse.json({ revalidated: true, scope, at: Date.now() });

@@ -52,6 +52,7 @@ const toImage = (im: Row): ProductImage => ({
 
 // ── Категорії ──
 export const getCategories = cache(async (): Promise<Category[]> => {
+  if (!process.env.DATABASE_URL) return []; // збірка без БД (Docker): реальні дані підтягне ISR у рантаймі
   const sql = getSql();
   const rows = await sql`
     SELECT slug, name, description, sort_order
@@ -65,6 +66,7 @@ export async function getCategory(slug: string): Promise<Category | undefined> {
 
 // ── Список продуктів (картковий рівень; важкі колекції — лише в getProduct) ──
 export const getProducts = cache(async (): Promise<PublicProduct[]> => {
+  if (!process.env.DATABASE_URL) return []; // збірка без БД (Docker): реальні дані підтягне ISR у рантаймі
   const sql = getSql();
   const prods = await sql`
     SELECT p.slug, p.name, p.short_name, p.type_label, p.short_description,
@@ -115,6 +117,7 @@ export async function getProductsByCategory(categorySlug: string): Promise<Publi
 
 // ── Продукт: повний DTO (усі дочірні сутності) ──
 export const getProduct = cache(async (slug: string): Promise<PublicProduct | undefined> => {
+  if (!process.env.DATABASE_URL) return undefined; // збірка без БД (Docker)
   const sql = getSql();
   const [p] = await sql`
     SELECT p.slug, p.name, p.short_name, p.type_label, p.short_description,

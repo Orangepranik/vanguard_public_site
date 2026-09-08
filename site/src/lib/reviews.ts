@@ -9,6 +9,7 @@ import type { ReviewWithProduct } from "./types";
  * Сортування — від найновіших. `cache()` дедуплікує в межах рендера.
  */
 export const getAllReviews = cache(async (): Promise<ReviewWithProduct[]> => {
+  if (!process.env.DATABASE_URL) return []; // збірка без БД (Docker)
   const sql = getSql();
   const revs = await sql`
     SELECT r.id, r.display_name, r.role_label, r.rating, r.body, r.use_case_tag,

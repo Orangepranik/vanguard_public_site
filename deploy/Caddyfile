@@ -1,0 +1,8 @@
+# Caddy — реверс-проксі з автоматичним HTTPS (Let's Encrypt) для VANGUARD.
+# Потрібні: A-записи ursvanguard.com і www → IP сервера, відкриті порти 80 і 443.
+# Якщо домен інший — заміни його тут.
+
+ursvanguard.com, www.ursvanguard.com {
+	encode gzip zstd
+	reverse_proxy site:3000
+}

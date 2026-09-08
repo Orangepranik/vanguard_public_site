@@ -1,0 +1,74 @@
+# Продакшн-стек VANGUARD: PostgreSQL + сайт (Next.js) + Caddy (реверс-проксі з авто-HTTPS).
+# Запуск і покроково — див. deploy/DEPLOY.md. Секрети — у deploy/.env (з .env.production.example).
+#
+#   docker compose -f deploy/docker-compose.prod.yml --env-file deploy/.env up -d --build
+name: vanguard
+
+services:
+  db:
+    image: postgres:17-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: vanguard
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?set POSTGRES_PASSWORD in deploy/.env}
+      POSTGRES_DB: vanguard
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U vanguard -d vanguard"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+
+  site:
+    build:
+      context: ../site
+    image: vanguard-site:latest
+    restart: unless-stopped
+    environment:
+      NODE_ENV: production
+      # Сайт збирається БЕЗ БД (порожні сторінки), реальні дані підтягуються тут, у рантаймі, через ISR.
+      DATABASE_URL: postgres://vanguard:${POSTGRES_PASSWORD}@db:5432/vanguard
+      REVALIDATE_SECRET: ${REVALIDATE_SECRET}
+      TELEGRAM_BOT_TOKEN: ${TELEGRAM_BOT_TOKEN}
+      TELEGRAM_CHAT_ID: ${TELEGRAM_CHAT_ID}
+    volumes:
+      # Черга заявок (персональні дані) — поза образом
+      - requests:/app/.data
+    depends_on:
+      db:
+        condition: service_healthy
+
+  caddy:
+    image: caddy:2-alpine
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+    depends_on:
+      - site
+
+  # Одноразово: міграції + сід каталогу. Не стартує зі стеком (профіль tools).
+  #   docker compose -f deploy/docker-compose.prod.yml --env-file deploy/.env --profile tools run --rm seed
+  seed:
+    image: node:22-alpine
+    profiles: ["tools"]
+    working_dir: /repo/backend
+    volumes:
+      - ..:/repo
+    environment:
+      DATABASE_URL: postgres://vanguard:${POSTGRES_PASSWORD}@db:5432/vanguard
+    depends_on:
+      db:
+        condition: service_healthy
+    command: sh -c "npm ci && npm run db:migrate && npm run db:seed"
+
+volumes:
+  pgdata:
+  requests:
+  caddy_data:
+  caddy_config:
