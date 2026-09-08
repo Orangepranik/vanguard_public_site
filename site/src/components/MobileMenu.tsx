@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import Link from "next/link";
 import { IconBurger, IconClose } from "./icons";
+import { useContactDialog } from "./contact/ContactDialog";
 
 type NavItem = { label: string; href: string };
 
@@ -82,6 +83,7 @@ function MenuOverlay({
   active: string;
   closeRef: React.RefObject<HTMLButtonElement | null>;
 }) {
+  const { open: openContact } = useContactDialog();
   return (
     <div className="xl:hidden">
       {/* Бекдроп */}
@@ -141,13 +143,16 @@ function MenuOverlay({
         </nav>
 
         <div className="shrink-0 border-t border-line-3 px-5 py-4">
-          <Link
-            href="#request"
-            onClick={onClose}
-            className="flex h-11 items-center justify-center rounded-[3px] border border-accent-deep text-[15px] font-semibold text-[#F3F3F3] transition-colors hover:bg-accent-deep/15"
+          <button
+            type="button"
+            onClick={() => {
+              onClose();
+              openContact();
+            }}
+            className="flex h-11 w-full items-center justify-center rounded-[3px] border border-accent-deep text-[15px] font-semibold text-[#F3F3F3] transition-colors hover:bg-accent-deep/15"
           >
             Зв&apos;язатися
-          </Link>
+          </button>
           <div className="mt-3 flex flex-col gap-1.5 text-[12px] text-ink-4">
             <a
               href="tel:+380608403520"

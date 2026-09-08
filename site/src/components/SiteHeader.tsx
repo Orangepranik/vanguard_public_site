@@ -1,13 +1,15 @@
 import Image from "next/image";
 import Link from "next/link";
 import MobileMenu from "./MobileMenu";
+import ContactDialogProvider, { ContactTrigger } from "./contact/ContactDialog";
 import { IconSearch } from "./icons";
 
-// Порядок пунктів — за Figma-макетом (фрейм Header / NAVIGATION)
+// Порядок пунктів — за Figma-макетом (фрейм Header / NAVIGATION); «Відгуки» — пропозиція (макета ще немає)
 const NAV = [
   { label: "Головна", href: "/" },
   { label: "Каталог", href: "/catalog" },
   { label: "Рішення", href: "/solutions" },
+  { label: "Відгуки", href: "/reviews" },
   { label: "Документація", href: "/documentation" },
   { label: "Про компанію", href: "/about" },
   { label: "Контакти", href: "/contacts" },
@@ -15,8 +17,9 @@ const NAV = [
 
 export default function SiteHeader({ active = "Каталог" }: { active?: string }) {
   return (
-    <header className="sticky top-0 z-40 border-b border-line-3 bg-header/95 backdrop-blur">
-      <div className="mx-auto flex h-[66px] w-full max-w-[1536px] items-center gap-3 px-4 lg:gap-6 lg:px-[35px]">
+    <ContactDialogProvider>
+      <header className="sticky top-0 z-40 border-b border-line-3 bg-header/95 backdrop-blur">
+        <div className="mx-auto flex h-[66px] w-full max-w-[1536px] items-center gap-3 px-4 lg:gap-6 lg:px-[35px]">
         <Link href="/catalog" aria-label="VANGUARD — на головну" className="shrink-0">
           <Image
             src="/images/brand/logo-full.png"
@@ -58,15 +61,15 @@ export default function SiteHeader({ active = "Каталог" }: { active?: str
 
         <span aria-hidden className="hidden h-[33px] w-px bg-line-2 xl:block" />
 
-        <Link
-          href="#request"
+        <ContactTrigger
           className="hidden h-9 shrink-0 items-center rounded-[3px] border border-accent-deep px-4 text-[14px] font-semibold text-[#F3F3F3] transition-colors hover:bg-accent-deep/15 sm:flex lg:px-6 lg:text-[16px]"
         >
           Зв&apos;язатися
-        </Link>
+        </ContactTrigger>
 
         <MobileMenu items={NAV} active={active} />
       </div>
     </header>
+    </ContactDialogProvider>
   );
 }

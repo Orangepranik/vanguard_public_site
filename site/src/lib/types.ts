@@ -92,6 +92,14 @@ export interface PublicReview {
   verified: true;
 }
 
+/** Відгук, збагачений продуктом — для збірної сторінки «Відгуки» (усі продукти). */
+export interface ReviewWithProduct extends PublicReview {
+  productSlug: string;
+  productName: string;
+  productShortName?: string;
+  productTypeLabel?: string;
+}
+
 export interface DocumentLink {
   title: string;
   type: string; // "pdf"
