@@ -7,16 +7,22 @@ import CatalogView from "@/components/catalog/CatalogView";
 import { IconChevronRight, IconHome } from "@/components/icons";
 import { getCategories, getProducts } from "@/lib/catalog";
 
-export const revalidate = 300; // ISR: фонове оновлення раз на 5 хв
-
 export const metadata: Metadata = {
   title: "Каталог продукції — VANGUARD",
   description:
     "Професійні рішення для виявлення та протидії БПЛА. Обладнання для будь-яких умов та задач.",
 };
 
-export default async function CatalogPage() {
-  const [products, categories] = await Promise.all([getProducts(), getCategories()]);
+type Params = { searchParams: Promise<{ category?: string }> };
+
+export default async function CatalogPage({ searchParams }: Params) {
+  const [{ category }, products, categories] = await Promise.all([
+    searchParams,
+    getProducts(),
+    getCategories(),
+  ]);
+  const initialCategory =
+    category && categories.some((c) => c.slug === category) ? category : undefined;
 
   return (
     <>
@@ -37,6 +43,7 @@ export default async function CatalogPage() {
         <CatalogView
           products={products}
           categories={categories}
+          initialCategory={initialCategory}
           title="Каталог продукції"
           description="Професійні рішення для виявлення та протидії БПЛА. Обладнання для будь-яких умов та задач."
         />

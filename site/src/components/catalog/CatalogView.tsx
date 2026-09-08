@@ -177,24 +177,24 @@ export default function CatalogView({
   categories,
   title,
   description,
+  initialCategory,
 }: {
   products: PublicProduct[];
   categories: Category[];
   title: string;
   description: string;
+  initialCategory?: string;
 }) {
-  const [selected, setSelected] = useState<string[]>([]);
+  const [selected, setSelected] = useState<string[]>(initialCategory ? [initialCategory] : []);
   const [equipmentOpen, setEquipmentOpen] = useState(true);
   const [sort, setSort] = useState<Sort>("popular");
   const [view, setView] = useState<View>("grid");
 
-  // Початковий фільтр із URL: /catalog?category=<slug> (напр. з посилань футера)
+  // Фільтр із URL (?category=<slug>): сервер віддає його вже застосованим,
+  // а тут синхронізуємо при переходах (напр. кліком у футері) без перезавантаження.
   useEffect(() => {
-    const cat = new URLSearchParams(window.location.search).get("category");
-    if (cat && categories.some((c) => c.slug === cat)) setSelected([cat]);
-    // один раз на монтуванні — початкове застосування з URL
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+    setSelected(initialCategory ? [initialCategory] : []);
+  }, [initialCategory]);
 
   const counts = useMemo(() => {
     const m = new Map<string, number>();
