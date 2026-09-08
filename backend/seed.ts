@@ -29,7 +29,9 @@ const categories = read("categories.json");
 const products = read("products.json");
 const documents = read("documents.json");
 
-await db.execute(sql`TRUNCATE categories, requests RESTART IDENTITY CASCADE`);
+// Скидаємо лише каталог (categories → CASCADE на products/фото/відгуки тощо).
+// requests НЕ чіпаємо — заявки клієнтів мають пережити повторний сід на проді.
+await db.execute(sql`TRUNCATE categories RESTART IDENTITY CASCADE`);
 
 // ── Категорії ──
 const catId = new Map<string, number>();
