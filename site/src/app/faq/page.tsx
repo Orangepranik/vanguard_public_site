@@ -114,7 +114,7 @@ export default function FaqPage() {
           </p>
         </header>
 
-        <div className="mt-7 max-w-[860px] space-y-8">
+        <div className="mt-7 grid gap-x-6 gap-y-8 lg:grid-cols-3 lg:items-start">
           {GROUPS.map((g) => (
             <section key={g.title}>
               <h2 className="text-[13px] font-semibold uppercase tracking-wide text-ink-4">{g.title}</h2>
@@ -136,7 +136,7 @@ export default function FaqPage() {
           ))}
         </div>
 
-        <section className="mt-10 flex flex-col items-start justify-between gap-4 rounded-[12px] border border-line-3 bg-[#070c11] px-6 py-5 sm:flex-row sm:items-center lg:max-w-[860px] lg:px-8">
+        <section className="mt-10 flex flex-col items-start justify-between gap-4 rounded-[12px] border border-line-3 bg-[#070c11] px-6 py-5 sm:flex-row sm:items-center lg:px-8">
           <div>
             <h2 className="font-display text-[18px] font-bold uppercase leading-tight text-ink">
               Не знайшли відповідь?
