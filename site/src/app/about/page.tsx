@@ -3,6 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import SiteHeader from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
+import { ContactTrigger } from "@/components/contact/ContactDialog";
 import { IconArrowRight, IconChevronRight, IconHome } from "@/components/icons";
 
 export const metadata: Metadata = {
@@ -183,13 +184,12 @@ export default function AboutPage() {
               вибором рішення.
             </p>
           </div>
-          <Link
-            href="#request"
+          <ContactTrigger
             className="inline-flex h-[46px] shrink-0 items-center gap-2 rounded-[8px] bg-accent-mid px-5 text-[14px] font-semibold text-white transition-colors hover:bg-accent"
           >
             Зв&apos;язатися з нами
             <IconArrowRight className="size-4" />
-          </Link>
+          </ContactTrigger>
         </section>
       </main>
       <SiteFooter />

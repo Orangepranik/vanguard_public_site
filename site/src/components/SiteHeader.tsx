@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import MobileMenu from "./MobileMenu";
-import ContactDialogProvider, { ContactTrigger } from "./contact/ContactDialog";
+import { ContactTrigger } from "./contact/ContactDialog";
 import { IconSearch } from "./icons";
 
 // Порядок пунктів — за Figma-макетом (фрейм Header / NAVIGATION); «Відгуки» — пропозиція (макета ще немає)
@@ -16,8 +16,7 @@ const NAV = [
 
 export default function SiteHeader({ active = "Каталог" }: { active?: string }) {
   return (
-    <ContactDialogProvider>
-      <header className="sticky top-0 z-40 border-b border-line-3 bg-header/95 backdrop-blur">
+    <header className="sticky top-0 z-40 border-b border-line-3 bg-header/95 backdrop-blur">
         <div className="mx-auto flex h-[66px] w-full max-w-[1536px] items-center gap-3 px-4 lg:px-[35px]">
           <div className="flex flex-1 items-center">
             <Link href="/catalog" aria-label="VANGUARD — на головну" className="shrink-0">
@@ -73,6 +72,5 @@ export default function SiteHeader({ active = "Каталог" }: { active?: str
           </div>
         </div>
     </header>
-    </ContactDialogProvider>
   );
 }
