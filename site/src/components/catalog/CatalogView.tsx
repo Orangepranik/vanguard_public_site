@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import type { Category, PublicProduct } from "@/lib/types";
 import { AVAILABILITY_LABELS } from "@/lib/types";
@@ -187,6 +187,14 @@ export default function CatalogView({
   const [equipmentOpen, setEquipmentOpen] = useState(true);
   const [sort, setSort] = useState<Sort>("popular");
   const [view, setView] = useState<View>("grid");
+
+  // Початковий фільтр із URL: /catalog?category=<slug> (напр. з посилань футера)
+  useEffect(() => {
+    const cat = new URLSearchParams(window.location.search).get("category");
+    if (cat && categories.some((c) => c.slug === cat)) setSelected([cat]);
+    // один раз на монтуванні — початкове застосування з URL
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const counts = useMemo(() => {
     const m = new Map<string, number>();

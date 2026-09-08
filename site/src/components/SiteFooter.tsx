@@ -17,6 +17,8 @@ function FooterCol({
   heading: string;
   links: { label: string; href: string }[];
 }) {
+  const cls =
+    "block text-[10px] leading-4 text-[#9EA3A7] transition-colors hover:text-ink-2";
   return (
     <div>
       <h3 className="text-[10px] font-semibold uppercase leading-[14px] tracking-wide text-[#E7E9EA]">
@@ -25,12 +27,19 @@ function FooterCol({
       <ul className="mt-2 space-y-[3px]">
         {links.map((l) => (
           <li key={l.label}>
-            <Link
-              href={l.href}
-              className="block text-[10px] leading-4 text-[#9EA3A7] transition-colors hover:text-ink-2"
-            >
-              {l.label}
-            </Link>
+            {l.href.startsWith("http") ? (
+              <a href={l.href} target="_blank" rel="noopener noreferrer" className={cls}>
+                {l.label}
+              </a>
+            ) : l.href.startsWith("mailto:") || l.href.startsWith("tel:") ? (
+              <a href={l.href} className={cls}>
+                {l.label}
+              </a>
+            ) : (
+              <Link href={l.href} className={cls}>
+                {l.label}
+              </Link>
+            )}
           </li>
         ))}
       </ul>
@@ -94,28 +103,26 @@ export default function SiteFooter() {
             <FooterCol
               heading="Продукція"
               links={[
-                { label: "Детектори", href: "/catalog" },
-                { label: "РЕБ системи", href: "/catalog" },
-                { label: "Антени", href: "/catalog" },
-                { label: "Комплекти", href: "/catalog" },
+                { label: "Детектори", href: "/catalog?category=detectors" },
+                { label: "РЕБ системи", href: "/catalog?category=reb" },
+                { label: "Антени", href: "/catalog?category=antennas" },
+                { label: "Комплекти", href: "/catalog?category=kits" },
               ]}
             />
             <FooterCol
               heading="Компанія"
               links={[
-                { label: "Про нас", href: "#" },
-                { label: "Виробництво", href: "#" },
-                { label: "Новини", href: "#" },
-                { label: "Кар'єра", href: "#" },
+                { label: "Про нас", href: "/about" },
+                { label: "Виробництво", href: "/about" },
+                { label: "Новини", href: "https://t.me/vanguard_urs" },
+                { label: "Кар'єра", href: "mailto:vanguardltd25@gmail.com?subject=Вакансії%20VANGUARD" },
               ]}
             />
             <FooterCol
               heading="Підтримка"
               links={[
-                { label: "Документація", href: "#" },
-                { label: "Гарантія", href: "#" },
-                { label: "FAQ", href: "#" },
-                { label: "Сервісні центри", href: "#" },
+                { label: "Гарантія", href: "/warranty" },
+                { label: "Сервісні центри", href: "/contacts" },
               ]}
             />
             <FooterCol
