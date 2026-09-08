@@ -1,8 +1,8 @@
 import Image from "next/image";
 import Link from "next/link";
 import MobileMenu from "./MobileMenu";
+import SiteSearch from "./SiteSearch";
 import { ContactTrigger } from "./contact/ContactDialog";
-import { IconSearch } from "./icons";
 
 // Порядок пунктів — за Figma-макетом (фрейм Header / NAVIGATION); «Відгуки» — пропозиція (макета ще немає)
 const NAV = [
@@ -51,14 +51,7 @@ export default function SiteHeader({ active = "Каталог" }: { active?: str
           </nav>
 
           <div className="flex flex-1 items-center justify-end gap-3 lg:gap-6">
-            <button
-              type="button"
-              className="flex h-[39px] items-center gap-2.5 px-2.5 text-ink"
-              aria-label="Пошук"
-            >
-              <IconSearch className="size-4" />
-              <span className="hidden text-[16px] font-medium sm:inline">Пошук</span>
-            </button>
+            <SiteSearch className="flex h-[39px] items-center gap-2.5 px-2.5 text-ink transition-colors hover:text-accent-mid" />
 
             <span aria-hidden className="hidden h-[33px] w-px bg-line-2 xl:block" />
 
