@@ -9,7 +9,13 @@
     "category": { "slug": "detectors", "name": "Детектори" },
     "useCases": ["infantry", "vehicle", "mobile-group", "stationary"],
     "badges": ["4 діапазони", "Автозапуск РЕБ"],
-    "publicImages": [],
+    "publicImages": [
+      { "src": "/images/products/kozhan-4-1.webp", "alt": "Детектор дронів «КОЖАН 4.0» з чотирма антенами, вид спереду", "width": 1010, "height": 1320 },
+      { "src": "/images/products/kozhan-4-2.webp", "alt": "«КОЖАН 4.0» — екран із переліком діапазонів та кнопки керування", "width": 1102, "height": 990 },
+      { "src": "/images/products/kozhan-4-3.webp", "alt": "«КОЖАН 4.0» — роз'єм для навушників на корпусі", "width": 220, "height": 176 },
+      { "src": "/images/products/kozhan-4-4.webp", "alt": "«КОЖАН 4.0» — роз'єм USB-C для заряджання та оновлення прошивки", "width": 220, "height": 212 },
+      { "src": "/images/products/kozhan-4-5.webp", "alt": "«КОЖАН 4.0» — роз'єм зовнішнього живлення на корпусі", "width": 220, "height": 174 }
+    ],
     "keySpecs": [
       { "label": "Діапазони", "value": "1G / 3G / 5G / 6G (4 діапазони)" },
       { "label": "Дальність виявлення", "value": "від 2 км" },
@@ -167,7 +173,15 @@
     "category": { "slug": "reb", "name": "РЕБ" },
     "useCases": ["stationary", "unit"],
     "badges": ["Модульна система", "Сумісність з «КОЖАН»"],
-    "publicImages": [],
+    "publicImages": [
+      { "src": "/images/products/kraken-1.webp", "alt": "Система РЕБ «КРАКЕН» у зборі: два яруси модулів завад на тринозі, комутаційна коробка, пульт та спрямована антена", "width": 1096, "height": 802 },
+      { "src": "/images/products/kraken-2.webp", "alt": "«КРАКЕН» — дві планки з модулями завад у захищених корпусах, вид спереду", "width": 880, "height": 284 },
+      { "src": "/images/products/kraken-3.webp", "alt": "«КРАКЕН» — комплект: комутаційна коробка на 16 каналів, виносний пульт, кабелі та спрямована антена", "width": 1048, "height": 362 },
+      { "src": "/images/products/kraken-4.webp", "alt": "«КРАКЕН» — комутаційна коробка з пронумерованими роз'ємами каналів", "width": 222, "height": 154 },
+      { "src": "/images/products/kraken-5.webp", "alt": "«КРАКЕН» — окремий модуль завад у захищеному корпусі з вентиляційними прорізами", "width": 406, "height": 172 },
+      { "src": "/images/products/kraken-6.webp", "alt": "«КРАКЕН» — виносний пульт увімкнення каналів із кабелем", "width": 404, "height": 136 },
+      { "src": "/images/products/kraken-7.webp", "alt": "«КРАКЕН» — спрямована антена типу «хвильовий канал» на щоглі", "width": 436, "height": 158 }
+    ],
     "keySpecs": [
       { "label": "Діапазон", "value": "300–4100 MHz" },
       { "label": "Вихідна потужність", "value": "25–50 Вт / 100 МГц (1 модуль)" },
@@ -269,7 +283,11 @@
     "category": { "slug": "reb", "name": "РЕБ" },
     "useCases": ["vehicle", "unit", "stationary"],
     "badges": ["8–20 каналів", "Автозапуск «КОЖАН»"],
-    "publicImages": [],
+    "publicImages": [
+      { "src": "/images/products/hydra-2u-1.webp", "alt": "Комплекс РЕБ «ГІДРА 2U» — повний комплект: блок у 19″ стійці, антени, кабелі та виносний пульт", "width": 1268, "height": 706 },
+      { "src": "/images/products/hydra-2u-2.webp", "alt": "«ГІДРА 2U» — передня панель: роз'єми живлення, гніздо пульта та індикатори діапазонів", "width": 918, "height": 704 },
+      { "src": "/images/products/hydra-2u-3.webp", "alt": "Антена комплексу «ГІДРА 2U» з кабелем підключення", "width": 270, "height": 208 }
+    ],
     "keySpecs": [
       { "label": "Робочий діапазон", "value": "300–6000 МГц" },
       { "label": "Кількість каналів", "value": "8–20" },
@@ -359,7 +377,10 @@
     "category": { "slug": "reb", "name": "РЕБ" },
     "useCases": ["vehicle", "special", "mobile-group"],
     "badges": ["Маскування під колеса", "Автозапуск «КОЖАН»"],
-    "publicImages": [],
+    "publicImages": [
+      { "src": "/images/products/dokatka-1.webp", "alt": "Комплекс РЕБ «ДОКАТКА» — колесо-маскування та платформа з модулями завад", "width": 1330, "height": 784 },
+      { "src": "/images/products/dokatka-2.webp", "alt": "«ДОКАТКА» — платформа з антенними модулями, підсилювачами та охолодженням, вид згори", "width": 852, "height": 672 }
+    ],
     "keySpecs": [
       { "label": "Робочий діапазон", "value": "300–6000 МГц" },
       { "label": "Діапазонів", "value": "до 12 (4–6 у кожному колесі)" },
@@ -454,7 +475,11 @@
     "category": { "slug": "reb", "name": "РЕБ" },
     "useCases": ["vehicle", "mobile-group", "special"],
     "badges": ["Маскування під авто", "Автозапуск «КОЖАН»"],
-    "publicImages": [],
+    "publicImages": [
+      { "src": "/images/products/delfin-1.webp", "alt": "Комплекс РЕБ «ДЕЛЬФІН» — даховий кофр у зборі, вид збоку", "width": 638, "height": 360 },
+      { "src": "/images/products/delfin-2.webp", "alt": "«ДЕЛЬФІН» — внутрішня компоновка: антенні модулі та підсилювачі у відкритому кофрі", "width": 557, "height": 658 },
+      { "src": "/images/products/delfin-3.webp", "alt": "«ДЕЛЬФІН» — виносна кнопка ON/OFF для увімкнення з кабіни", "width": 160, "height": 216 }
+    ],
     "keySpecs": [
       { "label": "Робочі частоти", "value": "300–6000 МГц" },
       { "label": "Модулів", "value": "до 13 частотних" },
@@ -550,7 +575,10 @@
     "category": { "slug": "surveillance", "name": "Спостереження" },
     "useCases": ["stationary", "special", "unit"],
     "badges": ["Стаціонарна / поворотна", "Виявлення в темряві"],
-    "publicImages": [],
+    "publicImages": [
+      { "src": "/images/products/thermal-camera-1.webp", "alt": "Тепловізійна камера у поворотному виконанні з монітором та з'єднувальним кабелем", "width": 1320, "height": 596 },
+      { "src": "/images/products/thermal-camera-2.webp", "alt": "Зображення з тепловізійної камери: постать людини на дорозі в темряві", "width": 670, "height": 428 }
+    ],
     "keySpecs": [
       { "label": "Матриця", "value": "VOx 256 × 192 px" },
       { "label": "Спектр", "value": "8–14 мкм" },

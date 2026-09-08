@@ -3,6 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import SiteHeader from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
+import ProductGallery from "@/components/product/ProductGallery";
 import ProductOrderPanel from "@/components/product/ProductOrderPanel";
 import ProductReviews from "@/components/product/ProductReviews";
 import { IconChevronRight, IconDownload, IconHome } from "@/components/icons";
@@ -64,18 +65,8 @@ export default async function ProductPage({ params }: Params) {
 
         {/* ── Верх: галерея + інфо/замовлення ── */}
         <div className="mt-5 grid gap-8 lg:grid-cols-[1fr_400px] lg:items-start">
-          {/* Галерея (фото поки плейсхолдери) */}
-          <div className="lg:sticky lg:top-4">
-            <div className="flex aspect-[4/3] items-center justify-center rounded-[12px] border border-line bg-field text-[13px] text-ink-5">
-              Фото продукту
-            </div>
-            <div className="mt-3 grid grid-cols-4 gap-3">
-              {Array.from({ length: 4 }).map((_, i) => (
-                <div key={i} className="aspect-square rounded-[8px] border border-line bg-field" />
-              ))}
-            </div>
-            <p className="mt-2 text-[11px] text-ink-5">Фото буде додано власником.</p>
-          </div>
+          {/* Галерея */}
+          <ProductGallery images={product.publicImages} name={product.name} />
 
           {/* Інфо */}
           <div>

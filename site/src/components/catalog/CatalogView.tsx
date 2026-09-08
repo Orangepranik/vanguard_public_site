@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import type { Category, PublicProduct } from "@/lib/types";
 import { AVAILABILITY_LABELS } from "@/lib/types";
@@ -100,14 +101,24 @@ function DetailsLink() {
   );
 }
 
-function ProductPhoto({ className }: { className: string }) {
+/* Перше фото продукту; поки його нема — текстовий плейсхолдер.
+   alt порожній: назва продукту вже є текстом у самій картці. */
+function ProductPhoto({ p, className }: { p: PublicProduct; className: string }) {
+  const photo = p.publicImages[0];
+  if (!photo) {
+    return (
+      <div
+        className={
+          "flex items-center justify-center text-[10px] text-ink-5 " + className
+        }
+      >
+        Фото продукту
+      </div>
+    );
+  }
   return (
-    <div
-      className={
-        "flex items-center justify-center text-[10px] text-ink-5 " + className
-      }
-    >
-      Фото продукту
+    <div className={"relative " + className}>
+      <Image src={photo.src} alt="" fill sizes="200px" className="object-contain" />
     </div>
   );
 }
@@ -121,7 +132,7 @@ function CardGrid({ p }: { p: PublicProduct }) {
           <span className="absolute left-3.5 top-3">
             <CategoryBadge name={p.category.name} />
           </span>
-          <ProductPhoto className="h-[128px] w-[130px]" />
+          <ProductPhoto p={p} className="h-[128px] w-[130px]" />
         </div>
         <div className="flex flex-1 flex-col gap-[7px] px-3.5 pb-3.5 pt-[15px]">
           <div>
@@ -149,7 +160,7 @@ function CardList({ p }: { p: PublicProduct }) {
       <BookmarkButton />
       <Link href={`/products/${p.slug}`} className="flex">
         <div className="relative flex w-[150px] shrink-0 items-center justify-center sm:w-[200px]">
-          <ProductPhoto className="h-[120px] w-[122px]" />
+          <ProductPhoto p={p} className="h-[120px] w-[122px]" />
         </div>
         <div className="flex flex-1 flex-col gap-[7px] px-3.5 py-3.5">
           <div className="flex flex-wrap items-center gap-2.5">
