@@ -122,6 +122,7 @@ export default function SiteFooter() {
               heading="Підтримка"
               links={[
                 { label: "Гарантія", href: "/warranty" },
+                { label: "FAQ", href: "/faq" },
                 { label: "Сервісні центри", href: "/contacts" },
               ]}
             />
