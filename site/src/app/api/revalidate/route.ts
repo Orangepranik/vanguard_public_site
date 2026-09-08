@@ -5,7 +5,7 @@ import { revalidatePath } from "next/cache";
  * POST /api/revalidate — миттєве оновлення ISR-сторінок на вимогу.
  * ERP після зміни даних кличе цей роут → сторінки регенеруються при наступному запиті
  * (не чекаючи фонового `revalidate = 300`). Захист: заголовок x-revalidate-secret.
- * Тіло (необовʼязкове): { "scope": "products" | "documents" | "all" }.
+ * Тіло (необовʼязкове): { "scope": "products" | "all" }.
  */
 export async function POST(req: Request) {
   const secret = process.env.REVALIDATE_SECRET;
@@ -24,9 +24,6 @@ export async function POST(req: Request) {
   if (scope === "products" || scope === "all") {
     revalidatePath("/catalog");
     revalidatePath("/products/[slug]", "page");
-  }
-  if (scope === "documents" || scope === "all") {
-    revalidatePath("/documentation");
   }
 
   return NextResponse.json({ revalidated: true, scope, at: Date.now() });

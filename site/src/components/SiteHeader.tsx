@@ -10,7 +10,6 @@ const NAV = [
   { label: "Каталог", href: "/catalog" },
   { label: "Рішення", href: "/solutions" },
   { label: "Відгуки", href: "/reviews" },
-  { label: "Документація", href: "/documentation" },
   { label: "Про компанію", href: "/about" },
   { label: "Контакти", href: "/contacts" },
 ];
