@@ -18,56 +18,60 @@ export default function SiteHeader({ active = "Каталог" }: { active?: str
   return (
     <ContactDialogProvider>
       <header className="sticky top-0 z-40 border-b border-line-3 bg-header/95 backdrop-blur">
-        <div className="mx-auto flex h-[66px] w-full max-w-[1536px] items-center gap-3 px-4 lg:gap-6 lg:px-[35px]">
-        <Link href="/catalog" aria-label="VANGUARD — на головну" className="shrink-0">
-          <Image
-            src="/images/brand/logo-full.png"
-            alt="VANGUARD — Ukrainian Radioelectronic Systems"
-            width={119}
-            height={47}
-            priority
-          />
-        </Link>
-
-        <nav
-          aria-label="Основна навігація"
-          className="mx-auto hidden items-center gap-6 xl:flex 2xl:gap-[38px]"
-        >
-          {NAV.map((item) => (
-            <Link
-              key={item.label}
-              href={item.href}
-              className={
-                "text-[16px] font-medium leading-none transition-colors " +
-                (item.label === active
-                  ? "text-accent-deep"
-                  : "text-ink-2 hover:text-ink")
-              }
-            >
-              {item.label}
+        <div className="mx-auto flex h-[66px] w-full max-w-[1536px] items-center gap-3 px-4 lg:px-[35px]">
+          <div className="flex flex-1 items-center">
+            <Link href="/catalog" aria-label="VANGUARD — на головну" className="shrink-0">
+              <Image
+                src="/images/brand/logo-full.png"
+                alt="VANGUARD — Ukrainian Radioelectronic Systems"
+                width={119}
+                height={47}
+                priority
+              />
             </Link>
-          ))}
-        </nav>
+          </div>
 
-        <button
-          type="button"
-          className="ml-auto flex h-[39px] items-center gap-2.5 px-2.5 text-ink xl:ml-0"
-          aria-label="Пошук"
-        >
-          <IconSearch className="size-4" />
-          <span className="hidden text-[16px] font-medium sm:inline">Пошук</span>
-        </button>
+          <nav
+            aria-label="Основна навігація"
+            className="hidden items-center gap-6 xl:flex 2xl:gap-[38px]"
+          >
+            {NAV.map((item) => (
+              <Link
+                key={item.label}
+                href={item.href}
+                className={
+                  "text-[16px] font-medium leading-none transition-colors " +
+                  (item.label === active
+                    ? "text-accent-deep"
+                    : "text-ink-2 hover:text-ink")
+                }
+              >
+                {item.label}
+              </Link>
+            ))}
+          </nav>
 
-        <span aria-hidden className="hidden h-[33px] w-px bg-line-2 xl:block" />
+          <div className="flex flex-1 items-center justify-end gap-3 lg:gap-6">
+            <button
+              type="button"
+              className="flex h-[39px] items-center gap-2.5 px-2.5 text-ink"
+              aria-label="Пошук"
+            >
+              <IconSearch className="size-4" />
+              <span className="hidden text-[16px] font-medium sm:inline">Пошук</span>
+            </button>
 
-        <ContactTrigger
-          className="hidden h-9 shrink-0 items-center rounded-[3px] border border-accent-deep px-4 text-[14px] font-semibold text-[#F3F3F3] transition-colors hover:bg-accent-deep/15 sm:flex lg:px-6 lg:text-[16px]"
-        >
-          Зв&apos;язатися
-        </ContactTrigger>
+            <span aria-hidden className="hidden h-[33px] w-px bg-line-2 xl:block" />
 
-        <MobileMenu items={NAV} active={active} />
-      </div>
+            <ContactTrigger
+              className="hidden h-9 shrink-0 items-center rounded-[3px] border border-accent-deep px-4 text-[14px] font-semibold text-[#F3F3F3] transition-colors hover:bg-accent-deep/15 sm:flex lg:px-6 lg:text-[16px]"
+            >
+              Зв&apos;язатися
+            </ContactTrigger>
+
+            <MobileMenu items={NAV} active={active} />
+          </div>
+        </div>
     </header>
     </ContactDialogProvider>
   );

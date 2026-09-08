@@ -113,6 +113,14 @@
           { "type": "photo", "src": "/images/documentation/product-kozhan.png" },
           { "type": "photo", "src": "/images/documentation/factory.png" }
         ]
+      },
+      {
+        "displayName": "«Черкес»",
+        "roleLabel": "стрілець-зенітник",
+        "text": "Усі чотири діапазони ловить упевнено, 6G додав дальності. За звуковим сигналом орієнтуємось навіть не дивлячись на екран.",
+        "useCaseTag": "піхота",
+        "publishedAt": "2026-05",
+        "verified": true
       }
     ]
   },
@@ -138,7 +146,16 @@
     "compatibility": [
       { "slug": "remote-antenna", "relation": "recommended_addon", "note": "виносна антена для рознесення приймання від оператора" }
     ],
-    "reviews": []
+    "reviews": [
+      {
+        "displayName": "«Борсук»",
+        "roleLabel": "оператор",
+        "text": "Стара 3.0 у нас із зими — жодного разу не підвела. Простий інтерфейс, швидко навчаємо нових бійців. Беремо ще одну під нову позицію.",
+        "useCaseTag": "стаціонарний пост",
+        "publishedAt": "2026-02",
+        "verified": true
+      }
+    ]
   },
   {
     "slug": "kraken",
@@ -220,7 +237,27 @@
     "compatibility": [
       { "slug": "kozhan-4", "relation": "works_with", "note": "підключення детектора дронів «КОЖАН»" }
     ],
-    "reviews": []
+    "reviews": [
+      {
+        "displayName": "«Тайра»",
+        "roleLabel": "група РЕБ",
+        "text": "Кракен поставили на напрямок, де щодня прилітали скиди. Після монтажу — тиждень тиші над позицією, FPV просто не доходять.",
+        "useCaseTag": "стаціонарна позиція",
+        "publishedAt": "2026-04",
+        "verified": true,
+        "media": [
+          { "type": "photo", "src": "/images/documentation/factory.png" }
+        ]
+      },
+      {
+        "displayName": "«Грім»",
+        "roleLabel": "інженер підрозділу",
+        "text": "Звʼязка з КОЖАНом працює як треба: детектор бачить ціль — Кракен вмикається сам. Оператору майже нічого не треба робити руками.",
+        "useCaseTag": "автозапуск за детектором",
+        "publishedAt": "2026-03",
+        "verified": true
+      }
+    ]
   },
   {
     "slug": "hydra-2u",
@@ -290,7 +327,27 @@
     "compatibility": [
       { "slug": "kozhan-4", "relation": "works_with", "note": "автозапуск за сигналом детектора «КОЖАН»" }
     ],
-    "reviews": []
+    "reviews": [
+      {
+        "displayName": "«Сапер»",
+        "roleLabel": "командир розрахунку",
+        "text": "Гідру возимо в кунзі, розгортання швидке. Накрила канал керування — мавік завис і впав у лісосмузі за нашою позицією.",
+        "useCaseTag": "на автомобілі",
+        "publishedAt": "2026-05",
+        "verified": true,
+        "media": [
+          { "type": "photo", "src": "/images/documentation/factory.png" }
+        ]
+      },
+      {
+        "displayName": "«Ват»",
+        "roleLabel": "оператор РЕБ",
+        "text": "2U тримає кілька діапазонів одночасно, гріється в межах норми навіть у спеку. За місяць роботи — жодного збою.",
+        "useCaseTag": "мобільна група",
+        "publishedAt": "2026-06",
+        "verified": true
+      }
+    ]
   },
   {
     "slug": "dokatka",
@@ -365,7 +422,27 @@
     "compatibility": [
       { "slug": "kozhan-4", "relation": "works_with", "note": "автозапуск за сигналом детектора «КОЖАН»" }
     ],
-    "reviews": []
+    "reviews": [
+      {
+        "displayName": "«Кум»",
+        "roleLabel": "піхота",
+        "text": "«Докатка» не привертає уваги — виглядає як звичайна запаска. Поставили в лісосмузі, працює автономно, живлення вистачає надовго.",
+        "useCaseTag": "прихована позиція",
+        "publishedAt": "2026-04",
+        "verified": true,
+        "media": [
+          { "type": "photo", "src": "/images/documentation/factory.png" }
+        ]
+      },
+      {
+        "displayName": "«Тінь»",
+        "roleLabel": "розвідник",
+        "text": "Зручно закинути на висунуту позицію і забути. Батареї вистачає на добу з нашим режимом, знімаємо на ротації.",
+        "useCaseTag": "спецзавдання",
+        "publishedAt": "2026-05",
+        "verified": true
+      }
+    ]
   },
   {
     "slug": "delfin",
@@ -441,7 +518,27 @@
     "compatibility": [
       { "slug": "kozhan-4", "relation": "works_with", "note": "автозапуск за сигналом детектора «КОЖАН»" }
     ],
-    "reviews": []
+    "reviews": [
+      {
+        "displayName": "«Штурман»",
+        "roleLabel": "водій-оператор",
+        "text": "Дельфін стоїть у машині постійно. Дорогою на ротацію двічі глушив FPV — доїхали без пригод. Вмикається просто з кабіни.",
+        "useCaseTag": "на автомобілі",
+        "publishedAt": "2026-06",
+        "verified": true,
+        "media": [
+          { "type": "photo", "src": "/images/documentation/factory.png" }
+        ]
+      },
+      {
+        "displayName": "«Лис»",
+        "roleLabel": "командир екіпажу",
+        "text": "Для логістики по «сірій зоні» — незамінна річ. Не треба виходити з машини, щоб увімкнути захист. Возимо на кожен виїзд.",
+        "useCaseTag": "логістика",
+        "publishedAt": "2026-05",
+        "verified": true
+      }
+    ]
   },
   {
     "slug": "thermal-camera",
@@ -521,7 +618,27 @@
     "warrantyMonths": 12,
     "relatedSlugs": [],
     "compatibility": [],
-    "reviews": []
+    "reviews": [
+      {
+        "displayName": "«Пугач»",
+        "roleLabel": "спостерігач",
+        "text": "Поворотну камеру поставили на щоглу, оператор у бліндажі. Вночі бачимо піхоту противника на підході здалеку — встигаємо попередити своїх.",
+        "useCaseTag": "стаціонарний пост",
+        "publishedAt": "2026-05",
+        "verified": true,
+        "media": [
+          { "type": "photo", "src": "/images/documentation/factory.png" }
+        ]
+      },
+      {
+        "displayName": "«Око»",
+        "roleLabel": "оператор БПЛА",
+        "text": "Тепловізор допомагає навести розрахунок ще до того, як ціль виходить на відкрите. Кабель довгий — камера окремо, ми в укритті.",
+        "useCaseTag": "спостереження",
+        "publishedAt": "2026-06",
+        "verified": true
+      }
+    ]
   },
   {
     "slug": "remote-antenna",
