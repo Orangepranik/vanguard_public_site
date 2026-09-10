@@ -131,3 +131,12 @@ body {
 :root[data-theme="dark"] .adv-png {
   filter: none;
 }
+
+/* Логотип — світлий металік (під темний фон). У світлій темі — суцільний чорний;
+   у темній — оригінал. */
+.site-logo {
+  filter: brightness(0);
+}
+:root[data-theme="dark"] .site-logo {
+  filter: none;
+}

@@ -27,6 +27,7 @@ export default function SiteHeader({ active = "Каталог" }: { active?: str
                 width={119}
                 height={47}
                 priority
+                className="site-logo"
               />
             </Link>
           </div>

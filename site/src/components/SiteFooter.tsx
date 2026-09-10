@@ -58,6 +58,7 @@ export default function SiteFooter() {
               alt="VANGUARD — Ukrainian Radioelectronic Systems"
               width={150}
               height={59}
+              className="site-logo"
             />
           </div>
 
