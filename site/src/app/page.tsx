@@ -95,7 +95,7 @@ export default function HomePage() {
             <div className="mx-auto grid w-full max-w-[1100px] grid-cols-2 gap-y-6 px-4 py-7 lg:grid-cols-4 lg:divide-x lg:divide-line-3">
               {STATS.map((s) => (
                 <div key={s.label} className="px-2 text-center lg:px-6">
-                  <div className="font-display text-[24px] font-bold leading-none text-[#ff4d00] lg:text-[28px]">
+                  <div className="font-display text-[24px] font-bold leading-none text-accent lg:text-[28px]">
                     {s.value}
                   </div>
                   <div className="mx-auto mt-2 max-w-[150px] text-[12px] leading-tight text-ink-3">

@@ -47,10 +47,10 @@ export default function AdvantagesStrip() {
               {item.icon}
             </span>
             <span>
-              <b className="block text-[12px] font-semibold leading-4 text-[#F0F1F2]">
+              <b className="block text-[12px] font-semibold leading-4 text-ink">
                 {item.title}
               </b>
-              <span className="text-[10px] leading-[15px] text-[#969CA1]">
+              <span className="text-[10px] leading-[15px] text-ink-4">
                 {item.sub}
               </span>
             </span>

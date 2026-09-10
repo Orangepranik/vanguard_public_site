@@ -5,8 +5,58 @@
   --font-display: var(--font-roboto-cond), "Arial Narrow", var(--font-inter), sans-serif;
 }
 
+/* ── СВІТЛА тема (за замовчуванням) ──
+   Значення @theme = світла палітра. Темна вмикається тумблером:
+   на <html> ставиться data-theme="dark", який перевизначає ці змінні нижче. */
 @theme {
-  /* Палітра з Figma-макета design/public_site.fig (фрейм Desktop / Catalog) */
+  --color-bg: #ffffff;
+  --color-header: #ffffff;
+  --color-surface: #f5f6f8;
+  --color-field: #ffffff;
+  --color-inset: #eef0f3;
+  --color-line: #e4e7eb;
+  --color-line-2: #d4d8dd;
+  --color-line-3: #ebeef1;
+  --color-edge: #c9ced4;
+  --color-ink: #0e1318;
+  --color-ink-2: #2d343b;
+  --color-ink-3: #555d64;
+  --color-ink-4: #6d747b;
+  --color-ink-5: #8b929a;
+  --color-accent: #e94a02;
+  --color-accent-mid: #e54a02;
+  --color-accent-deep: #d04401;
+  --color-ok: #16a34a;
+  --color-warn: #d97706;
+  --color-bad: #dc2626;
+  --color-card: #ffffff;
+  --color-card-line: #e4e7eb;
+  --color-chip-line: #d6dadf;
+  --color-badge: #eef1f4;
+  --color-details: #d84400;
+  --color-status-ok: #16a34a;
+  --color-adv: #f5f6f8;
+  --color-adv-line: #e0e4e8;
+  --color-divider: #e4e7eb;
+  --color-submit: #d44801;
+  --color-panel: #f6f8f9;
+  --color-panel-2: #eef1f4;
+  --color-row: #fafbfc;
+  --color-help: #f3f6f8;
+  --color-tab: #fd4500;
+  --color-cta: #f5f6f8;
+  --color-file-pdf: #f3493f;
+  --color-file-docx: #3578d4;
+  --color-file-zip: #f2a735;
+}
+
+:root {
+  color-scheme: light;
+}
+
+/* ── ТЕМНА тема (тумблер) — оригінальна палітра з Figma-макета ── */
+:root[data-theme="dark"] {
+  color-scheme: dark;
   --color-bg: #060a0f;
   --color-header: #000202;
   --color-surface: #0e1317;
@@ -27,31 +77,25 @@
   --color-ok: #4ade80;
   --color-warn: #fbbf24;
   --color-bad: #f87171;
-  /* картка продукту (Figma catalog_page) */
   --color-card: #0d1418;
   --color-card-line: #293138;
   --color-chip-line: #30373c;
   --color-badge: #222a30;
   --color-details: #e84a00;
   --color-status-ok: #04ff00;
-  /* смуга переваг і футер */
   --color-adv: #0c1116;
   --color-adv-line: #20262c;
   --color-divider: #151b20;
   --color-submit: #d44801;
-  /* сторінка «Документація» (Figma Desktop / Documentation) */
-  --color-panel: #0c161d;      /* панелі «Обраний продукт» / «Останні оновлення» */
-  --color-panel-2: #061017;    /* таблиця документів, смуга вкладок */
-  --color-row: #101920;        /* рядок документа */
-  --color-help: #0d171e;       /* картка-підказка, кнопка «Переглянути» */
-  --color-tab: #fd4500;        /* активна вкладка / акценти сторінки docs */
+  --color-panel: #0c161d;
+  --color-panel-2: #061017;
+  --color-row: #101920;
+  --color-help: #0d171e;
+  --color-tab: #fd4500;
+  --color-cta: #070c11;
   --color-file-pdf: #f3493f;
   --color-file-docx: #3578d4;
   --color-file-zip: #f2a735;
-}
-
-:root {
-  color-scheme: dark;
 }
 
 body {
@@ -62,10 +106,19 @@ body {
 
 ::selection {
   background: var(--color-accent);
-  color: #060a0f;
+  color: #ffffff;
 }
 
 :focus-visible {
   outline: 2px solid var(--color-accent);
   outline-offset: 2px;
+}
+
+/* Миттєве перемикання теми: у мить зміни глушимо анімації кольорів,
+   щоб елементи з transition-colors не «пливли» під час фліпу. */
+:root.theme-switching,
+:root.theme-switching *,
+:root.theme-switching *::before,
+:root.theme-switching *::after {
+  transition: none !important;
 }

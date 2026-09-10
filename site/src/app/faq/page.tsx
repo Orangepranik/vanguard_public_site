@@ -136,7 +136,7 @@ export default function FaqPage() {
           ))}
         </div>
 
-        <section className="mt-10 flex flex-col items-start justify-between gap-4 rounded-[12px] border border-line-3 bg-[#070c11] px-6 py-5 sm:flex-row sm:items-center lg:px-8">
+        <section className="mt-10 flex flex-col items-start justify-between gap-4 rounded-[12px] border border-line-3 bg-cta px-6 py-5 sm:flex-row sm:items-center lg:px-8">
           <div>
             <h2 className="font-display text-[18px] font-bold uppercase leading-tight text-ink">
               Не знайшли відповідь?

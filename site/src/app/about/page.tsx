@@ -156,13 +156,13 @@ export default function AboutPage() {
 
         {/* Статистика */}
         <section
-          className="mt-7 rounded-[12px] border border-adv-line bg-[#070c11] px-5 py-5 lg:px-8"
+          className="mt-7 rounded-[12px] border border-adv-line bg-cta px-5 py-5 lg:px-8"
           aria-label="Компанія в цифрах"
         >
           <div className="grid grid-cols-2 gap-y-6 lg:grid-cols-4 lg:divide-x lg:divide-divider">
             {STATS.map((s) => (
               <div key={s.label} className="px-2 text-center lg:px-6">
-                <div className="font-display text-[26px] font-bold leading-none text-[#ff4d00]">
+                <div className="font-display text-[26px] font-bold leading-none text-accent">
                   {s.value}
                 </div>
                 <div className="mx-auto mt-2 max-w-[130px] text-[12px] leading-tight text-ink-3">
@@ -174,7 +174,7 @@ export default function AboutPage() {
         </section>
 
         {/* Contact CTA */}
-        <section className="mt-6 flex flex-col items-start justify-between gap-4 rounded-[12px] border border-line-3 bg-[#070c11] px-6 py-5 sm:flex-row sm:items-center lg:px-8">
+        <section className="mt-6 flex flex-col items-start justify-between gap-4 rounded-[12px] border border-line-3 bg-cta px-6 py-5 sm:flex-row sm:items-center lg:px-8">
           <div>
             <h2 className="font-display text-[18px] font-bold uppercase leading-tight text-ink">
               Хочете дізнатись більше?

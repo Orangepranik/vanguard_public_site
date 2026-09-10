@@ -18,10 +18,10 @@ function FooterCol({
   links: { label: string; href: string }[];
 }) {
   const cls =
-    "block text-[10px] leading-4 text-[#9EA3A7] transition-colors hover:text-ink-2";
+    "block text-[10px] leading-4 text-ink-4 transition-colors hover:text-ink-2";
   return (
     <div>
-      <h3 className="text-[10px] font-semibold uppercase leading-[14px] tracking-wide text-[#E7E9EA]">
+      <h3 className="text-[10px] font-semibold uppercase leading-[14px] tracking-wide text-ink-2">
         {heading}
       </h3>
       <ul className="mt-2 space-y-[3px]">
@@ -62,7 +62,7 @@ export default function SiteFooter() {
           </div>
 
           <div className="max-w-[240px]">
-            <p className="text-[10px] leading-4 text-[#999EA3]">
+            <p className="text-[10px] leading-4 text-ink-4">
               Розробляємо та виробляємо радіоелектронні системи для захисту від
               сучасних повітряних загроз.
             </p>
@@ -140,10 +140,10 @@ export default function SiteFooter() {
           <span aria-hidden className="hidden w-px self-stretch bg-divider xl:block" />
 
           <div className="w-full max-w-[280px] xl:max-w-none">
-            <h3 className="text-[10px] font-semibold uppercase leading-[14px] tracking-wide text-[#E8E9EA]">
+            <h3 className="text-[10px] font-semibold uppercase leading-[14px] tracking-wide text-ink-2">
               Підписатися на новини
             </h3>
-            <p className="mt-1.5 text-[10px] leading-4 text-[#959A9F]">
+            <p className="mt-1.5 text-[10px] leading-4 text-ink-4">
               Будьте в курсі новинок та оновлень
             </p>
             <form
@@ -154,7 +154,7 @@ export default function SiteFooter() {
                 type="email"
                 placeholder="Ваш email"
                 aria-label="Email для розсилки"
-                className="h-full w-full bg-transparent pl-3.5 text-[11px] text-ink placeholder:text-[#858B90] focus:outline-none"
+                className="h-full w-full bg-transparent pl-3.5 text-[11px] text-ink placeholder:text-ink-5 focus:outline-none"
               />
               <button
                 type="button"
@@ -169,7 +169,7 @@ export default function SiteFooter() {
         </div>
       </div>
 
-      <div className="mx-auto flex w-full max-w-[1536px] flex-col gap-2 px-5 py-3.5 text-[10px] leading-[14px] text-[#858A8F] sm:flex-row sm:items-center sm:justify-between lg:px-[67px]">
+      <div className="mx-auto flex w-full max-w-[1536px] flex-col gap-2 px-5 py-3.5 text-[10px] leading-[14px] text-ink-5 sm:flex-row sm:items-center sm:justify-between lg:px-[67px]">
         <span>© 2026 VANGUARD. Усі права захищені.</span>
         <span className="flex gap-8">
           <Link href="#" className="transition-colors hover:text-ink-2">

@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import MobileMenu from "./MobileMenu";
 import SiteSearch from "./SiteSearch";
+import ThemeToggle from "./ThemeToggle";
 import { ContactTrigger } from "./contact/ContactDialog";
 
 // Порядок пунктів — за Figma-макетом (фрейм Header / NAVIGATION); «Відгуки» — пропозиція (макета ще немає)
@@ -53,10 +54,12 @@ export default function SiteHeader({ active = "Каталог" }: { active?: str
           <div className="flex flex-1 items-center justify-end gap-3 lg:gap-6">
             <SiteSearch className="flex h-[39px] items-center gap-2.5 px-2.5 text-ink transition-colors hover:text-accent-mid" />
 
+            <ThemeToggle />
+
             <span aria-hidden className="hidden h-[33px] w-px bg-line-2 xl:block" />
 
             <ContactTrigger
-              className="hidden h-9 shrink-0 items-center rounded-[3px] border border-accent-deep px-4 text-[14px] font-semibold text-[#F3F3F3] transition-colors hover:bg-accent-deep/15 sm:flex lg:px-6 lg:text-[16px]"
+              className="hidden h-9 shrink-0 items-center rounded-[3px] border border-accent-deep px-4 text-[14px] font-semibold text-ink transition-colors hover:bg-accent-deep/15 sm:flex lg:px-6 lg:text-[16px]"
             >
               Зв&apos;язатися
             </ContactTrigger>

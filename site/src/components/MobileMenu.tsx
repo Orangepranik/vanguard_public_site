@@ -149,7 +149,7 @@ function MenuOverlay({
               onClose();
               openContact();
             }}
-            className="flex h-11 w-full items-center justify-center rounded-[3px] border border-accent-deep text-[15px] font-semibold text-[#F3F3F3] transition-colors hover:bg-accent-deep/15"
+            className="flex h-11 w-full items-center justify-center rounded-[3px] border border-accent-deep text-[15px] font-semibold text-ink transition-colors hover:bg-accent-deep/15"
           >
             Зв&apos;язатися
           </button>

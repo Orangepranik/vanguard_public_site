@@ -43,7 +43,7 @@ function dotClass(a: PublicProduct["availability"]): string {
 
 function CardStatus({ a }: { a: PublicProduct["availability"] }) {
   return (
-    <span className="flex items-center gap-1.5 text-[10px] leading-none text-[#D2D5D7]">
+    <span className="flex items-center gap-1.5 text-[10px] leading-none text-ink-2">
       <span aria-hidden className={"size-2 rounded-full " + dotClass(a)} />
       {AVAILABILITY_LABELS[a]}
     </span>
@@ -52,7 +52,7 @@ function CardStatus({ a }: { a: PublicProduct["availability"] }) {
 
 function CategoryBadge({ name }: { name: string }) {
   return (
-    <span className="rounded-[2px] bg-badge px-2 py-1 text-[9px] font-medium uppercase leading-3 tracking-wide text-[#CFD2D4]">
+    <span className="rounded-[2px] bg-badge px-2 py-1 text-[9px] font-medium uppercase leading-3 tracking-wide text-ink-2">
       {name}
     </span>
   );
@@ -65,7 +65,7 @@ function TagChips({ p }: { p: PublicProduct }) {
       {tags.map((t) => (
         <span
           key={t}
-          className="rounded-[2px] border border-chip-line px-2 py-[3px] text-[9px] leading-[13px] text-[#D4D6D8]"
+          className="rounded-[2px] border border-chip-line px-2 py-[3px] text-[9px] leading-[13px] text-ink-2"
         >
           {t}
         </span>
@@ -136,10 +136,10 @@ function CardGrid({ p }: { p: PublicProduct }) {
         </div>
         <div className="flex flex-1 flex-col gap-[7px] px-3.5 pb-3.5 pt-[15px]">
           <div>
-            <h3 className="font-display text-[17px] font-bold uppercase leading-5 text-[#F1F1F1]">
+            <h3 className="font-display text-[17px] font-bold uppercase leading-5 text-ink">
               {p.shortName ?? p.name}
             </h3>
-            <p className="mt-1 text-[11px] leading-[15px] text-[#B3B7BA]">
+            <p className="mt-1 text-[11px] leading-[15px] text-ink-3">
               {p.typeLabel ?? p.category.name}
             </p>
           </div>
@@ -164,12 +164,12 @@ function CardList({ p }: { p: PublicProduct }) {
         </div>
         <div className="flex flex-1 flex-col gap-[7px] px-3.5 py-3.5">
           <div className="flex flex-wrap items-center gap-2.5">
-            <h3 className="font-display text-[17px] font-bold uppercase leading-5 text-[#F1F1F1]">
+            <h3 className="font-display text-[17px] font-bold uppercase leading-5 text-ink">
               {p.shortName ?? p.name}
             </h3>
             <CategoryBadge name={p.category.name} />
           </div>
-          <p className="text-[11px] leading-[15px] text-[#B3B7BA]">
+          <p className="text-[11px] leading-[15px] text-ink-3">
             {p.typeLabel ?? p.category.name} · {p.shortDescription}
           </p>
           <TagChips p={p} />
@@ -238,7 +238,7 @@ export default function CatalogView({
       {/* Рядок заголовка: зліва PAGE TITLE, справа Filters_Sort — як у макеті (y84 / y162) */}
       <div className="mt-[14px] flex flex-wrap items-end justify-between gap-x-6 gap-y-4">
         <div>
-          <h1 className="font-display text-[30px] font-bold uppercase leading-9 tracking-wide text-[#F2F3F4]">
+          <h1 className="font-display text-[30px] font-bold uppercase leading-9 tracking-wide text-ink">
             {title}
           </h1>
           <p className="mt-2 max-w-[420px] text-[12px] leading-[18px] text-ink-3">
@@ -326,7 +326,7 @@ export default function CatalogView({
           aria-expanded={equipmentOpen}
           className="flex w-full items-center justify-between"
         >
-          <span className="text-[12px] font-medium leading-[18px] text-[#E5E7E8]">
+          <span className="text-[12px] font-medium leading-[18px] text-ink-2">
             Тип обладнання
           </span>
           <IconChevronDown
