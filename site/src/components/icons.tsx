@@ -118,7 +118,7 @@ export function IconBookmark({ className, filled }: IconProps & { filled?: boole
 
 export function IconTrident({ className }: IconProps) {
   return (
-    <svg viewBox="0 0 34 38" fill="none" stroke="#FFFFFF" strokeWidth="2.2" className={className} aria-hidden>
+    <svg viewBox="0 0 34 38" fill="none" stroke="currentColor" strokeWidth="2.2" className={className} aria-hidden>
       <path d="M17 1.5 32 7v13.5c0 8.5-6.5 12.7-15 16-8.5-3.3-15-7.5-15-16V7Z" strokeLinejoin="round" />
       <path d="M17 8v17" />
       <path d="M11.5 10v6.5a5.5 5.5 0 0 0 11 0V10" />
@@ -129,7 +129,7 @@ export function IconTrident({ className }: IconProps) {
 
 export function IconTarget({ className }: IconProps) {
   return (
-    <svg viewBox="0 0 47 47" fill="none" stroke="#FFFFFF" strokeWidth="2.2" className={className} aria-hidden>
+    <svg viewBox="0 0 47 47" fill="none" stroke="currentColor" strokeWidth="2.2" className={className} aria-hidden>
       <circle cx="23.5" cy="23.5" r="17.5" />
       <circle cx="23.5" cy="23.5" r="5" />
       <path d="M23.5 1v9M23.5 37v9M1 23.5h9M37 23.5h9" />
@@ -142,9 +142,18 @@ export function IconTarget({ className }: IconProps) {
 export function IconInstagram({ className }: IconProps) {
   return (
     <svg viewBox="0 0 18 18" className={className} aria-hidden>
-      <rect x="0.5" y="0.5" width="17" height="17" rx="4.5" fill="#898F94" />
-      <circle cx="9" cy="9" r="3.6" fill="none" stroke="#0F0F0F" strokeWidth="1.5" />
-      <circle cx="13.6" cy="4.4" r="1.1" fill="#0F0F0F" />
+      <defs>
+        <radialGradient id="ig-grad" cx="0.32" cy="1.02" r="1.15">
+          <stop offset="0" stopColor="#FFDB57" />
+          <stop offset="0.28" stopColor="#FF543E" />
+          <stop offset="0.56" stopColor="#C837AB" />
+          <stop offset="1" stopColor="#5B51D8" />
+        </radialGradient>
+      </defs>
+      <rect x="0.5" y="0.5" width="17" height="17" rx="5" fill="url(#ig-grad)" />
+      <rect x="4.4" y="4.4" width="9.2" height="9.2" rx="3" fill="none" stroke="#fff" strokeWidth="1.4" />
+      <circle cx="9" cy="9" r="2.3" fill="none" stroke="#fff" strokeWidth="1.4" />
+      <circle cx="13" cy="5" r="0.85" fill="#fff" />
     </svg>
   );
 }
@@ -189,13 +198,17 @@ export function IconTelegram({ className }: IconProps) {
 }
 
 export function IconTikTok({ className }: IconProps) {
+  // Три шари ноти зі зсувом — фірмовий бірюзово-малиновий ефект TikTok.
+  // Основна нота — currentColor: чорна на світлому футері, біла на темному.
+  const note =
+    "M10.2 3.5h1.9c.15 1.35 1.05 2.35 2.4 2.5v1.9c-.9 0-1.75-.25-2.4-.72v3.68c0 1.9-1.45 3.34-3.3 3.34-1.85 0-3.3-1.44-3.3-3.24 0-1.9 1.6-3.3 3.5-3.14v1.95c-.85-.2-1.6.45-1.6 1.24 0 .72.6 1.3 1.35 1.3.78 0 1.4-.6 1.4-1.55Z";
   return (
     <svg viewBox="0 0 18 18" className={className} aria-hidden>
-      <rect x="0.5" y="0.5" width="17" height="17" rx="4.5" fill="#898F94" />
-      <path
-        d="M10.2 3.5h1.9c.15 1.35 1.05 2.35 2.4 2.5v1.9c-.9 0-1.75-.25-2.4-.72v3.68c0 1.9-1.45 3.34-3.3 3.34-1.85 0-3.3-1.44-3.3-3.24 0-1.9 1.6-3.3 3.5-3.14v1.95c-.85-.2-1.6.45-1.6 1.24 0 .72.6 1.3 1.35 1.3.78 0 1.4-.6 1.4-1.55Z"
-        fill="#0F0F0F"
-      />
+      <g transform="translate(-1 0)">
+        <path d={note} fill="#25F4EE" transform="translate(-0.55 -0.45)" />
+        <path d={note} fill="#FE2C55" transform="translate(0.55 0.45)" />
+        <path d={note} fill="currentColor" />
+      </g>
     </svg>
   );
 }

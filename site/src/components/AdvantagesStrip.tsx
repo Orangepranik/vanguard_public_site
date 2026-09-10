@@ -20,14 +20,14 @@ const ITEMS: {
   },
   {
     icon: (
-      <Image src="/images/icons/adv-support.png" width={47} height={47} alt="" />
+      <Image src="/images/icons/adv-support.png" width={47} height={47} alt="" className="adv-png" />
     ),
     title: "Технічна підтримка",
     sub: "Консультації та супровід",
   },
   {
     icon: (
-      <Image src="/images/icons/adv-warranty.png" width={47} height={47} alt="" />
+      <Image src="/images/icons/adv-warranty.png" width={47} height={47} alt="" className="adv-png" />
     ),
     title: "Гарантія якості",
     sub: "12 місяців гарантії",
@@ -43,7 +43,7 @@ export default function AdvantagesStrip() {
       <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 xl:grid-cols-4 xl:gap-8">
         {ITEMS.map((item) => (
           <div key={item.title} className="flex items-center gap-2.5">
-            <span className="flex size-[47px] shrink-0 items-center justify-center">
+            <span className="flex size-[47px] shrink-0 items-center justify-center text-ink">
               {item.icon}
             </span>
             <span>

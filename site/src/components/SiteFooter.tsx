@@ -90,7 +90,7 @@ export default function SiteFooter() {
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="TikTok VANGUARD"
-                className="transition-opacity hover:opacity-80"
+                className="text-ink transition-opacity hover:opacity-80"
               >
                 <IconTikTok className="size-[18px]" />
               </a>

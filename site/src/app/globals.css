@@ -122,3 +122,12 @@ body {
 :root.theme-switching *::after {
   transition: none !important;
 }
+
+/* Іконки-переваги — растрові (білі, під темний фон). У світлій темі робимо їх
+   темними; у темній лишаємо оригінал. */
+.adv-png {
+  filter: brightness(0) opacity(0.85);
+}
+:root[data-theme="dark"] .adv-png {
+  filter: none;
+}
