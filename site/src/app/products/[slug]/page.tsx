@@ -6,10 +6,12 @@ import SiteFooter from "@/components/SiteFooter";
 import ProductGallery from "@/components/product/ProductGallery";
 import ProductOrderPanel from "@/components/product/ProductOrderPanel";
 import ProductReviews from "@/components/product/ProductReviews";
+import JsonLd from "@/components/JsonLd";
 import { IconChevronRight, IconDownload, IconHome } from "@/components/icons";
 import { getProduct, getProducts } from "@/lib/catalog";
 import { AVAILABILITY_LABELS } from "@/lib/types";
 import { formatBytes } from "@/lib/format";
+import { productLd, breadcrumbLd } from "@/lib/seo";
 
 export const revalidate = 300; // ISR: фонове оновлення раз на 5 хв
 
@@ -23,7 +25,21 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
   const { slug } = await params;
   const product = await getProduct(slug);
   if (!product) return {};
-  return { title: `${product.name} — VANGUARD`, description: product.shortDescription };
+  const url = `/products/${slug}`;
+  const title = `${product.name} — VANGUARD`;
+  const img = product.publicImages[0];
+  return {
+    title,
+    description: product.shortDescription,
+    alternates: { canonical: url },
+    openGraph: {
+      url,
+      title,
+      description: product.shortDescription,
+      ...(img ? { images: [{ url: img.src, alt: img.alt || product.name }] } : {}),
+    },
+    ...(img ? { twitter: { card: "summary_large_image", images: [img.src] } } : {}),
+  };
 }
 
 const RELATION_LABEL: Record<string, string> = {
@@ -52,6 +68,14 @@ export default async function ProductPage({ params }: Params) {
 
   return (
     <>
+      <JsonLd data={productLd(product)} />
+      <JsonLd
+        data={breadcrumbLd([
+          { name: "Головна", path: "/" },
+          { name: "Каталог", path: "/catalog" },
+          { name: product.name, path: `/products/${product.slug}` },
+        ])}
+      />
       <SiteHeader active="Каталог" />
       <main className="mx-auto w-full max-w-[1536px] flex-1 px-4 pb-12 lg:px-[67px]">
         <nav aria-label="Хлібні крихти" className="mt-3 flex items-center gap-2 text-[10px] leading-[14px]">

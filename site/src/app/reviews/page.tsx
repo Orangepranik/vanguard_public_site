@@ -12,6 +12,7 @@ export const metadata: Metadata = {
   title: "Відгуки — VANGUARD",
   description:
     "Відгуки та досвід застосування обладнання VANGUARD — детекторів, засобів РЕБ і спостереження. Реальні історії з фото й відео, фільтр за продуктом.",
+  alternates: { canonical: "/reviews" },
 };
 
 export default async function ReviewsPage() {

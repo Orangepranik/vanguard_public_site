@@ -15,6 +15,7 @@ export const metadata: Metadata = {
   title: "Контакти — VANGUARD",
   description:
     "Звʼяжіться з VANGUARD: телефон, email, Telegram. Залиште заявку — менеджер допоможе з підбором обладнання для виявлення та протидії БПЛА.",
+  alternates: { canonical: "/contacts" },
 };
 
 const CONTACTS: { label: string; value: string; href?: string }[] = [

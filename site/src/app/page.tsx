@@ -20,6 +20,7 @@ export const metadata: Metadata = {
   title: "VANGUARD — радіоелектронні системи виявлення та протидії БПЛА",
   description:
     "VANGUARD — український розробник і виробник радіоелектронних систем для виявлення та протидії сучасним повітряним загрозам. Власна розробка, виробництво й підтримка.",
+  alternates: { canonical: "/" },
 };
 
 const STATS: { value: string; label: string }[] = [

@@ -10,6 +10,7 @@ export const metadata: Metadata = {
   title: "Рішення — VANGUARD",
   description:
     "Комплексні рішення для захисту від безпілотних загроз: підібрані конфігурації обладнання VANGUARD для різних задач і умов.",
+  alternates: { canonical: "/solutions" },
 };
 
 // Контент сторінки (за Figma Desktop / Solutions). Демо-набір — до переліку від власника.

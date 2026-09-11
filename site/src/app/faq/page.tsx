@@ -14,6 +14,7 @@ export const metadata: Metadata = {
   title: "Часті запитання — VANGUARD",
   description:
     "Відповіді на поширені запитання про замовлення, ціни, конфігурацію, сумісність, гарантію та підтримку обладнання VANGUARD.",
+  alternates: { canonical: "/faq" },
 };
 
 const GROUPS: { title: string; items: { q: string; a: ReactNode }[] }[] = [

@@ -11,6 +11,7 @@ export const metadata: Metadata = {
   title: "Каталог продукції — VANGUARD",
   description:
     "Професійні рішення для виявлення та протидії БПЛА. Обладнання для будь-яких умов та задач.",
+  alternates: { canonical: "/catalog" },
 };
 
 type Params = { searchParams: Promise<{ category?: string }> };

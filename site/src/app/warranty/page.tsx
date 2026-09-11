@@ -13,6 +13,7 @@ export const metadata: Metadata = {
   title: "Гарантія — VANGUARD",
   description:
     "Гарантійні умови на обладнання VANGUARD: гарантійний термін, що покриває гарантія та як звернутися по сервіс.",
+  alternates: { canonical: "/warranty" },
 };
 
 const COVERED = [

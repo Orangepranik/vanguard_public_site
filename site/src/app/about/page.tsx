@@ -10,6 +10,7 @@ export const metadata: Metadata = {
   title: "Про компанію — VANGUARD",
   description:
     "VANGUARD — український розробник і виробник радіоелектронних систем для виявлення та протидії сучасним повітряним загрозам.",
+  alternates: { canonical: "/about" },
 };
 
 const ACTIVITIES: { title: string; description: string }[] = [
