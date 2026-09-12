@@ -50,6 +50,10 @@ const toImage = (im: Row): ProductImage => ({
   height: (im.height as number) ?? 0,
 });
 
+// timestamptz із postgres приходить як Date → ISO-рядок для DTO (для sitemap lastmod).
+const toIso = (v: unknown): string =>
+  v instanceof Date ? v.toISOString() : v == null ? "" : String(v);
+
 // ── Категорії ──
 export const getCategories = cache(async (): Promise<Category[]> => {
   if (!process.env.DATABASE_URL) return []; // збірка без БД (Docker): реальні дані підтягне ISR у рантаймі
@@ -72,6 +76,7 @@ export const getProducts = cache(async (): Promise<PublicProduct[]> => {
     SELECT p.slug, p.name, p.short_name, p.type_label, p.short_description,
            p.card_tags, p.use_cases, p.badges, p.package_contents,
            p.price_type, p.price_amount, p.price_old_amount, p.currency, p.availability, p.warranty_months,
+           p.updated_at,
            c.slug AS category_slug, c.name AS category_name
     FROM products p JOIN categories c ON c.id = p.category_id
     WHERE p.is_published
@@ -105,6 +110,7 @@ function card(p: Row, images: Row[]): PublicProduct {
     documents: [],
     packageContents: (p.package_contents as string[]) ?? [],
     warrantyMonths: p.warranty_months as number,
+    updatedAt: toIso(p.updated_at),
     relatedSlugs: [],
     compatibility: [],
     reviews: [],
@@ -123,7 +129,7 @@ export const getProduct = cache(async (slug: string): Promise<PublicProduct | un
     SELECT p.slug, p.name, p.short_name, p.type_label, p.short_description,
            p.card_tags, p.use_cases, p.badges, p.package_contents,
            p.price_type, p.price_amount, p.price_old_amount, p.currency, p.availability, p.warranty_months,
-           p.default_variant_id, c.slug AS category_slug, c.name AS category_name
+           p.updated_at, p.default_variant_id, c.slug AS category_slug, c.name AS category_name
     FROM products p JOIN categories c ON c.id = p.category_id
     WHERE p.slug = ${slug} AND p.is_published`;
   if (!p) return undefined;
@@ -216,6 +222,7 @@ export const getProduct = cache(async (slug: string): Promise<PublicProduct | un
     documents,
     packageContents: (p.package_contents as string[]) ?? [],
     warrantyMonths: p.warranty_months as number,
+    updatedAt: toIso(p.updated_at),
     relatedSlugs: rels.map((r) => r.slug as string),
     compatibility: compat.map((c) => ({
       slug: c.target_slug as string,
