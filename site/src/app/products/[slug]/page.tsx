@@ -10,7 +10,7 @@ import JsonLd from "@/components/JsonLd";
 import { IconChevronRight, IconDownload, IconHome } from "@/components/icons";
 import { getProduct, getProducts } from "@/lib/catalog";
 import { AVAILABILITY_LABELS } from "@/lib/types";
-import { formatBytes } from "@/lib/format";
+import { formatBytes, formatDate } from "@/lib/format";
 import { productLd, breadcrumbLd } from "@/lib/seo";
 
 export const revalidate = 300; // ISR: фонове оновлення раз на 5 хв
@@ -122,6 +122,12 @@ export default async function ProductPage({ params }: Params) {
             )}
 
             <p className="mt-4 text-[13px] leading-relaxed text-ink-3">{product.shortDescription}</p>
+
+            {/* Пропозиція (немає в макеті): видимий сигнал свіжості для читача й AI. */}
+            <p className="mt-3 text-[11px] text-ink-5">
+              Оновлено:{" "}
+              <time dateTime={product.updatedAt}>{formatDate(product.updatedAt.slice(0, 10))}</time>
+            </p>
 
             {product.keySpecs.length > 0 && (
               <dl className="mt-5 grid gap-y-2 rounded-[10px] border border-line-3 bg-surface p-4 text-[13px]">
