@@ -129,6 +129,8 @@ export interface PublicProduct {
   documents: DocumentLink[];
   packageContents: string[];
   warrantyMonths: number;
+  /** ISO-дата останнього оновлення (products.updated_at) — реальний lastmod для sitemap. */
+  updatedAt: string;
   relatedSlugs: string[];
   compatibility: CompatibilityLink[];
   reviews: PublicReview[];

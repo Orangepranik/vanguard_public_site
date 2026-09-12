@@ -5,6 +5,8 @@ import SiteHeader from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
 import { ContactTrigger } from "@/components/contact/ContactDialog";
 import { IconArrowRight, IconChevronDown, IconChevronRight, IconHome } from "@/components/icons";
+import JsonLd from "@/components/JsonLd";
+import { SITE_URL, faqPageLd } from "@/lib/seo";
 
 /* Сторінка «Часті запитання» — пропозиція в наявній дизайн-мові (макета ще немає).
    Відповіді спираються на ухвалені правила проєкту (продаж через заявку, конфігуратор,
@@ -17,7 +19,9 @@ export const metadata: Metadata = {
   alternates: { canonical: "/faq" },
 };
 
-const GROUPS: { title: string; items: { q: string; a: ReactNode }[] }[] = [
+// `a` — для відображення (може містити JSX-посилання); `aText` — текст тієї самої
+// відповіді для FAQPage-схеми (обов'язковий, коли `a` не є простим рядком).
+const GROUPS: { title: string; items: { q: string; a: ReactNode; aText?: string }[] }[] = [
   {
     title: "Замовлення та ціни",
     items: [
@@ -71,6 +75,7 @@ const GROUPS: { title: string; items: { q: string; a: ReactNode }[] }[] = [
             .
           </>
         ),
+        aText: `Гарантія — 12 місяців з дати передачі. Що покриває гарантія та як звернутися — на сторінці <a href="${SITE_URL}/warranty">«Гарантія»</a>.`,
       },
       {
         q: "Де знайти документацію на продукт?",
@@ -88,14 +93,25 @@ const GROUPS: { title: string; items: { q: string; a: ReactNode }[] }[] = [
             .
           </>
         ),
+        aText: `Залиште заявку через форму (кнопка «Звʼязатися»), зателефонуйте або напишіть у Telegram — усі канали на сторінці <a href="${SITE_URL}/contacts">«Контакти»</a>.`,
       },
     ],
   },
 ];
 
+// Плаский перелік Q&A для FAQPage-схеми: беремо `aText`, а якщо його немає —
+// відповідь-рядок; JSX-відповіді без `aText` до схеми не потрапляють.
+const FAQ_ITEMS = GROUPS.flatMap((g) =>
+  g.items.map((it) => ({
+    question: it.q,
+    answer: it.aText ?? (typeof it.a === "string" ? it.a : ""),
+  })),
+).filter((it) => it.answer !== "");
+
 export default function FaqPage() {
   return (
     <>
+      <JsonLd data={faqPageLd(FAQ_ITEMS)} />
       <SiteHeader active="FAQ" />
       <main className="mx-auto w-full max-w-[1536px] flex-1 px-4 pb-16 lg:px-[67px]">
         <nav aria-label="Хлібні крихти" className="mt-3 flex items-center gap-2 text-[10px] leading-[14px]">
