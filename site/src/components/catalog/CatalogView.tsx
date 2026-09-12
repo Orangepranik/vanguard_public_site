@@ -188,12 +188,15 @@ export default function CatalogView({
   categories,
   title,
   description,
+  intro,
   initialCategory,
 }: {
   products: PublicProduct[];
   categories: Category[];
   title: string;
   description: string;
+  /** Front-load-абзац над сіткою (опц.): пряма відповідь для читача й AI-пошуку. */
+  intro?: string;
   initialCategory?: string;
 }) {
   const [selected, setSelected] = useState<string[]>(initialCategory ? [initialCategory] : []);
@@ -300,6 +303,13 @@ export default function CatalogView({
           </span>
         </div>
       </div>
+
+      {/* Front-load (пропозиція, немає в макеті): визначення для читача й AI-пошуку. */}
+      {intro && (
+        <p className="mt-3 max-w-[860px] text-[12px] leading-[18px] text-ink-3">
+          {intro}
+        </p>
+      )}
 
       <div className="mt-6 lg:grid lg:grid-cols-[246px_1fr] lg:items-start lg:gap-6">
       {/* Панель фільтрів — за Figma-фреймом "Filters" */}
