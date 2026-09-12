@@ -41,6 +41,20 @@ export function organizationLd() {
     url: SITE_URL,
     logo: abs("/images/brand/logo-full.png"),
     description: SITE_DESCRIPTION,
+    slogan: "Технології, що працюють там, де це дійсно важливо",
+    // Сфери експертизи — допомагають AI/пошуку правильно класифікувати сутність бренду
+    // (розрізнити від інших «VANGUARD») і цитувати за темою.
+    knowsAbout: [
+      "виявлення БПЛА",
+      "протидія БПЛА (антидрон)",
+      "радіоелектронна боротьба (РЕБ)",
+      "детектори дронів",
+      "антени та підсилення сигналу",
+    ],
+    areaServed: { "@type": "Country", name: "Ukraine" },
+    // TODO(власник): foundingDate — вказати реальну дату/рік заснування (ISO, напр. "2015").
+    // Свідомо не додаємо навмання: «10+ років досвіду» на /about — це досвід, а не дата реєстрації.
+    // sameAs: соцмережі; додати Wikidata та профіль Brave1, щойно з'являться стабільні URL.
     sameAs: SOCIAL_LINKS,
     contactPoint: {
       "@type": "ContactPoint",
@@ -53,8 +67,20 @@ export function organizationLd() {
   };
 }
 
-/** Product JSON-LD. Ціну кладемо лише для товарів із точною (exact) ціною. */
-export function productLd(p: PublicProduct) {
+/**
+ * Product JSON-LD. Ціну кладемо лише для товарів із точною (exact) ціною.
+ *
+ * `related` — сумісні/пов'язані продукти (назва + slug) для `isRelatedTo`; сторінка
+ * передає їх, бо резолвить slug→продукт у себе (productLd не має доступу до каталогу).
+ *
+ * Свідомо НЕ додаємо `aggregateRating`/`review`: реальної системи оцінок ще немає
+ * (див. types.ts — UI не показує зірок), а позивні рецензентів — під OPSEC
+ * (docs/04-logic.md §22). Повернемося, коли буде справжня рейтингова система.
+ */
+export function productLd(
+  p: PublicProduct,
+  related: { name: string; slug: string }[] = [],
+) {
   const url = `${SITE_URL}/products/${p.slug}`;
   const exactPrice = p.publicPrice.type === "exact" ? p.publicPrice.amount : undefined;
   const sku = p.configuration?.variants[0]?.sku;
@@ -68,6 +94,22 @@ export function productLd(p: PublicProduct) {
   };
   if (exactPrice != null) offers.price = String(exactPrice);
 
+  // Специфікації → additionalProperty: LLM охоче витягують конкретні числа з одиницями.
+  // keySpecs (вибране) першими, далі повні publicSpecifications; дублікати за label прибираємо.
+  const seen = new Set<string>();
+  const additionalProperty = [
+    ...p.keySpecs,
+    ...p.publicSpecifications.flatMap((g) => g.items),
+  ]
+    .filter((s) => !seen.has(s.label) && seen.add(s.label) !== undefined)
+    .map((s) => ({ "@type": "PropertyValue", name: s.label, value: s.value }));
+
+  const isRelatedTo = related.map((r) => ({
+    "@type": "Product",
+    name: r.name,
+    url: `${SITE_URL}/products/${r.slug}`,
+  }));
+
   return {
     "@context": "https://schema.org",
     "@type": "Product",
@@ -75,8 +117,23 @@ export function productLd(p: PublicProduct) {
     description: p.shortDescription,
     category: p.category.name,
     brand: { "@type": "Brand", name: SITE_NAME },
+    manufacturer: { "@type": "Organization", name: SITE_NAME },
     ...(sku ? { sku } : {}),
     ...(p.publicImages.length > 0 ? { image: p.publicImages.map((im) => abs(im.src)) } : {}),
+    ...(additionalProperty.length > 0 ? { additionalProperty } : {}),
+    ...(p.warrantyMonths > 0
+      ? {
+          warranty: {
+            "@type": "WarrantyPromise",
+            durationOfWarranty: {
+              "@type": "QuantitativeValue",
+              value: p.warrantyMonths,
+              unitCode: "MON", // UN/CEFACT: місяць
+            },
+          },
+        }
+      : {}),
+    ...(isRelatedTo.length > 0 ? { isRelatedTo } : {}),
     offers,
   };
 }
@@ -90,6 +147,23 @@ export function breadcrumbLd(items: { name: string; path: string }[]) {
       position: i + 1,
       name: it.name,
       item: abs(it.path),
+    })),
+  };
+}
+
+/**
+ * FAQPage JSON-LD. `answer` — текст відповіді; допускається базовий HTML
+ * (<a>, <p>, <br>, <b>, <ul>, <li>) для внутрішніх посилань. Питання й відповіді
+ * мають бути реально видимі на сторінці (у нас — контент <details> у SSR-HTML).
+ */
+export function faqPageLd(items: { question: string; answer: string }[]) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: items.map((it) => ({
+      "@type": "Question",
+      name: it.question,
+      acceptedAnswer: { "@type": "Answer", text: it.answer },
     })),
   };
 }

@@ -65,10 +65,15 @@ export default async function ProductPage({ params }: Params) {
 
   const bySlug = new Map(all.map((p) => [p.slug, p]));
   const related = product.relatedSlugs.map((s) => bySlug.get(s)).filter((p): p is NonNullable<typeof p> => Boolean(p));
+  // Пов'язані для isRelatedTo у Product-схемі — із графа сумісності (works_with/requires/addon).
+  const compatRefs = product.compatibility
+    .map((c) => bySlug.get(c.slug))
+    .filter((p): p is NonNullable<typeof p> => Boolean(p))
+    .map((p) => ({ name: p.name, slug: p.slug }));
 
   return (
     <>
-      <JsonLd data={productLd(product)} />
+      <JsonLd data={productLd(product, compatRefs)} />
       <JsonLd
         data={breadcrumbLd([
           { name: "Головна", path: "/" },
