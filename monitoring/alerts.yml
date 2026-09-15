@@ -1,0 +1,34 @@
+# Правила алертів. Кожні evaluation_interval (15с) Prometheus рахує expr.
+# Якщо умова тримається протягом `for`, алерт зі стану pending переходить у firing.
+groups:
+  - name: vanguard-site
+    rules:
+      # 1. Сайт не відповідає — Prometheus не може зіскребти метрики.
+      - alert: SiteDown
+        expr: up{job="vanguard-site"} == 0
+        for: 1m
+        labels:
+          severity: critical
+        annotations:
+          summary: "Сайт vanguard недоступний (up=0)"
+          description: "Prometheus не може зіскребти host.docker.internal:3000 понад 1 хвилину."
+
+      # 2. БД лягла: заявки рятуються у файловий резерв (outcome=fallback) — головний бізнес-алерт.
+      - alert: DatabaseFallback
+        expr: increase(vanguard_requests_total{outcome="fallback"}[5m]) > 0
+        for: 0m
+        labels:
+          severity: critical
+        annotations:
+          summary: "Заявки йдуть повз БД у файл (fallback)"
+          description: "За 5 хв {{ $value }} заявок збережено у .data замість БД — база недоступна."
+
+      # 3. Втрата заявок: і БД, і файловий резерв впали (outcome=error, HTTP 500).
+      - alert: RequestsLost
+        expr: increase(vanguard_requests_total{outcome="error"}[5m]) > 0
+        for: 0m
+        labels:
+          severity: critical
+        annotations:
+          summary: "ВТРАТА заявок (HTTP 500)"
+          description: "За 5 хв {{ $value }} заявок втрачено — і БД, і файловий резерв недоступні."

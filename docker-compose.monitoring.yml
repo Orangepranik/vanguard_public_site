@@ -13,9 +13,32 @@ services:
     volumes:
       # Наш конфіг усередину контейнера, лише для читання (:ro).
       - ./monitoring/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      # Правила алертів (Етап 4).
+      - ./monitoring/alerts.yml:/etc/prometheus/alerts.yml:ro
       # TSDB (база метрик) — та сама папка prometheus_data з .gitignore. Переживає рестарт.
       - ./prometheus_data:/prometheus
     command:
       - "--config.file=/etc/prometheus/prometheus.yml"
       - "--storage.tsdb.path=/prometheus"
     restart: unless-stopped
+
+  grafana:
+    image: grafana/grafana:latest   # для прода — запінь конкретну версію
+    container_name: vanguard-grafana
+    ports:
+      # Grafana всередині слухає 3000, але 3000 на хості зайнятий Next.js → мапимо на 3001.
+      - "3001:3000"                 # веб-інтерфейс: http://localhost:3001
+    volumes:
+      # grafana_data — named volume, а НЕ bind-mount: SQLite Grafana на bind-mount у Docker Desktop/Windows
+      # постійно ловить "database is locked" (міст WSL2↔Windows не тримає файлові блокування SQLite).
+      - grafana_data:/var/lib/grafana
+      - ./monitoring/grafana/provisioning:/etc/grafana/provisioning   # авто-підключення джерела (bind ок — read-only конфіг)
+    environment:
+      GF_SECURITY_ADMIN_USER: admin
+      GF_SECURITY_ADMIN_PASSWORD: admin       # локально ок; у проді ОБОВʼЯЗКОВО змінити
+    depends_on:
+      - prometheus
+    restart: unless-stopped
+
+volumes:
+  grafana_data:   # дані Grafana (дашборди, налаштування) — живуть усередині Docker, не в папці проєкту

@@ -1,7 +1,11 @@
 # Конфіг скрейпінгу Prometheus (модель pull: Prometheus сам ходить за метриками).
 global:
   scrape_interval: 15s      # як часто «соскрібати» метрики з кожного таргета
-  evaluation_interval: 15s  # як часто перевіряти правила алертів (знадобиться на Етапі 4)
+  evaluation_interval: 15s  # як часто Prometheus перераховує правила алертів
+
+# Файли з правилами алертів — Prometheus завантажує й оцінює їх кожні evaluation_interval.
+rule_files:
+  - /etc/prometheus/alerts.yml
 
 scrape_configs:
   # Наш сайт. Next.js крутиться на ХОСТі (npm run dev), тому не "localhost",
