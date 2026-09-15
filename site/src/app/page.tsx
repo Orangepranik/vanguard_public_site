@@ -14,7 +14,9 @@ import {
 import type { ReactElement } from "react";
 
 /* Головна — за брифом власника, стилізована пропозиція в наявній дизайн-мові
-   (макета ще немає). Статичний контент, БД не потрібна. */
+   (макета ще немає). Статичний контент, БД не потрібна.
+   Hero — преміум банер, адаптивний під тему (світла/темна) — CSS-фон, без фото.
+   Плавний перехід на /catalog — CSS-анімація входу сторінки каталогу (globals.css). */
 
 export const metadata: Metadata = {
   title: "VANGUARD — радіоелектронні системи виявлення та протидії БПЛА",
@@ -42,49 +44,79 @@ export default function HomePage() {
     <>
       <SiteHeader active="Головна" />
       <main className="flex-1">
-        {/* ── Hero ── */}
-        <section className="relative overflow-hidden border-b border-line-3">
+        {/* ── Hero: преміум банер, адаптивний під тему (світла/темна) ── */}
+        <section className="hero relative isolate overflow-hidden">
+          {/* Фонові шари (кольори — зі змінних теми у globals.css) */}
           <div aria-hidden className="pointer-events-none absolute inset-0">
-            <div className="absolute left-1/2 top-1/2 size-[720px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[radial-gradient(circle,rgba(233,74,2,0.12),transparent_60%)]" />
+            {/* базовий градієнт + віньєтка */}
+            <div className="absolute inset-0" style={{ background: "var(--hero-base)" }} />
+            {/* акцентні глоу */}
+            <div
+              className="absolute left-1/2 top-[40%] size-[860px] -translate-x-1/2 -translate-y-1/2 rounded-full"
+              style={{ background: "radial-gradient(circle, var(--hero-glow), transparent 60%)" }}
+            />
+            <div
+              className="absolute left-[14%] top-[6%] size-[440px] rounded-full"
+              style={{ background: "radial-gradient(circle, var(--hero-glow-2), transparent 66%)" }}
+            />
+            {/* повільний промінь-розгортка радара (обертається внутрішній шар) */}
+            <div className="absolute left-1/2 top-1/2 size-[820px] -translate-x-1/2 -translate-y-1/2">
+              <div
+                className="hero-sweep size-full rounded-full"
+                style={{
+                  background:
+                    "conic-gradient(from 0deg, transparent 0deg, var(--hero-sweep-c) 16deg, transparent 44deg)",
+                }}
+              />
+            </div>
+            {/* кола радара */}
             <svg
               viewBox="0 0 600 600"
-              className="absolute left-1/2 top-1/2 size-[680px] -translate-x-1/2 -translate-y-1/2 text-ink opacity-[0.06]"
+              className="absolute left-1/2 top-1/2 size-[780px] -translate-x-1/2 -translate-y-1/2"
+              style={{ color: "var(--hero-radar)" }}
               fill="none"
               stroke="currentColor"
               strokeWidth="1"
             >
-              <circle cx="300" cy="300" r="80" />
-              <circle cx="300" cy="300" r="160" />
-              <circle cx="300" cy="300" r="240" />
+              <circle cx="300" cy="300" r="90" />
+              <circle cx="300" cy="300" r="170" />
+              <circle cx="300" cy="300" r="250" />
               <circle cx="300" cy="300" r="300" />
               <path d="M300 300 566 148" />
               <circle cx="430" cy="220" r="4" fill="currentColor" stroke="none" />
             </svg>
+            {/* кінозерно */}
+            <div className="hero-grain absolute inset-0" />
+            {/* верхня хвилька для глибини */}
+            <div
+              className="absolute inset-x-0 top-0 h-px"
+              style={{ background: "linear-gradient(to right, transparent, var(--hero-hairline), transparent)" }}
+            />
           </div>
 
-          <div className="relative mx-auto flex w-full max-w-[1080px] flex-col items-center px-4 py-24 text-center lg:py-32">
-            <span className="inline-flex items-center gap-2 rounded-full border border-line-2 bg-surface/60 px-4 py-1.5 text-[11px] uppercase tracking-[0.14em] text-ink-3 backdrop-blur-sm">
-              <span className="size-1.5 rounded-full bg-accent" />
+          <div className="relative mx-auto flex w-full max-w-[1080px] flex-col items-center px-4 py-28 text-center lg:py-36">
+            <span className="hero-badge inline-flex items-center gap-2 rounded-full border px-4 py-1.5 text-[11px] uppercase tracking-[0.16em] backdrop-blur-sm">
+              <span className="size-1.5 rounded-full bg-accent shadow-[0_0_10px_2px_rgba(233,74,2,0.55)]" />
               Українські радіоелектронні системи
             </span>
-            <h1 className="mt-6 font-display text-[34px] font-bold uppercase leading-[1.06] text-balance text-ink sm:text-[48px] lg:text-[60px]">
+            <h1 className="hero-h1 mt-7 font-display text-[36px] font-bold uppercase leading-[1.05] text-balance sm:text-[52px] lg:text-[64px]">
               Технології, що працюють там, де це дійсно важливо
             </h1>
-            <p className="mt-6 max-w-[580px] text-[15px] leading-relaxed text-ink-3">
+            <p className="hero-soft mt-6 max-w-[600px] text-[15px] leading-relaxed">
               VANGUARD — український розробник і виробник радіоелектронних систем для виявлення
               та протидії сучасним повітряним загрозам.
             </p>
-            <div className="mt-9 flex flex-wrap items-center justify-center gap-3">
+            <div className="mt-10 flex flex-wrap items-center justify-center gap-3">
               <Link
                 href="/catalog"
-                className="inline-flex h-[48px] items-center gap-2 rounded-[8px] bg-submit px-6 text-[14px] font-semibold text-white transition-colors hover:bg-accent-mid"
+                className="group inline-flex h-[50px] items-center gap-2 rounded-[10px] bg-submit px-7 text-[14px] font-semibold text-white shadow-[0_8px_30px_-8px_rgba(233,74,2,0.55)] transition-all hover:bg-accent-mid hover:shadow-[0_10px_38px_-6px_rgba(233,74,2,0.7)]"
               >
                 Наша продукція
-                <IconArrowRight className="size-4" />
+                <IconArrowRight className="size-4 transition-transform group-hover:translate-x-0.5" />
               </Link>
               <Link
                 href="/about"
-                className="inline-flex h-[48px] items-center rounded-[8px] border border-edge px-6 text-[14px] font-semibold text-ink-2 transition-colors hover:border-accent hover:text-ink"
+                className="hero-ghost inline-flex h-[50px] items-center rounded-[10px] border px-7 text-[14px] font-semibold backdrop-blur-sm transition-colors"
               >
                 Про компанію
               </Link>
@@ -92,14 +124,14 @@ export default function HomePage() {
           </div>
 
           {/* Смуга статистики */}
-          <div className="relative border-t border-line-3 bg-bg/40">
-            <div className="mx-auto grid w-full max-w-[1100px] grid-cols-2 gap-y-6 px-4 py-7 lg:grid-cols-4 lg:divide-x lg:divide-line-3">
+          <div className="hero-strip relative border-t">
+            <div className="hero-strip-grid mx-auto grid w-full max-w-[1100px] grid-cols-2 gap-y-6 px-4 py-8 lg:grid-cols-4">
               {STATS.map((s) => (
                 <div key={s.label} className="px-2 text-center lg:px-6">
-                  <div className="font-display text-[24px] font-bold leading-none text-accent lg:text-[28px]">
+                  <div className="font-display text-[24px] font-bold leading-none text-accent lg:text-[30px]">
                     {s.value}
                   </div>
-                  <div className="mx-auto mt-2 max-w-[150px] text-[12px] leading-tight text-ink-3">
+                  <div className="hero-stat-label mx-auto mt-2 max-w-[150px] text-[12px] leading-tight">
                     {s.label}
                   </div>
                 </div>
