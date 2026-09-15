@@ -37,8 +37,7 @@ export default async function CatalogPage({ searchParams }: Params) {
   return (
     <>
       <SiteHeader active="Каталог" />
-      {/* Плавна поява каталогу — CSS-анімація входу (globals.css → .catalog-enter) */}
-      <main className="catalog-enter mx-auto w-full max-w-[1536px] flex-1 px-4 pb-3 lg:px-[67px]">
+      <main className="mx-auto w-full max-w-[1536px] flex-1 px-4 pb-3 lg:px-[67px]">
         <nav
           aria-label="Хлібні крихти"
           className="mt-[17px] flex items-center gap-2 text-[10px] leading-[14px]"

@@ -158,11 +158,14 @@ body {
   mix-blend-mode: var(--hero-grain-blend, overlay);
 }
 
-/* ── Плавна поява сторінки каталогу (CSS-анімація входу при монтуванні) ── */
-.catalog-enter {
-  animation: catalog-enter 460ms cubic-bezier(0.16, 1, 0.3, 1) both;
+/* ── Плавна поява при кожній навігації (PageTransition + key={pathname}
+   перемонтовує обгортку). Без fill-mode: після завершення елемент повертається
+   до базового стилю (без transform/filter) — тому sticky-шапка лишається липкою
+   (transform присутній лише під час анімації, коли сторінка вгорі). */
+.page-enter {
+  animation: page-enter 460ms cubic-bezier(0.16, 1, 0.3, 1);
 }
-@keyframes catalog-enter {
+@keyframes page-enter {
   from {
     opacity: 0;
     filter: blur(6px);
@@ -177,7 +180,7 @@ body {
 
 @media (prefers-reduced-motion: reduce) {
   .hero-sweep,
-  .catalog-enter {
+  .page-enter {
     animation: none;
   }
 }

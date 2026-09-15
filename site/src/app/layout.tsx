@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter, Roboto_Condensed } from "next/font/google";
 import ContactDialogProvider from "@/components/contact/ContactDialog";
 import JsonLd from "@/components/JsonLd";
+import PageTransition from "@/components/PageTransition";
 import { SITE_URL, SITE_NAME, SITE_DESCRIPTION, organizationLd } from "@/lib/seo";
 import "./globals.css";
 
@@ -72,7 +73,9 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       <body className="flex min-h-full flex-col">
         <script dangerouslySetInnerHTML={{ __html: themeInit }} />
         <JsonLd data={organizationLd()} />
-        <ContactDialogProvider>{children}</ContactDialogProvider>
+        <ContactDialogProvider>
+          <PageTransition>{children}</PageTransition>
+        </ContactDialogProvider>
       </body>
     </html>
   );
