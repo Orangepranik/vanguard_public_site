@@ -1,0 +1,17 @@
+# Конфіг скрейпінгу Prometheus (модель pull: Prometheus сам ходить за метриками).
+global:
+  scrape_interval: 15s      # як часто «соскрібати» метрики з кожного таргета
+  evaluation_interval: 15s  # як часто перевіряти правила алертів (знадобиться на Етапі 4)
+
+scrape_configs:
+  # Наш сайт. Next.js крутиться на ХОСТі (npm run dev), тому не "localhost",
+  # а host.docker.internal — це хост-машина з точки зору контейнера.
+  - job_name: "vanguard-site"
+    metrics_path: /api/metrics
+    static_configs:
+      - targets: ["host.docker.internal:3000"]
+
+  # Сам Prometheus теж експортить метрики про себе — зручно для перевірки й навчання.
+  - job_name: "prometheus"
+    static_configs:
+      - targets: ["localhost:9090"]

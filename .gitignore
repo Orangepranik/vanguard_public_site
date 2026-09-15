@@ -7,3 +7,7 @@ node_modules/
 
 # Черга заявок містить персональні дані — ніколи не комітити
 .data/
+
+# Дані моніторингу (TSDB Prometheus, дашбоард Graphana)
+prometheus_data/
+grafana_data/

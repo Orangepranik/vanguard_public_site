@@ -1,0 +1,21 @@
+# Стек моніторингу — ОКРЕМО від docker-compose.yml (site), щоб не зачепити прод і БД.
+#   Підняти:   docker compose -f docker-compose.monitoring.yml up -d
+#   Логи:      docker compose -f docker-compose.monitoring.yml logs -f prometheus
+#   Зупинити:  docker compose -f docker-compose.monitoring.yml down
+# ⚠️ НІКОЛИ не додавай --remove-orphans — знесе контейнери поза цим файлом (у т.ч. БД).
+
+services:
+  prometheus:
+    image: prom/prometheus:latest   # для прода — запінь конкретну версію замість :latest
+    container_name: vanguard-prometheus
+    ports:
+      - "9090:9090"                 # веб-інтерфейс: http://localhost:9090
+    volumes:
+      # Наш конфіг усередину контейнера, лише для читання (:ro).
+      - ./monitoring/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      # TSDB (база метрик) — та сама папка prometheus_data з .gitignore. Переживає рестарт.
+      - ./prometheus_data:/prometheus
+    command:
+      - "--config.file=/etc/prometheus/prometheus.yml"
+      - "--storage.tsdb.path=/prometheus"
+    restart: unless-stopped
