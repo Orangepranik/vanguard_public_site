@@ -140,3 +140,135 @@ body {
 :root[data-theme="dark"] .site-logo {
   filter: none;
 }
+
+/* ── Головна: преміум hero ── */
+@keyframes hero-sweep {
+  to {
+    transform: rotate(360deg);
+  }
+}
+.hero-sweep {
+  animation: hero-sweep 14s linear infinite;
+}
+/* Кінозерно (SVG feTurbulence як data-URI); прозорість/змішування — за темою */
+.hero-grain {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 160px 160px;
+  opacity: var(--hero-grain-op, 0.05);
+  mix-blend-mode: var(--hero-grain-blend, overlay);
+}
+
+/* ── Плавна поява сторінки каталогу (CSS-анімація входу при монтуванні) ── */
+.catalog-enter {
+  animation: catalog-enter 460ms cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+@keyframes catalog-enter {
+  from {
+    opacity: 0;
+    filter: blur(6px);
+    transform: translateY(14px) scale(0.99);
+  }
+  to {
+    opacity: 1;
+    filter: blur(0);
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-sweep,
+  .catalog-enter {
+    animation: none;
+  }
+}
+
+/* ── Hero: змінні тем (світла = дефолт, темна = data-theme="dark") ── */
+:root {
+  --hero-bg: #eef1f5;
+  --hero-base: radial-gradient(125% 120% at 50% 12%, #ffffff 0%, #eff2f6 52%, #e3e7ee 100%);
+  --hero-glow: rgba(233, 74, 2, 0.12);
+  --hero-glow-2: rgba(70, 120, 200, 0.08);
+  --hero-radar: rgba(14, 19, 24, 0.06);
+  --hero-sweep-c: rgba(233, 74, 2, 0.1);
+  --hero-hairline: rgba(14, 19, 24, 0.1);
+  --hero-grain-op: 0.035;
+  --hero-grain-blend: multiply;
+  --hero-h1: linear-gradient(to bottom, #0e1318 0%, #0e1318 55%, #566169 100%);
+  --hero-text: #0e1318;
+  --hero-text-soft: #555d64;
+  --hero-badge-bd: rgba(14, 19, 24, 0.12);
+  --hero-badge-bg: rgba(14, 19, 24, 0.035);
+  --hero-badge-tx: #555d64;
+  --hero-ghost-bd: rgba(14, 19, 24, 0.16);
+  --hero-ghost-bg: rgba(14, 19, 24, 0.02);
+  --hero-ghost-tx: #2d343b;
+  --hero-ghost-bd-h: rgba(14, 19, 24, 0.4);
+  --hero-stat-lb: #555d64;
+  --hero-strip-bd: rgba(14, 19, 24, 0.08);
+  --hero-strip-bg: rgba(14, 19, 24, 0.015);
+  --hero-strip-dv: rgba(14, 19, 24, 0.08);
+}
+:root[data-theme="dark"] {
+  --hero-bg: #080c11;
+  --hero-base: radial-gradient(125% 120% at 50% 16%, #16202b 0%, #0b1117 46%, #05080b 100%);
+  --hero-glow: rgba(233, 74, 2, 0.2);
+  --hero-glow-2: rgba(80, 140, 220, 0.1);
+  --hero-radar: rgba(255, 255, 255, 0.055);
+  --hero-sweep-c: rgba(233, 74, 2, 0.14);
+  --hero-hairline: rgba(255, 255, 255, 0.15);
+  --hero-grain-op: 0.05;
+  --hero-grain-blend: overlay;
+  --hero-h1: linear-gradient(to bottom, #ffffff 0%, #ffffff 55%, rgba(255, 255, 255, 0.65) 100%);
+  --hero-text: #ffffff;
+  --hero-text-soft: rgba(255, 255, 255, 0.65);
+  --hero-badge-bd: rgba(255, 255, 255, 0.15);
+  --hero-badge-bg: rgba(255, 255, 255, 0.04);
+  --hero-badge-tx: rgba(255, 255, 255, 0.7);
+  --hero-ghost-bd: rgba(255, 255, 255, 0.15);
+  --hero-ghost-bg: rgba(255, 255, 255, 0.03);
+  --hero-ghost-tx: rgba(255, 255, 255, 0.85);
+  --hero-ghost-bd-h: rgba(255, 255, 255, 0.35);
+  --hero-stat-lb: rgba(255, 255, 255, 0.55);
+  --hero-strip-bd: rgba(255, 255, 255, 0.1);
+  --hero-strip-bg: rgba(255, 255, 255, 0.02);
+  --hero-strip-dv: rgba(255, 255, 255, 0.1);
+}
+.hero {
+  background: var(--hero-bg);
+  color: var(--hero-text);
+}
+.hero-h1 {
+  background-image: var(--hero-h1);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+.hero-soft {
+  color: var(--hero-text-soft);
+}
+.hero-badge {
+  border-color: var(--hero-badge-bd);
+  background: var(--hero-badge-bg);
+  color: var(--hero-badge-tx);
+}
+.hero-ghost {
+  border-color: var(--hero-ghost-bd);
+  background: var(--hero-ghost-bg);
+  color: var(--hero-ghost-tx);
+}
+.hero-ghost:hover {
+  border-color: var(--hero-ghost-bd-h);
+  color: var(--hero-text);
+}
+.hero-strip {
+  border-color: var(--hero-strip-bd);
+  background: var(--hero-strip-bg);
+}
+.hero-stat-label {
+  color: var(--hero-stat-lb);
+}
+@media (min-width: 1024px) {
+  .hero-strip-grid > * + * {
+    border-inline-start: 1px solid var(--hero-strip-dv);
+  }
+}
