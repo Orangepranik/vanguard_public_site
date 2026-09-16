@@ -9,7 +9,9 @@ services:
     image: vanguard-site:latest
     container_name: vanguard-site
     ports:
-      - "3000:3000"
+      # Лише localhost сервера: сайт назовні доступний ТІЛЬКИ через Caddy (HTTPS 443),
+      # а /api/metrics не витікає повз проксі. Локально (dev) працює так само — http://localhost:3000.
+      - "127.0.0.1:3000:3000"
     environment:
       NODE_ENV: production
       # Перед релізом: NOTIFY_EMAIL, TELEGRAM_BOT_TOKEN, TELEGRAM_CHAT_ID (сповіщення про заявки)

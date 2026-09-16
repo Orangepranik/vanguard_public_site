@@ -1,0 +1,61 @@
+# ПРОД-стек моніторингу для сервера. Окремий проєкт, підключений до НАЯВНОЇ мережі
+# vanguard_default (де site/db/caddy). Портів назовні НЕ публікує (крім Grafana на
+# localhost — для доступу через SSH-тунель). Секрети — з deploy/.env.
+#
+#   Запуск:  docker compose -f docker-compose.monitoring.prod.yml -p vanguard-mon --env-file deploy/.env up -d
+#   Логи:    docker compose -f docker-compose.monitoring.prod.yml -p vanguard-mon logs -f
+#   Стоп:    docker compose -f docker-compose.monitoring.prod.yml -p vanguard-mon down
+# ⚠️ НІКОЛИ не додавай --remove-orphans (знесе site/db/caddy — вони в іншому проєкті).
+
+services:
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: vanguard-prometheus
+    volumes:
+      - ./monitoring/prometheus.prod.yml:/etc/prometheus/prometheus.yml:ro
+      - ./monitoring/alerts.yml:/etc/prometheus/alerts.yml:ro
+      - prometheus_data:/prometheus
+    command:
+      - "--config.file=/etc/prometheus/prometheus.yml"
+      - "--storage.tsdb.path=/prometheus"
+      - "--storage.tsdb.retention.time=15d"   # обмежуємо історію — бережемо диск сервера
+    networks:
+      - vanguard_default
+    restart: unless-stopped
+    # порт 9090 назовні НЕ публікуємо — тільки внутрішня мережа + SSH-тунель за потреби
+
+  grafana:
+    image: grafana/grafana:latest
+    container_name: vanguard-grafana
+    volumes:
+      - grafana_data:/var/lib/grafana
+      - ./monitoring/grafana/provisioning:/etc/grafana/provisioning
+    environment:
+      GF_SECURITY_ADMIN_USER: admin
+      GF_SECURITY_ADMIN_PASSWORD: ${GRAFANA_ADMIN_PASSWORD:?set GRAFANA_ADMIN_PASSWORD in deploy/.env}
+    ports:
+      - "127.0.0.1:3001:3000"   # лише localhost сервера → дивишся через ssh -L 3001:127.0.0.1:3001
+    networks:
+      - vanguard_default
+    depends_on:
+      - prometheus
+    restart: unless-stopped
+
+  alertmanager:
+    image: prom/alertmanager:latest
+    container_name: vanguard-alertmanager
+    volumes:
+      - ./monitoring/alertmanager.yml:/etc/alertmanager/alertmanager.yml:ro
+    networks:
+      - vanguard_default
+    restart: unless-stopped
+    # порт 9093 назовні НЕ публікуємо
+
+volumes:
+  prometheus_data:
+  grafana_data:
+
+networks:
+  # Наявна мережа прод-стека (site/db/caddy). external = не створювати, а приєднатися.
+  vanguard_default:
+    external: true

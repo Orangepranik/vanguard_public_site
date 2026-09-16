@@ -4,5 +4,11 @@
 
 ursvanguard.com, www.ursvanguard.com {
 	encode gzip zstd
+
+	# Внутрішні метрики Prometheus — закрити від публічного доступу.
+	# Prometheus скрейпить site:3000/api/metrics усередині Docker-мережі, повз Caddy.
+	@metrics path /api/metrics
+	respond @metrics 404
+
 	reverse_proxy site:3000
 }

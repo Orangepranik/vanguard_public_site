@@ -1,0 +1,27 @@
+# ПРОД-конфіг Prometheus (для сервера). Відмінність від локального prometheus.yml:
+# сайт на проді крутиться в Docker (не на хості через npm run dev), тому target —
+# імʼя сервісу "site" у мережі vanguard_default, а НЕ host.docker.internal.
+global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
+
+rule_files:
+  - /etc/prometheus/alerts.yml
+
+alerting:
+  alertmanagers:
+    - static_configs:
+        - targets: ["alertmanager:9093"]   # у тій самій мережі vanguard_default
+
+scrape_configs:
+  # Сайт — по внутрішньому імені сервісу в мережі vanguard_default (alias "site").
+  # Так метрики НЕ виходять назовні: скрейп іде всередині Docker, повз Caddy й порт 3000.
+  - job_name: "vanguard-site"
+    metrics_path: /api/metrics
+    static_configs:
+      - targets: ["site:3000"]
+
+  # Сам Prometheus.
+  - job_name: "prometheus"
+    static_configs:
+      - targets: ["localhost:9090"]
