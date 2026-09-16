@@ -1,0 +1,23 @@
+# ШАБЛОН. Скопіюй у alertmanager.yml і впиши свої bot_token та chat_id:
+#   cp monitoring/alertmanager.yml.example monitoring/alertmanager.yml
+# Реальний alertmanager.yml — у .gitignore (містить секрет). Токен/чат — ті самі, що шлють заявки.
+
+route:
+  receiver: telegram        # приймач за замовчуванням
+  group_by: ['alertname']   # групувати однакові алерти в одне сповіщення
+  group_wait: 10s           # зачекати 10с перед першим сповіщенням (раптом прийдуть схожі — злити в одне)
+  group_interval: 5m        # мінімум між сповіщеннями однієї групи
+  repeat_interval: 3h       # якщо алерт усе ще firing — повторити не частіше, ніж раз на 3 год
+
+receivers:
+  - name: telegram
+    telegram_configs:
+      - bot_token: 'ВСТАВ_СВІЙ_BOT_TOKEN'
+        chat_id: ВСТАВ_СВІЙ_CHAT_ID        # ціле число (група/супергрупа зазвичай від'ємне: -100…)
+        parse_mode: HTML
+        send_resolved: true                # слати й коли алерт згас (resolved)
+        message: |
+          <b>{{ .Status | toUpper }}</b> — {{ .CommonLabels.alertname }}
+          {{ range .Alerts }}{{ .Annotations.summary }}
+          {{ .Annotations.description }}
+          {{ end }}

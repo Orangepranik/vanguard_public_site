@@ -11,3 +11,6 @@ node_modules/
 # Дані моніторингу (TSDB Prometheus, дашбоард Graphana)
 prometheus_data/
 grafana_data/
+
+# Конфіг Alertmanager містить bot_token (секрет) — комітимо лише alertmanager.yml.example
+monitoring/alertmanager.yml
