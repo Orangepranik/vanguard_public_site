@@ -28,6 +28,15 @@ const PHONE_RE = /^\+?[\d\s()-]{9,18}$/;
 const CHANNELS = new Set(["call", "telegram", "signal", "whatsapp"]);
 
 export async function POST(req: Request) {
+  // Обгортка-таймер: заміряємо тривалість усієї обробки (Histogram → p95/p99 + алерт «повільний відгук»).
+  // Обгортаємо, а не дьоргаємо таймер перед кожним return — так меншає шансів забути гілку.
+  const end = metrics.httpDuration.startTimer({ route: "/api/requests", method: "POST" });
+  const res = await handleRequest(req);
+  end({ status: String(res.status) });
+  return res;
+}
+
+async function handleRequest(req: Request) {
   const ip = (req.headers.get("x-forwarded-for") ?? "local").split(",")[0].trim();
   if (rateLimited(ip)) {
     metrics.requestsTotal.inc({ outcome: "rate_limited" });

@@ -32,3 +32,13 @@ groups:
         annotations:
           summary: "ВТРАТА заявок (HTTP 500)"
           description: "За 5 хв {{ $value }} заявок втрачено — і БД, і файловий резерв недоступні."
+
+      # 4. Повільний відгук: p95 тривалості обробки заявки > 1с протягом 5 хв.
+      - alert: SlowRequests
+        expr: histogram_quantile(0.95, sum(rate(vanguard_http_request_duration_seconds_bucket{route="/api/requests"}[5m])) by (le)) > 1
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Повільна обробка заявок (p95 > 1с)"
+          description: "p95 тривалості /api/requests ≈ {{ $value | humanize }}с за останні 5 хв."
