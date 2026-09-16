@@ -1,0 +1,13 @@
+# Grafana автоматично підключає це джерело даних при старті (provisioning).
+# Альтернатива — додати руками в UI: Connections → Data sources → Add.
+apiVersion: 1
+
+datasources:
+  - name: Prometheus
+    type: prometheus
+    access: proxy
+    # УВАГА: тут "prometheus" — це імʼя сервісу в цьому ж docker-compose.
+    # Контейнери в одній compose-мережі бачать одне одного за іменами сервісів
+    # (а НЕ через localhost / host.docker.internal — то було для доступу з контейнера на хост).
+    url: http://prometheus:9090
+    isDefault: true

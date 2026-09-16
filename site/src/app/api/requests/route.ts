@@ -3,6 +3,7 @@ import { promises as fs } from "fs";
 import path from "path";
 import { getSql } from "@/lib/db";
 import { notifyTelegram } from "@/lib/notify";
+import { metrics } from "@/lib/metrics";
 
 /**
  * POST /api/requests — єдиний динамічний ендпоінт сайту (docs/06-tech.md §28).
@@ -27,8 +28,18 @@ const PHONE_RE = /^\+?[\d\s()-]{9,18}$/;
 const CHANNELS = new Set(["call", "telegram", "signal", "whatsapp"]);
 
 export async function POST(req: Request) {
+  // Обгортка-таймер: заміряємо тривалість усієї обробки (Histogram → p95/p99 + алерт «повільний відгук»).
+  // Обгортаємо, а не дьоргаємо таймер перед кожним return — так меншає шансів забути гілку.
+  const end = metrics.httpDuration.startTimer({ route: "/api/requests", method: "POST" });
+  const res = await handleRequest(req);
+  end({ status: String(res.status) });
+  return res;
+}
+
+async function handleRequest(req: Request) {
   const ip = (req.headers.get("x-forwarded-for") ?? "local").split(",")[0].trim();
   if (rateLimited(ip)) {
+    metrics.requestsTotal.inc({ outcome: "rate_limited" });
     return NextResponse.json({ error: "rate_limited" }, { status: 429 });
   }
 
@@ -36,11 +47,13 @@ export async function POST(req: Request) {
   try {
     body = (await req.json()) as Record<string, unknown>;
   } catch {
+    metrics.requestsTotal.inc({ outcome: "invalid_json" });
     return NextResponse.json({ error: "invalid_json" }, { status: 400 });
   }
 
   // Honeypot: приховане поле "website" завжди порожнє в людей (без CAPTCHA — docs/04-logic §21)
   if (typeof body.website === "string" && body.website.length > 0) {
+    metrics.requestsTotal.inc({ outcome: "honeypot" }); // бот спіймався на приховане поле; поміняй на "ok", якщо не хочеш рахувати окремо
     return NextResponse.json({ ok: true, id: "REQ-OK" });
   }
 
@@ -79,6 +92,7 @@ export async function POST(req: Request) {
   if (!PHONE_RE.test(phone)) errors.push("phone");
   if (items.length === 0 && !hasMessage) errors.push("comment");
   if (errors.length > 0) {
+    metrics.requestsTotal.inc({ outcome: "validation" });
     return NextResponse.json({ error: "validation", fields: errors }, { status: 422 });
   }
 
@@ -100,6 +114,7 @@ export async function POST(req: Request) {
     });
 
     await notifyTelegram({ id: `REQ-${reqId}`, name, phone, contactChannel, organization, comment, items, sourcePage });
+    metrics.requestsTotal.inc({ outcome: "ok" });
     return NextResponse.json({ ok: true, id: `REQ-${reqId}` });
   } catch (err) {
     console.error("[requests] INSERT у БД не вдався — резерв у .data/requests.jsonl:", err);
@@ -111,9 +126,11 @@ export async function POST(req: Request) {
       await fs.appendFile(path.join(dir, "requests.jsonl"), JSON.stringify(record) + "\n", "utf8");
     } catch (fsErr) {
       console.error("[requests] Резерв у JSONL теж не вдався:", fsErr);
+      metrics.requestsTotal.inc({ outcome: "error" });
       return NextResponse.json({ error: "server_error" }, { status: 500 });
     }
     await notifyTelegram({ id, name, phone, contactChannel, organization, comment, items, sourcePage, fallback: true });
+    metrics.requestsTotal.inc({ outcome: "fallback" }); // БД лягла, врятувалися файлом — сюди повісимо алерт на Етапі 4
     return NextResponse.json({ ok: true, id, fallback: true });
   }
 }
