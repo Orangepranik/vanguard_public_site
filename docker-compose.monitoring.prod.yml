@@ -33,6 +33,10 @@ services:
     environment:
       GF_SECURITY_ADMIN_USER: admin
       GF_SECURITY_ADMIN_PASSWORD: ${GRAFANA_ADMIN_PASSWORD:?set GRAFANA_ADMIN_PASSWORD in deploy/.env}
+      # Публічний доступ через піддомен за реверс-проксі Caddy (grafana.ursvanguard.com):
+      GF_SERVER_ROOT_URL: https://grafana.ursvanguard.com
+      GF_USERS_ALLOW_SIGN_UP: "false"   # жодної самореєстрації — лише admin
+
     ports:
       - "127.0.0.1:3001:3000"   # лише localhost сервера → дивишся через ssh -L 3001:127.0.0.1:3001
     networks:

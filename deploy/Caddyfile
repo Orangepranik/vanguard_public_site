@@ -12,3 +12,10 @@ ursvanguard.com, www.ursvanguard.com {
 
 	reverse_proxy site:3000
 }
+
+# Grafana — окремий піддомен з авто-HTTPS. Доступ із будь-якого пристрою за логіном Grafana.
+# Потрібна DNS A-запис: grafana.ursvanguard.com → IP сервера (169.58.92.166).
+grafana.ursvanguard.com {
+	encode gzip zstd
+	reverse_proxy vanguard-grafana:3000
+}
