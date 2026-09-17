@@ -13,10 +13,19 @@ import { metrics } from "@/lib/metrics";
 
 const WINDOW_MS = 60_000;
 const MAX_PER_WINDOW = 5;
+const MAX_BODY_BYTES = 16 * 1024; // тіло заявки — до 16 КБ (захист від роздування пам'яті)
 const hits = new Map<string, number[]>();
+let lastSweep = Date.now();
 
 function rateLimited(ip: string): boolean {
   const now = Date.now();
+  // Періодичне прибирання, щоб Map не ріс безмежно (пам'ять/DoS через розмаїття IP).
+  if (now - lastSweep > WINDOW_MS) {
+    for (const [k, ts] of hits) {
+      if (ts.every((t) => now - t >= WINDOW_MS)) hits.delete(k);
+    }
+    lastSweep = now;
+  }
   const recent = (hits.get(ip) ?? []).filter((t) => now - t < WINDOW_MS);
   if (recent.length >= MAX_PER_WINDOW) return true;
   recent.push(now);
@@ -24,8 +33,52 @@ function rateLimited(ip: string): boolean {
   return false;
 }
 
+// Довірена IP клієнта: за Cloudflare+Caddy ПЕРШИЙ X-Forwarded-For підробляється
+// клієнтом (проксі лише дописує реальний у кінець), тож брати його для rate-limit
+// небезпечно. Пріоритет: CF-Connecting-IP (ставить Cloudflare) → X-Real-IP (Caddy) →
+// як резерв перший XFF.
+function clientIp(req: Request): string {
+  return (
+    req.headers.get("cf-connecting-ip")?.trim() ||
+    req.headers.get("x-real-ip")?.trim() ||
+    (req.headers.get("x-forwarded-for") ?? "local").split(",")[0].trim()
+  );
+}
+
+// Обрізаємо рядки до безпечної довжини (сховище/пам'ять/ліміт повідомлення Telegram 4096).
+const clamp = (s: string, max: number): string => (s.length > max ? s.slice(0, max) : s);
+const MAX = { name: 120, phone: 32, organization: 200, comment: 4000, sku: 64 };
+
 const PHONE_RE = /^\+?[\d\s()-]{9,18}$/;
+const SLUG_RE = /^[a-z0-9][a-z0-9-]{0,79}$/; // формат slug продукту (лишається bind-параметром у SQL)
 const CHANNELS = new Set(["call", "telegram", "signal", "whatsapp"]);
+
+// sourcePage — приймаємо ЛИШЕ власний відносний шлях («/catalog»); чужі та
+// протокол-відносні URL («//evil», «http://…») відкидаємо (захист у глибину від
+// зберігання сміття й майбутнього open-redirect, якщо значення колись стане ціллю переходу).
+function safeSourcePage(v: unknown): string | null {
+  if (typeof v !== "string") return null;
+  const s = v.trim();
+  if (!s.startsWith("/") || s.startsWith("//")) return null;
+  return clamp(s, 512);
+}
+
+// Конфігурація варіанта — довільний об'єкт від клієнта. Лишаємо тільки пари
+// рядок→рядок з обмеженням кількості/довжини (у SQL іде як bind JSON, але не даємо
+// роздувати сховище).
+function sanitizeConfig(v: unknown): Record<string, string> | undefined {
+  if (!v || typeof v !== "object" || Array.isArray(v)) return undefined;
+  const out: Record<string, string> = {};
+  let n = 0;
+  for (const [k, val] of Object.entries(v as Record<string, unknown>)) {
+    if (n >= 20) break;
+    if (typeof val === "string") {
+      out[clamp(k, 64)] = clamp(val, 128);
+      n++;
+    }
+  }
+  return Object.keys(out).length ? out : undefined;
+}
 
 export async function POST(req: Request) {
   // Обгортка-таймер: заміряємо тривалість усієї обробки (Histogram → p95/p99 + алерт «повільний відгук»).
@@ -37,10 +90,16 @@ export async function POST(req: Request) {
 }
 
 async function handleRequest(req: Request) {
-  const ip = (req.headers.get("x-forwarded-for") ?? "local").split(",")[0].trim();
+  const ip = clientIp(req);
   if (rateLimited(ip)) {
     metrics.requestsTotal.inc({ outcome: "rate_limited" });
     return NextResponse.json({ error: "rate_limited" }, { status: 429 });
+  }
+
+  // Відкидаємо завелике тіло ще до парсингу (захист від роздування пам'яті).
+  if (Number(req.headers.get("content-length") ?? 0) > MAX_BODY_BYTES) {
+    metrics.requestsTotal.inc({ outcome: "validation" });
+    return NextResponse.json({ error: "payload_too_large" }, { status: 413 });
   }
 
   let body: Record<string, unknown>;
@@ -57,33 +116,41 @@ async function handleRequest(req: Request) {
     return NextResponse.json({ ok: true, id: "REQ-OK" });
   }
 
-  const name = typeof body.name === "string" ? body.name.trim() : "";
-  const phone = typeof body.phone === "string" ? body.phone.trim() : "";
+  const name = clamp(typeof body.name === "string" ? body.name.trim() : "", MAX.name);
+  const phone = clamp(typeof body.phone === "string" ? body.phone.trim() : "", MAX.phone);
   const contactChannel =
     typeof body.contactChannel === "string" && CHANNELS.has(body.contactChannel)
       ? body.contactChannel
       : "call";
-  const organization = typeof body.organization === "string" ? body.organization.trim() : null;
-  const comment = typeof body.comment === "string" ? body.comment.trim() : null;
-  const sourcePage = typeof body.sourcePage === "string" ? body.sourcePage : null;
+  const organization =
+    typeof body.organization === "string" && body.organization.trim()
+      ? clamp(body.organization.trim(), MAX.organization)
+      : null;
+  const comment =
+    typeof body.comment === "string" && body.comment.trim()
+      ? clamp(body.comment.trim(), MAX.comment)
+      : null;
+  const sourcePage = safeSourcePage(body.sourcePage);
   const items = (Array.isArray(body.items) ? body.items : [])
     .map((it) => {
       const raw = it as Record<string, unknown>;
+      const slug = typeof raw.slug === "string" ? raw.slug.trim() : "";
       return {
-        slug: typeof raw.slug === "string" ? raw.slug.trim() : "",
-        qty: typeof raw.qty === "number" && Number.isFinite(raw.qty) ? Math.floor(raw.qty) : 0,
-        configuration:
-          raw.configuration && typeof raw.configuration === "object"
-            ? (raw.configuration as Record<string, string>)
-            : undefined,
-        sku: typeof raw.sku === "string" ? raw.sku : undefined,
+        slug: SLUG_RE.test(slug) ? slug : "",
+        qty:
+          typeof raw.qty === "number" && Number.isFinite(raw.qty)
+            ? Math.min(Math.floor(raw.qty), 9999)
+            : 0,
+        configuration: sanitizeConfig(raw.configuration),
+        sku: typeof raw.sku === "string" ? clamp(raw.sku, MAX.sku) : undefined,
         priceAtSubmit:
           typeof raw.priceAtSubmit === "number" && Number.isFinite(raw.priceAtSubmit)
             ? raw.priceAtSubmit
             : undefined,
       };
     })
-    .filter((it) => it.slug.length > 0 && it.qty > 0);
+    .filter((it) => it.slug.length > 0 && it.qty > 0)
+    .slice(0, 50); // не більше 50 позицій у заявці
 
   // Заявка = або товари (items), або загальне звернення з повідомленням (comment) зі сторінки «Контакти».
   const hasMessage = !!comment && comment.length >= 5;
