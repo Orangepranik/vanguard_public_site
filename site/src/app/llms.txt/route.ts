@@ -11,6 +11,7 @@ export const dynamic = "force-dynamic";
 
 const STATIC_PAGES: { path: string; title: string; summary: string }[] = [
   { path: "/catalog", title: "Каталог продукції", summary: "Детектори БПЛА «КОЖАН», засоби РЕБ, антени та готові комплекти." },
+  { path: "/reb", title: "Засоби РЕБ: порівняння", summary: "Порівняння «КРАКЕН», «ГІДРА 2U», «ДОКАТКА», «ДЕЛЬФІН» за діапазоном, потужністю, форм-фактором; як обрати систему РЕБ." },
   { path: "/solutions", title: "Рішення", summary: "Підібрані конфігурації обладнання під сценарії застосування." },
   { path: "/reviews", title: "Відгуки", summary: "Досвід застосування обладнання (з OPSEC-модерацією)." },
   { path: "/warranty", title: "Гарантія", summary: "Умови гарантії — 12 місяців з дати передачі." },

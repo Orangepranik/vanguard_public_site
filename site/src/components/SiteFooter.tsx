@@ -124,6 +124,7 @@ export default function SiteFooter() {
               links={[
                 { label: "Гарантія", href: "/warranty" },
                 { label: "FAQ", href: "/faq" },
+                { label: "Порівняння РЕБ", href: "/reb" },
                 { label: "Сервісні центри", href: "/contacts" },
               ]}
             />

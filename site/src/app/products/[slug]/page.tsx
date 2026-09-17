@@ -121,7 +121,18 @@ export default async function ProductPage({ params }: Params) {
               </div>
             )}
 
-            <p className="mt-4 text-[13px] leading-relaxed text-ink-3">{product.shortDescription}</p>
+            {/* Answer-first (GEO): стисле, самодостатнє твердження «що це + хто виробник»,
+                яке LLM легко процитувати. Для КОЖАН 3.0 не додаємо — специфікації ще
+                уточнюються (рішення власника). */}
+            <p className="mt-4 text-[13px] leading-relaxed text-ink-3">
+              {product.slug !== "kozhan-3" && (
+                <span className="text-ink-2">
+                  {product.name} — власна розробка та виробництво компанії VANGUARD
+                  (Ukrainian Radioelectronic Systems), Україна.{" "}
+                </span>
+              )}
+              {product.shortDescription}
+            </p>
 
             {/* Пропозиція (немає в макеті): видимий сигнал свіжості для читача й AI. */}
             <p className="mt-3 text-[11px] text-ink-5">
