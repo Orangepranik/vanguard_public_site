@@ -7,7 +7,7 @@ import ProductGallery from "@/components/product/ProductGallery";
 import ProductOrderPanel from "@/components/product/ProductOrderPanel";
 import ProductReviews from "@/components/product/ProductReviews";
 import JsonLd from "@/components/JsonLd";
-import { IconChevronRight, IconDownload, IconHome } from "@/components/icons";
+import { IconArrowRight, IconChevronRight, IconDownload, IconHome } from "@/components/icons";
 import { getProduct, getProducts } from "@/lib/catalog";
 import { AVAILABILITY_LABELS } from "@/lib/types";
 import { formatBytes, formatDate } from "@/lib/format";
@@ -225,6 +225,15 @@ export default async function ProductPage({ params }: Params) {
 
           {/* Права колонка: сумісність + схожі */}
           <aside className="space-y-6">
+            {product.category.slug === "reb" && (
+              <Link
+                href="/reb"
+                className="flex items-center justify-between gap-3 rounded-[10px] border border-line-3 bg-cta px-4 py-3.5 transition-colors hover:border-accent-deep"
+              >
+                <span className="text-[13px] font-semibold text-ink">Порівняти засоби РЕБ</span>
+                <IconArrowRight className="size-4 shrink-0 text-accent" />
+              </Link>
+            )}
             {product.compatibility.length > 0 && (
               <div className="rounded-[10px] border border-line-3 bg-surface p-4">
                 <h2 className="text-[13px] font-semibold uppercase tracking-wide text-ink">Сумісність</h2>

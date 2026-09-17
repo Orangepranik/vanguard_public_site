@@ -392,6 +392,18 @@ export default function CatalogView({
       </aside>
 
       <div className="mt-6 lg:mt-0">
+        {selected.includes("reb") && (
+          <Link
+            href="/reb"
+            className="mb-4 flex items-center justify-between gap-3 rounded-[8px] border border-line-3 bg-cta px-4 py-3 transition-colors hover:border-accent-deep"
+          >
+            <span className="text-[13px] leading-snug text-ink">
+              <span className="font-semibold">Не знаєте, який РЕБ обрати?</span>{" "}
+              <span className="text-ink-3">Порівняння: КРАКЕН · ГІДРА 2U · ДОКАТКА · ДЕЛЬФІН</span>
+            </span>
+            <IconArrowRight className="size-4 shrink-0 text-accent" />
+          </Link>
+        )}
         {shown.length === 0 ? (
           <div className="rounded-[4px] border border-line bg-surface p-10 text-center">
             <p className="text-[16px] font-medium">Нічого не знайдено</p>
